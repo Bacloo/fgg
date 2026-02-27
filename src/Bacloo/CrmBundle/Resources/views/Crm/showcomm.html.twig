@@ -1,0 +1,17 @@
+<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': id}) }}'">
+		{% if test == 'ok' %}<b>Le {{ datecomm|date("d/m/Y") }} : {{ commentaire }}</b>{% endif %}
+</td>
+	
+{% if module1act == 1 %}
+			<form role="form" action="{{ path('bacloocrm_speedpartage', {'id' : id}) }}" method="post" {{form_enctype(form) }}>
+			<td>
+				<div class="form-group">
+					{{ form_widget(form.pseudo, { 'attr' : { 'class' : 'form-control' } })  }}
+				</div>
+			</td>
+			<td>
+					<input type="submit" name="submit" id="submit" value="Partager" class="btn btn-info pull-right">					 
+					 {{ form_row(form._token) }}
+			</td>
+			</form>
+{% endif %}	

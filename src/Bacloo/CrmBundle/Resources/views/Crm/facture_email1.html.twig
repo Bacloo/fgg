@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+Bonjour {% if civilite == 'M.' %}Monsieur {% else %}Madame {% endif %}{{ prenom }} {{ nom }}
+{% set totalfac = 0 %}
+{% for liste in facturesechues %}
+    {% if liste.typedoc == 'facture' %}
+        {% set totalfac = totalfac + liste.totalttc - liste.montantdejareg %}
+    {% elseif liste.typedoc == 'avoir' %}
+        {% set totalfac = totalfac - liste.totalttc %}
+    {% endif %}
+{% endfor %}
+<br><br>
+Sauf erreur de notre part, le paiement des factures échues, détaillées ci-dessous, ne nous est pas parvenu.
+<br><br>
+Montant total dû : {{ totalfac }}€ TTC
+<br><br>
+{% set nbavoir = 0 %}
+{% for liste in facturesechues %}
+    {% if liste.typedoc == 'avoir' %}
+        {% set nbavoir = nbavoir + 1 %}
+    {% endif %}
+{% endfor %}
+{% set sommefacture = 0 %}
+{% set sommeavoir = 0 %}
+{% for liste in facturesechues %}
+    {% if liste.typedoc == 'facture' %}
+        - {{ liste.numfacture }} du {{ liste.datecrea|date('d/m/Y') }} d'un montant de {{ liste.totalttc }}€ TTC reste à payer {{ liste.totalttc - liste.montantdejareg }} € TTC<br>
+        {% set areg = liste.totalttc - liste.montantdejareg %}
+        {% set sommefacture = sommefacture + areg %}
+    {% endif %}
+{% endfor %}
+{% if nbavoir > 0 %}
+    <br><br>
+    Avoirs à déduire :
+    <br><br>
+{% endif %}
+{% for liste in facturesechues %}
+    {% if liste.typedoc == 'avoir' %}
+        - {{ liste.numfacture }} du {{ liste.datecrea|date('d/m/Y') }} d'un montant de {{ liste.totalttc }}€ TTC<br>
+        {% set sommeavoir = sommeavoir + liste.totalttc %}
+    {% endif %}
+{% endfor %}
+{% if nbavoir > 1 %}
+    Total facture : {{ sommefacture }}<br>
+    Total avoir : -{{ sommeavoir }}<br>
+    Montant du : {{ sommefacture - sommeavoir }}
+{% endif %}
+<br><br>
+Si par ailleurs votre paiement venait à nous parvenir avant la réception de la présente, nous vous saurions gré de ne pas en tenir compte.
+<br><br>
+Cordialement
+<br><br>
+Le service client
+</body>
+</html>

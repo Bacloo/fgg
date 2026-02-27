@@ -1,0 +1,209 @@
+{% if factures.vars.value.typedoc == 'facture' or factures.vars.value.typedoc == 'avoir' %}
+					<tr>
+						<td>
+							<div class="hidden">
+								{{ form_widget(factures.datecrea) }}
+								{{ form_widget(factures.locatacloneid) }}
+								{{ form_widget(factures.user) }}
+								{{ form_widget(factures.encompta) }}
+							</div>
+							{% if factures.vars.value.selection is defined %}
+								{{ form_widget(factures.selection, { 'attr' : { 'class' : 'checkbox1', 'name' : 'check[]' } })  }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.selection) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.encompta == 1 %}
+							{% else %}
+								{% if 'V-' ~ factures.locatacloneid.vars.value == factures.codelocata.vars.value %}
+									<center><a href="{{ path('bacloocrm_ventes', {'ficheid': factures.clientid.vars.value, 'vendaid': factures.locatacloneid.vars.value} ) }}"><i class="fa fa-pencil"></i></a></center>
+								{% elseif factures.typedoc.vars.value == 'avoir' %}
+									<center><a href="{{ path('bacloocrm_avoirloc', {'locid': factures.locatacloneid.vars.value, 'numavoir':factures.numfacture.vars.value } ) }}"><i class="fa fa-pencil"></i></a></center>
+								{% else %}
+									<center><a href="{{ path('bacloocrm_modifierfacture', {'ficheid': factures.clientid.vars.value, 'locid': factures.locatacloneid.vars.value} ) }}"><i class="fa fa-pencil"></i></a></center>
+								{% endif %}
+							{% endif %}
+						</td>
+						<td>
+							<a href="{{ path('bacloocrm_impressionfactures', {'codecontrat': factures.locatacloneid.vars.value, 'clientid': factures.clientid.vars.value, 'numlocatavente': factures.codelocata.vars.value, 'mode':factures.vars.value.typedoc, 'numfacture':factures.numfacture.vars.value} ) }}"><i class="fa fa-file-pdf-o"></i></a>
+						</td>
+						<td>
+							{% if factures.vars.value.encompta == 1 %}{% if 'V-' ~ factures.locatacloneid.vars.value != factures.codelocata.vars.value %}<a href="{{ path('bacloocrm_recupfacture', {'numfacture': factures.numfacture.vars.value, 'locatacloneid': factures.locatacloneid.vars.value, 'typedoc': factures.typedoc.vars.value} ) }}" title="Récupérer la facture validée définitivement"><i class="glyphicon glyphicon-refresh"></i></a>{% endif %}{% else %}{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.numfacture is defined %}
+								<div class="hidden">{{ form_widget(factures.numfacture) }}</div>
+								{{ factures.numfacture.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.numfacture) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.codelocata is defined %}
+								<div class="hidden">{{ form_widget(factures.codelocata) }}</div>
+								{{ factures.codelocata.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.codelocata) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.clientid is defined %}
+								<div class="hidden">{{ form_widget(factures.clientid) }}</div>
+								{{ factures.clientid.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.clientid) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.client is defined %}
+								<div class="hidden">{{ form_widget(factures.client) }}</div>
+								<a href="{{ path('bacloocrm_voir', {'id': factures.clientid.vars.value } ) }}">{{ factures.client.vars.value }}</a>
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.client) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.chantier.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.chantier) }}</div>
+								{{ factures.chantier.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.chantier) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.totalht.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.totalht) }}</div>
+								{{ factures.totalht.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.totalht) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.totalttc.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.totalttc) }}</div>
+								{{ factures.totalttc.vars.value }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.totalttc) }}</div>
+							{% endif %}
+						</td>
+						<td>
+						{% if factures.vars.value.typedoc != 'avoir' %}
+							{% if factures.vars.value.encompta == 1 %}
+								<div class="hidden">{{ form_widget(factures.echeance) }}</div>
+								{{ factures.echeance.vars.value }}
+							{% else %}
+								{{ form_widget(factures.echeance, { 'attr' : { 'class' : 'datepicker' } }) }}
+							{% endif %}
+						{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.typedoc is defined %}
+								<div class="hidden">{{ form_widget(factures.typedoc) }}</div>
+								{{ factures.vars.value.typedoc }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.typedoc) }}</div>
+							{% endif %}
+						</td>
+					{% if factures.vars.value.typedoc == 'avoir' %}
+						<td>
+							{% if factures.vars.value.reglement is defined %}
+								{{ form_widget(factures.reglement) }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.reglement) }}</div>
+							{% endif %}
+						</td>
+						<td colspan="7" class="col-md-12">
+							<b>Commentaire</b>
+							{{ form_widget(factures.commentaire, { 'attr' : { 'class' : 'form-control', 'rows' : '3'}}) }}
+						</td>						
+					{% else %}
+						<td>
+							<div class="hidden">{{ form_widget(factures.commentaire) }}</div>
+							{% if factures.vars.value.reglement is defined %}
+								{{ form_widget(factures.reglement) }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.reglement) }}</div>
+							{% endif %}
+						</td>
+						<td>
+								{{ form_widget(factures.montantreg) }}							
+						</td>
+						<td>
+							{% if factures.vars.value.datepaiement is defined %}
+								{{ form_widget(factures.datepaiement, { 'attr' : { 'class' : 'datepicker' } }) }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.datepaiement) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.vars.value.modepaiement is defined %}
+								{{ form_widget(factures.modepaiement) }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.modepaiement) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{{ form_widget(factures.montantdejareg) }}							
+						</td>
+						<td>
+							{% if factures.daterelance1.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.daterelance1) }}</div>
+								{{ factures.daterelance1.vars.value|date('d/m/Y') }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.daterelance1) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.daterelance2.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.daterelance2) }}</div>
+								{{ factures.daterelance2.vars.value|date('d/m/Y') }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.daterelance2) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if factures.daterelance3.vars.value is not empty %}
+								<div class="hidden">{{ form_widget(factures.daterelance3) }}</div>
+								{{ factures.daterelance3.vars.value|date('d/m/Y') }}
+							{% else %}
+								<div class="hidden">{{ form_widget(factures.daterelance3) }}</div>
+							{% endif %}
+						</td>
+						{% if factures.vars.value.modepaiement is defined and (factures.vars.value.modepaiement == 'lcr' or factures.vars.value.modepaiement == 'cheque') %}
+							<td>
+								{{ form_widget(factures.encaisse) }}</div>
+							</td>
+						{% else %}
+							<div class="hidden">{{ form_widget(factures.encaisse) }}</div>
+						{% endif %}	
+					{% endif %}
+						<td>
+							{% if factures.vars.value.encompta == 1 %}{% else %}{% if 'V-' ~ factures.locatacloneid.vars.value != factures.codelocata.vars.value %}<a href="{{ path('bacloocrm_removefacture', {'numfacture': factures.numfacture.vars.value, 'locatacloneid': factures.locatacloneid.vars.value, 'typedoc': factures.typedoc.vars.value} ) }}"><i class="fa fa-trash-o"></i></a>{% endif %}{% endif %}
+						</td>
+					</tr>
+{% elseif factures.vars.value.typedoc == 'bon de commande' %}
+	<div class="hidden">	
+		{{ form_widget(factures.datecrea) }}
+		{{ form_widget(factures.locatacloneid) }}
+		{{ form_widget(factures.numfacture) }}
+		{{ form_widget(factures.codelocata) }}
+		{{ form_widget(factures.clientid) }}
+		{{ form_widget(factures.client) }}
+		{{ form_widget(factures.chantier) }}
+		{{ form_widget(factures.totalht) }}
+		{{ form_widget(factures.totalttc) }}
+		{{ form_widget(factures.typedoc) }}
+		{{ form_widget(factures.reglement) }}
+		{{ form_widget(factures.datepaiement) }}
+		{{ form_widget(factures.modepaiement) }}		
+	</div>
+{% endif %}
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>

@@ -1,0 +1,7 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{# {{ barcode({code: '127.0.0.1:8080/symfony2/web/b/metal/web/app_dev.php/transporteur/'~ codemachine, type: 'qrcode', format: 'svg', width: 10, height: 10, color: 'black'}) }} #}
+{# {{ barcode({code: 'https://www.bacloo.fr/b/metaloc/web/app_dev.php/transporteur/'~ codemachine, type: 'qrcode', format: 'svg', width: 10, height: 10, color: 'black'}) }} #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	{{ barcode({code: 'https://www.bacloo.fr/b/metaloc/web/app.php/transporteur/'~ codemachine, type: 'qrcode', format: 'svg', width: 10, height: 10, color: 'black'}) }}
+{% endblock %}

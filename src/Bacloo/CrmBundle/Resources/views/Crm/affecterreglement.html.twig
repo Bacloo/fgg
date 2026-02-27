@@ -1,0 +1,233 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+    <form class="form-horizontal" action="{{ path('bacloocrm_affecterreglement', {'clientid':clientid, 'mode': mode, 'style': style, 'reset':0} ) }}" method="post" {{form_enctype(form) }}>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Affecter un règlement pour le client {{ client }}
+
+                        {% if form.vars.value.solde is not empty %}
+                            <button type="submit" class="btn btn-danger pull-right" value="Enregistrer"  name="save" >
+                                Enregistrer
+                            </button>
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="hidden">
+                        {{ form_widget(form.clientid, { 'value' : clientid }) }}
+                        {{ form_widget(form.client, { 'value' : client }) }}
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Date de paiement</span>
+                                            {{ form_widget(form.datepaiment, {'attr' : { 'class' : 'form-control datepicker' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Paiement par</span>
+                                            {{ form_widget(form.modepaiement, {'attr' : { 'class' : 'form-control' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Règlement</span>
+                                            {{ form_widget(form.montantreg, {'attr' : { 'class' : 'form-control' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Montant imputé</span>
+                                            {{ form_widget(form.montantimpute, {'attr' : { 'class' : 'form-control' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Reste à imputer</span>
+                                            {{ form_widget(form.solde, {'attr' : { 'class' : 'form-control' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><b></b>Trop perçu</span>
+                                            {{ form_widget(form.troppercu, {'attr' : { 'class' : 'form-control' } })  }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-success" value="Controler"  name="controle" >
+                                    Actualiser les montants
+                                </button>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="hidden">
+                        {{ form_widget(form.clientid, { 'value' : clientid }) }}
+                        {{ form_widget(form.client, { 'value' : client }) }}
+                    </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Liste des factures à régler
+                                </h3>
+                            </div>
+                            {% set troppercu = form.vars.value.troppercu %}
+                            <div class="panel-body">
+                                TP : Cochez la case pour utiliser le Trop Perçu avec la facture désignée
+                                <div id="bacloo_crmbundle_regla_reglement" data-prototype="{{ _self.reglementCollectionItem(form.reglement.vars.prototype)|e}}">
+                                    <table id="bacloo3" class="table table-bordered">
+                                        <tr id="dibac3">
+                                            <td style="width:50px">Sélection</td>
+                                            {%  if troppercu > 0 %}
+                                                <td style="width:50px">TP</td>
+                                            {% endif %}
+                                            <td class="">N°facture</td>
+                                            <td class="">Type document</td>
+                                            <td class="">Total TTC</td>
+                                            <td class="">Echéance</td>
+                                            <td class="">Montant avoir</td>
+                                            <td class="">Escompte</td>
+                                            <td class="">Montant imputé</td>
+                                            <td class="">Trop perçu</td>
+                                        </tr>
+                                        {% for reglo in form.reglement %}
+                                            {{ _self.reglementCollectionItem(reglo, troppercu) }}
+                                        {% endfor %}
+                                        {% macro reglementCollectionItem(reglement, troppercu) %}
+                                            {% if reglement.echeance.vars.value|date('U') <= "now"|date('U') %}
+                                                <tr class="danger">
+                                            {% else %}
+                                                <tr class="dibacloo3">
+                                            {% endif %}
+                                                <td>
+                                                    <div class="hidden">{{ form_widget(reglement.regler)  }}</div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                           {{ form_widget(reglement.selection, {'attr' : { 'class' : 'form-control' } })  }}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {%  if troppercu > 0 and reglement.typedoc.vars.value is not same as('avoir') %}
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                {{ form_widget(reglement.troppercu, {'attr' : { 'class' : 'form-control' } })  }}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                {% elseif troppercu > 0 and reglement.typedoc.vars.value is same as('avoir') %}
+                                                    <td></td>
+                                                {% endif %}
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.numfacture, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    <b>{{ reglement.numfacture.vars.value }}</b>
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.typedoc, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.typedoc.vars.value }}
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.totalttc, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    <b>{{ reglement.totalttc.vars.value }}</b>
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.echeance, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.echeance.vars.value|date('d/m/Y') }}
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.montantavoir, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.montantavoir.vars.value }}
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.escompte, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.escompte.vars.value }}
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.aimputer, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.aimputer.vars.value }}
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">
+                                                        {{ form_widget(reglement.montanttroppercu, {'attr' : { 'class' : 'form-control' } })  }}
+                                                    </div>
+                                                    {{ reglement.montanttroppercu.vars.value }}
+                                                </td>
+                                            </tr>
+                                        {% endmacro %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <br>
+                        <button type="submit" class="btn btn-warning" value="Fermer"  name="Ferme" >
+                            Annuler
+                        </button>
+                        {{ form_row(form._token) }}
+                    </center>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+		$( function() {
+			$( ".datepicker" ).datepicker({
+				dateFormat: 'dd/mm/yy',
+				firstDay:1
+			});
+		} );
+	</script>
+{% endblock %}

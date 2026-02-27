@@ -1,0 +1,151 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/searchdate.html.twig #}
+		<div class="col-md-12 column">
+			<center>
+					<h3 class="panel-title">
+						{% if vue == 'rappels' %}
+							<h3>Liste des relances au {{ au|date("d/m/Y") }} </h3>				
+						{% elseif vue == 'a_faire' %}
+							<h3>Liste des tâches au {{ au|date("d/m/Y") }} </h3>
+						{% elseif vue == 'rdv' %}
+							<h3>Liste des rendez-vous au {{ au|date("d/m/Y") }} </h3>
+						{% endif %}
+					</h3>
+			</center>
+
+	<ul class="nav nav-pills nav-stacked">
+	{% if resultrap is defined %}
+		{% if resultrap is empty %}
+			{% if fiche is not empty %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>
+							Date
+							</th>
+							<th>
+							Commentaire
+							</th>					
+						</tr>
+					</thead>
+					<tbody>							
+					{% for result in fiche %}
+						{% for data in result.brappels %}
+						{% if data.date < date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr class="danger" style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif data.date > date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr style="cursor:pointer" class="success" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'a_faire' %}
+								<tr style="cursor:pointer" class="info" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'rdv' %}
+								<tr style="cursor:pointer" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">									
+						{% else %}
+								<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% endif %}
+									<td>
+									{{ data.date|date('d/m/Y') }}
+									</td>
+									<td>
+									{{ result.raisonSociale| truncate(25) }} : {{ data.rapTexte| truncate(40) }}
+									</td>>								
+								</tr>				
+						{% endfor %}
+					 
+
+					{% endfor %}
+					</tbody>
+				</table>				
+	
+			{% endif %}
+		{% else %}		
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>
+						Date
+						</th>
+						<th>
+						Commentaire
+						</th>					
+					</tr>
+				</thead>
+				<tbody>							
+				{% for result in resultrap %}
+					{% for data in result.brappels %}
+						{% if data.date < date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr style="cursor:pointer" class="danger" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif data.date > date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr style="cursor:pointer" class="success" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'a_faire' %}
+								<tr style="cursor:pointer" class="info" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'rdv' %}
+								<tr style="cursor:pointer" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">									
+						{% else %}
+								<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% endif %}
+								<td>
+								{{ data.date|date('d/m/Y') }}
+								</td>
+								<td>
+								{{ result.raisonSociale| truncate(25) }} : {{ data.rapTexte| truncate(40) }}
+								</td>							
+							</tr>				
+					{% endfor %}
+				 
+
+				{% endfor %}
+				</tbody>
+			</table>				
+				
+		{% endif %}
+	{% else %}
+	<center>
+			{% if fiche is not empty %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>
+							Date
+							</th>
+							<th>
+							Commentaire
+							</th>					
+						</tr>
+					</thead>
+					<tbody>							
+					{% for result in fiche %}
+						{% for data in result.brappels %}
+						{% if data.date < date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr style="cursor:pointer" class="danger" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif data.date > date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr style="cursor:pointer" class="success" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'a_faire' %}
+								<tr style="cursor:pointer" class="info" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'rdv' %}
+								<tr style="cursor:pointer" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">									
+						{% else %}
+								<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% endif %}
+									<td>
+									{{ data.date|date('d/m/Y') }}
+									</td>
+									<td>
+									{{ result.raisonSociale| truncate(25) }} : {{ data.rapTexte| truncate(40) }}
+									</td>							
+								</tr>				
+						{% endfor %}
+					 
+
+					{% endfor %}
+					</tbody>
+				</table>				
+	
+			{% else %}
+				Pas de résultat
+			{% endif %}		
+		
+	</center>
+	{% endif %}
+	</ul>
+
+
+</div>

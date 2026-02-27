@@ -1,0 +1,221 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+{% if grant == 'nok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Crédits insuffisants
+							</h4>
+						</div>
+						<div class="modal-body">
+							Vous ne disposez pas d'assez de crédits pour effectuer cet achat.<br><br>
+							<a href="#" class="btn btn-success" role="button">Acheter des crédits</a> 
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif grant == 'dejadonne' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Fiche déjà donnée !
+							</h4>
+						</div>
+						<div class="modal-body">
+							Vous avez déjà donné la fiche {{ raisonsociale }} à l'utilisateur {{ acheteur }}.<br><br>
+							
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'ok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Vente confirmée
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre achat a bien été effectué, la raison sociale est <a href="{{ path('bacloocrm_voir', {'id': fichecopyid}) }}">{{ raisonsociale }}</a>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': fichecopyid}) }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'bacloo' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Vente confirmée
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre achat a bien été effectué, vous avez acheté {{ nbfiche }} {% if nbfiche > 1 %} fiches {% else %} fiche{% endif %} .
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'don' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_search') }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Don confirmé
+							</h4>
+						</div>
+						<div class="modal-body">
+							Vous avez bien donné une copie de la fiche {{raisonsociale}} à {{ acheteur }}.
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_search') }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'donemail' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_donemail', {'id':id}) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Don confirmé
+							</h4>
+						</div>
+						<div class="modal-body">
+							Vous avez bien donné une copie de la fiche {{ societe }} par email à : {{ email }}.
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'invitation' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_donemail', {'id':id}) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Invitation envoyée
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre invitation à {{ societe }} à l'adresse {{ email }} a bien été envoyée.<br><br>
+							
+							Vous allez recevoir 1 point.
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'badmail' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_donemail', {'id':id}) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Email non valide
+							</h4>
+						</div>
+						<div class="modal-body">
+							L'adresse email saisie n'est pas valide. Veuillez la vérifier.<br><br>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif vente == 'deja' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_donemail', {'id':id}) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Invitation déjà envoyée
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre avez déjà envoyé une invitation à l'adresse {{ email }}.<br><br>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif mode == 'fichier_commun' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Confirmation
+							</h4>
+						</div>
+						<div class="modal-body">
+							Confirmez vous la génération de votre Bacloo personnalisé avec fichier client commun ?<br><br>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Je confirme</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif mode == 'fichier_pas_commun' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_donemail', {'id':id}) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								confirmation
+							</h4>
+						</div>
+						<div class="modal-body">
+							Confirmez vous la génération de votre Bacloo personnalisé avec fichier client séparé pour chaque utilisateur ?<br><br>
+						</div
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_donemail', {'id':id}) }}"><span>Je confirme</span></a>
+						</div>
+					</div>					
+				</div>
+{% else %}
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						 <a class="close" href="{{ previous }}">×</a>
+						<h4 class="modal-title" id="myModalLabel">
+							Confirmation !
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" action="{{ path('bacloocrm_buyfiche', {'ficheid': ficheid, 'vendeur': vendeur, 'typev': typev}) }}" method="post" {{form_enctype(form) }}>					
+							{% if typev == 'ssc' %}
+								Confirmez-vous l'achat de la fiche n°{{ ficheid }} sans nom de contact auprès de l'utilisateur {{ vendeur }} pour {{ prix }} crédits ?<br><br>				
+							{% else %}
+								Confirmez-vous l'achat de la fiche n°{{ ficheid }} avec des noms de contact auprès de l'utilisateur {{ vendeur }} pour {{ prix }} crédits ?<br><br>	
+							{% endif %}
+							<input type="submit" class="btn btn-success" value="Confirmer"/>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+					</div>					
+				</div>					
+			</div>				
+{% endif %}
+</div>		
+{% endblock %}

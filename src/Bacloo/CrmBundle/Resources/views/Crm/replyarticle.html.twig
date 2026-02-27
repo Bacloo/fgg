@@ -1,0 +1,82 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+
+			<div class="modal-dialog">
+				<div class="modal-content">
+					{% if reply is defined and reply == 'ok' %}
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_home') }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								OK
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre réponse a bien été publiée
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_home') }}"><span>Fermer</span></a>
+						</div>
+					{% elseif article.replytexte is not empty %}
+						<form role="form" action="{{ path('bacloocrm_replyarticle', {'id': id } ) }}" method="post" {{form_enctype(form) }}>
+							<fieldset>
+							{{ form_errors(form) }}								
+							<div class="modal-header">
+							<a class="close" href="{{ previous }}">×</a>
+								<h4 class="modal-title" id="myModalLabel">
+									Répondre à la publication de {{ article.auteur }}
+								</h4>
+							</div>
+							<div class="modal-body">
+											<div class="form-group">
+											<div id='messages' class="form-group">
+												  <label for="message">Texte</label>
+													{{ form_widget(form.replytexte, { 'attr' : { 'class' : 'form-control' ,'rows' : '5' }} )  }}
+											</div>
+							<div class="hidden">{{ form_widget(form.date, { 'value' : today }) }}</div>										
+							<div class="hidden">{{ form_widget(form.titre, { 'value' : article.titre }) }}</div>										
+							<div class="hidden">{{ form_widget(form.auteur, { 'value' : article.transfereur }) }}</div>										
+							<div class="hidden">{{ form_widget(form.texte, { 'value' : article.replytexte }) }}</div>	
+
+							<div class="hidden">{{ form_widget(form.sharepartenaire, { 'value' : article.sharepartenaire }) }}</div>									
+							<div class="hidden">{{ form_widget(form.transfereur, { 'value' : user }) }}</div>									
+							{{ form_row(form._token) }}
+							</div>
+							<div class="modal-footer"><a class="btn btn-default" href="{{ previous }}">Close</a><input type="submit" class="btn btn-primary" />
+							</div>
+							</fieldset>							
+						</form>
+					{% else %}
+						<form role="form" action="{{ path('bacloocrm_replyarticle', {'id': id } ) }}" method="post" {{form_enctype(form) }}>
+							<fieldset>
+							{{ form_errors(form) }}								
+							<div class="modal-header">
+							<a class="close" href="{{ previous }}">×</a>
+								<h4 class="modal-title" id="myModalLabel">
+									Répondre à la publication de {{ article.auteur }}
+								</h4>
+							</div>
+							<div class="modal-body">
+											<div class="form-group">
+											<div id='messages' class="form-group">
+												  <label for="message">Texte</label>
+													{{ form_widget(form.replytexte, { 'attr' : { 'class' : 'form-control' ,'rows' : '5' }} )  }}
+											</div>
+							<div class="hidden">{{ form_widget(form.titre, { 'value' : article.titre }) }}</div>										
+							<div class="hidden">{{ form_widget(form.date, { 'value' : today }) }}</div>										
+							<div class="hidden">{{ form_widget(form.auteur, { 'value' : article.auteur }) }}</div>										
+							<div class="hidden">{{ form_widget(form.texte, { 'value' : article.texte }) }}</div>										
+
+							<div class="hidden">{{ form_widget(form.sharepartenaire, { 'value' : article.sharepartenaire }) }}</div>									
+							<div class="hidden">{{ form_widget(form.transfereur, { 'value' : user }) }}</div>									
+							{{ form_row(form._token) }}
+							</div>
+							<div class="modal-footer"><a class="btn btn-default" href="{{ previous }}">Close</a><input type="submit" class="btn btn-primary" />
+							</div>
+							</fieldset>							
+						</form>	
+					{% endif %}
+				</div>					
+			</div>				
+</div>		
+{% endblock %}

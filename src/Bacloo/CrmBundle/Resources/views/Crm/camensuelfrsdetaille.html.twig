@@ -1,0 +1,193 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+    <a type="button" class="btn btn-primary pull-left" href="{{ path('bacloocrm_camensuelfrs') }}"
+       xmlns="http://www.w3.org/1999/html"><<< Retour au statistiques financières</span></a>
+    <br><br><br>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <h3>Rentabilité des affaires en sous-location pour un fournisseur</h3>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-3 column">
+                <form role="form" action="{{ path('bacloocrm_camensuelfrsdetaille', {'mois' : mois, 'fournisseur' : fournisseur}) }}" method="post" {{form_enctype(form) }}>
+                    <div class="row clearfix">
+                        <table class="col-md-12">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Du</span>
+                                                    {{ form_widget(form.date, {'value' : mois, 'attr' : { 'class' : 'form-control datepicker' } })  }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Client</span>
+                                                    {{ form_widget(form.fournisseur, {'value' : fournisseur,'attr' : { 'class' : 'form-control' } })  }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><center><input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />
+                                        <a type="button" class="btn btn-default" href="{{ path('bacloocrm_camensuelfrsdetaille', {'mois' : mois, 'fournisseur' : fournisseur}) }}">Réinitialiser</a></center>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                    <br>
+                    {{ form_row(form._token) }}
+                </form>
+            </div>
+            <div class="col-md-10 column">
+            </div>
+            <div class="col-md-12">
+                <span style="color:red;font-size: 16px;font-weight: bold">!!! Attention !!! Les informations ci-dessous dépendent des données saisies dans les bons de commandes. Toutes les machines ne sont peut-être pas présentes sur le bon de commande.</span>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr style="background-color:#eaecef;text-align: center;font-weight: bold;">
+                    <td rowspan="2">
+                        <i class="fa fa-user"></i>
+                    </td>
+                    <td colspan="6">
+                        Achat Loueur
+                    </td>
+                    <td colspan="6">
+                        Ventes
+                    </td>
+                    <td colspan="2">
+                        Marge
+                    </td>
+                </tr>
+                <tr style="background-color:#eaecef;text-align: center;font-weight: bold;">
+                    <td>
+                        N°bdc
+                    </td>
+                    <td>
+                        Id sous-location
+                    </td>
+                    <td>
+                        Description
+                    </td>
+                    <td>
+                        Debutloc
+                    </td>
+                    <td>
+                        finloc
+                    </td>
+                    <td>
+                        Prix
+                    </td>
+                    <td>
+                        N° contrat
+                    </td>
+                    <td>
+                        Id sous-location
+                    </td>
+                    <td>
+                        Description
+                    </td>
+                    <td>
+                        Debutloc
+                    </td>
+                    <td>
+                        finloc
+                    </td>
+                    <td>
+                        Prix
+                    </td>
+                    <td>
+                        €
+                    </td>
+                    <td>
+                        %
+                    </td>
+                </tr>
+                </thead>
+                {% for loca in ca %}
+                    {% for boca in loca.locationsfrs %}
+                        {% for loca2 in caclientsl %}
+                            {% for zoca in loca2.locationssl %}
+                                {% if boca.codelocationsl == zoca.id  %}
+                                    <tr>
+                                        <td>
+                                            {{ loca2.user }}
+                                        </td>
+                                        <td>
+                                            <a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': loca.fournisseurid, 'locid': loca.id, 'erreur': 0 }) }}">{{ loca.id }}</a>
+                                        </td>
+                                        <td>
+                                            {{ boca.codelocationsl }}
+                                        </td>
+                                        <td>
+                                            {{ boca.designation }}
+                                        </td>
+                                        <td>
+                                            {{ boca.debutloc|date('d/m/Y') }}
+                                        </td>
+                                        <td>
+                                            {{ boca.finloc|date('d/m/Y') }}
+                                        </td>
+                                        <td>
+                                            <span style="color: #faa004;font-weight: bold">{{ boca.montantht }}€</span>
+                                        </td>
+                                        <td>
+                                            <a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': loca2.clientid, 'locid': loca2.id, 'erreur': 0 }) }}">{{ loca2.id }}</a>
+                                        </td>
+                                        <td>
+                                            {{ zoca.id }}
+                                        </td>
+                                        <td>
+                                            {{ zoca.typemachine }}
+                                        </td>
+                                        <td>
+                                            {{ zoca.debutloc|date('d/m/Y') }}
+                                        </td>
+                                        <td>
+                                            {{ zoca.finloc|date('d/m/Y') }}
+                                        </td>
+                                        <td>
+                                            <span style="color: green;font-weight: bold">{{ zoca.montantloc }}€</span>
+                                        </td>
+                                        <td align="right">
+                                            <b>{{ zoca.montantloc-boca.montantht }}€</b>
+                                        </td>
+                                        <td align="right">
+                                            <b>{% set pmarge = ((zoca.montantloc-boca.montantht)/boca.montantht)*100 %}<span style="color:#0427a5;"><b>{{ pmarge|number_format(0, ',', ' ') }}%</b></span>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script>
+        $( function() {
+            $( ".datepicker" ).datepicker({
+                dateFormat: 'dd/mm/yy',
+                firstDay:1
+            });
+        } );
+    </script>
+{% endblock %}

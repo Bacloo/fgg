@@ -1,0 +1,1082 @@
+<?php
+
+namespace Bacloo\CrmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Locata
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bacloo\CrmBundle\Entity\LocataRepository")
+ */
+class Locata
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    public $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="chantierid", type="integer", nullable=true)
+     */
+    public $chantierid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomchantier", type="string", length=255)
+     */
+    public $nomchantier;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse1", type="string", length=255)
+     */
+    public $adresse1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse2", type="string", length=255, nullable=true)
+     */
+    public $adresse2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse3", type="string", length=255, nullable=true)
+     */
+    public $adresse3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cp", type="string", length=5, nullable=true)
+     */
+    public $cp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
+     */
+    public $ville;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="clientid", type="integer", type="integer", nullable=true)
+     */
+    public $clientid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client", type="string", length=255, nullable=true)
+     */
+    public $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user", type="string", length=255, nullable=true)
+     */
+    public $user;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="acheteur", type="string", length=255, nullable=true)
+     */
+    public $acheteur;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contactchantier", type="string", length=255, nullable=true)
+     */
+    public $contactchantier;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datemodif", type="string", nullable=true)
+     */
+    public $datemodif;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="debutloc", type="string", nullable=true)
+     */
+    public $debutloc;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="finloc", type="string", nullable=true)
+     */
+    public $finloc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facturerwe", type="boolean", length=255, nullable=true)
+     */
+    public $facturerwe;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="contributionverte", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $contributionverte;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="assurance", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $assurance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="offreencours", type="boolean", length=255, nullable=true)
+     */
+    public $offreencours;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bdcrecu", type="boolean", length=255, nullable=true)
+     */
+    public $bdcrecu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="offrerefusee", type="boolean", length=255, nullable=true)
+     */
+    public $offrerefusee;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contrat", type="boolean", length=255, nullable=true)
+     */
+    public $contrat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="annulee", type="boolean", length=255, nullable=true)
+     */
+    public $annulee;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="transportaller", type="integer", type="integer", nullable=true)
+     */
+    public $transportaller;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="transportretour", type="integer", type="integer", nullable=true)
+     */
+    public $transportretour;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="montantloc", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $montantloc;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="montantcarb", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $montantcarb;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="remise", type="integer", nullable=true)
+     */
+    public $remise;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="caution", type="integer", nullable=true)
+     */
+    public $caution;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numbdc", type="string", length=255, nullable=true)
+     */
+    public $numbdc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="text", nullable=true)
+     */
+    private $commentaire;
+
+  /**
+   * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Locations", cascade={"persist"}, orphanRemoval=true)
+   */	
+	public $locations;
+
+  /**
+   * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Locationssl", cascade={"persist"}, orphanRemoval=true)
+   */	
+	public $locationssl;
+
+    /**
+     * Set chantierid
+     *
+     * @param integer $chantierid
+     *
+     * @return Locations
+     */
+    public function setChantierid($chantierid)
+    {
+        $this->chantierid = $chantierid;
+
+        return $this;
+    }
+
+    /**
+     * Get chantierid
+     *
+     * @return integer
+     */
+    public function getChantierid()
+    {
+        return $this->chantierid;
+    }
+
+    /**
+     * Set nomchantier
+     *
+     * @param string $nomchantier
+     *
+     * @return Locations
+     */
+    public function setNomchantier($nomchantier)
+    {
+        $this->nomchantier = $nomchantier;
+
+        return $this;
+    }
+
+    /**
+     * Get nomchantier
+     *
+     * @return string
+     */
+    public function getNomchantier()
+    {
+        return $this->nomchantier;
+    }
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->locations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add location
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locations $location
+     *
+     * @return Locata
+     */
+    public function addLocation(\Bacloo\CrmBundle\Entity\Locations $location)
+    {
+        $this->locations[] = $location;
+
+        return $this;
+    }
+
+    /**
+     * Remove location
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locations $location
+     */
+    public function removeLocation(\Bacloo\CrmBundle\Entity\Locations $location)
+    {
+        $this->locations->removeElement($location);
+    }
+
+    /**
+     * Get locations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLocations()
+    {
+        return $this->locations;
+    }
+
+    /**
+     * Set debutloc
+     *
+     * @param string $debutloc
+     *
+     * @return Locata
+     */
+    public function setDebutloc($debutloc)
+    {
+        $this->debutloc = $debutloc;
+
+        return $this;
+    }
+
+    /**
+     * Get debutloc
+     *
+     * @return string
+     */
+    public function getDebutloc()
+    {
+        return $this->debutloc;
+    }
+
+    /**
+     * Set finloc
+     *
+     * @param string $finloc
+     *
+     * @return Locata
+     */
+    public function setFinloc($finloc)
+    {
+        $this->finloc = $finloc;
+
+        return $this;
+    }
+
+    /**
+     * Get finloc
+     *
+     * @return string
+     */
+    public function getFinloc()
+    {
+        return $this->finloc;
+    }
+
+    /**
+     * Set facturerwe
+     *
+     * @param boolean $facturerwe
+     *
+     * @return Locata
+     */
+    public function setFacturerwe($facturerwe)
+    {
+        $this->facturerwe = $facturerwe;
+
+        return $this;
+    }
+
+    /**
+     * Get facturerwe
+     *
+     * @return boolean
+     */
+    public function getFacturerwe()
+    {
+        return $this->facturerwe;
+    }
+
+    /**
+     * Set contributionverte
+     *
+     * @param boolean $contributionverte
+     *
+     * @return Locata
+     */
+    public function setContributionverte($contributionverte)
+    {
+        $this->contributionverte = $contributionverte;
+
+        return $this;
+    }
+
+    /**
+     * Get contributionverte
+     *
+     * @return boolean
+     */
+    public function getContributionverte()
+    {
+        return $this->contributionverte;
+    }
+
+    /**
+     * Set assurance
+     *
+     * @param boolean $assurance
+     *
+     * @return Locata
+     */
+    public function setAssurance($assurance)
+    {
+        $this->assurance = $assurance;
+
+        return $this;
+    }
+
+    /**
+     * Get assurance
+     *
+     * @return boolean
+     */
+    public function getAssurance()
+    {
+        return $this->assurance;
+    }
+
+    /**
+     * Set offreencours
+     *
+     * @param boolean $offreencours
+     *
+     * @return Locata
+     */
+    public function setOffreencours($offreencours)
+    {
+        $this->offreencours = $offreencours;
+
+        return $this;
+    }
+
+    /**
+     * Get offreencours
+     *
+     * @return boolean
+     */
+    public function getOffreencours()
+    {
+        return $this->offreencours;
+    }
+
+    /**
+     * Set offrerefusee
+     *
+     * @param boolean $offrerefusee
+     *
+     * @return Locata
+     */
+    public function setOffrerefusee($offrerefusee)
+    {
+        $this->offrerefusee = $offrerefusee;
+
+        return $this;
+    }
+
+    /**
+     * Get offrerefusee
+     *
+     * @return boolean
+     */
+    public function getOffrerefusee()
+    {
+        return $this->offrerefusee;
+    }
+
+    /**
+     * Set contrat
+     *
+     * @param boolean $contrat
+     *
+     * @return Locata
+     */
+    public function setContrat($contrat)
+    {
+        $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    /**
+     * Get contrat
+     *
+     * @return boolean
+     */
+    public function getContrat()
+    {
+        return $this->contrat;
+    }
+
+    /**
+     * Set clientid
+     *
+     * @param integer $clientid
+     *
+     * @return Locata
+     */
+    public function setClientid($clientid)
+    {
+        $this->clientid = $clientid;
+
+        return $this;
+    }
+
+    /**
+     * Get clientid
+     *
+     * @return integer
+     */
+    public function getClientid()
+    {
+        return $this->clientid;
+    }
+
+    /**
+     * Set client
+     *
+     * @param string $client
+     *
+     * @return Locata
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return string
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set transportaller
+     *
+     * @param integer $transportaller
+     *
+     * @return Locata
+     */
+    public function setTransportaller($transportaller)
+    {
+        $this->transportaller = $transportaller;
+
+        return $this;
+    }
+
+    /**
+     * Get transportaller
+     *
+     * @return integer
+     */
+    public function getTransportaller()
+    {
+        return $this->transportaller;
+    }
+
+    /**
+     * Set transportretour
+     *
+     * @param integer $transportretour
+     *
+     * @return Locata
+     */
+    public function setTransportretour($transportretour)
+    {
+        $this->transportretour = $transportretour;
+
+        return $this;
+    }
+
+    /**
+     * Get transportretour
+     *
+     * @return integer
+     */
+    public function getTransportretour()
+    {
+        return $this->transportretour;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Locata
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set datemodif
+     *
+     * @param string $datemodif
+     *
+     * @return Locata
+     */
+    public function setDatemodif($datemodif)
+    {
+        $this->datemodif = $datemodif;
+
+        return $this;
+    }
+
+    /**
+     * Get datemodif
+     *
+     * @return string
+     */
+    public function getDatemodif()
+    {
+        return $this->datemodif;
+    }
+
+    /**
+     * Set acheteur
+     *
+     * @param string $acheteur
+     *
+     * @return Locata
+     */
+    public function setAcheteur($acheteur)
+    {
+        $this->acheteur = $acheteur;
+
+        return $this;
+    }
+
+    /**
+     * Get acheteur
+     *
+     * @return string
+     */
+    public function getAcheteur()
+    {
+        return $this->acheteur;
+    }
+
+    /**
+     * Set adresse1
+     *
+     * @param string $adresse1
+     *
+     * @return Locata
+     */
+    public function setAdresse1($adresse1)
+    {
+        $this->adresse1 = $adresse1;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse1
+     *
+     * @return string
+     */
+    public function getAdresse1()
+    {
+        return $this->adresse1;
+    }
+
+    /**
+     * Set adresse2
+     *
+     * @param string $adresse2
+     *
+     * @return Locata
+     */
+    public function setAdresse2($adresse2)
+    {
+        $this->adresse2 = $adresse2;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse2
+     *
+     * @return string
+     */
+    public function getAdresse2()
+    {
+        return $this->adresse2;
+    }
+
+    /**
+     * Set adresse3
+     *
+     * @param string $adresse3
+     *
+     * @return Locata
+     */
+    public function setAdresse3($adresse3)
+    {
+        $this->adresse3 = $adresse3;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse3
+     *
+     * @return string
+     */
+    public function getAdresse3()
+    {
+        return $this->adresse3;
+    }
+
+    /**
+     * Set cp
+     *
+     * @param integer $cp
+     *
+     * @return Locata
+     */
+    public function setCp($cp)
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    /**
+     * Get cp
+     *
+     * @return integer
+     */
+    public function getCp()
+    {
+        return $this->cp;
+    }
+
+    /**
+     * Set ville
+     *
+     * @param string $ville
+     *
+     * @return Locata
+     */
+    public function setVille($ville)
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * Get ville
+     *
+     * @return string
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * Set bdcrecu
+     *
+     * @param boolean $bdcrecu
+     *
+     * @return Locata
+     */
+    public function setBdcrecu($bdcrecu)
+    {
+        $this->bdcrecu = $bdcrecu;
+
+        return $this;
+    }
+
+    /**
+     * Get bdcrecu
+     *
+     * @return boolean
+     */
+    public function getBdcrecu()
+    {
+        return $this->bdcrecu;
+    }
+
+    /**
+     * Set contactchantier
+     *
+     * @param string $contactchantier
+     *
+     * @return Locata
+     */
+    public function setContactchantier($contactchantier)
+    {
+        $this->contactchantier = $contactchantier;
+
+        return $this;
+    }
+
+    /**
+     * Get contactchantier
+     *
+     * @return string
+     */
+    public function getContactchantier()
+    {
+        return $this->contactchantier;
+    }
+
+    /**
+     * Set annulee
+     *
+     * @param boolean $annulee
+     *
+     * @return Locata
+     */
+    public function setAnnulee($annulee)
+    {
+        $this->annulee = $annulee;
+
+        return $this;
+    }
+
+    /**
+     * Get annulee
+     *
+     * @return boolean
+     */
+    public function getAnnulee()
+    {
+        return $this->annulee;
+    }
+
+    /**
+     * Set montantloc
+     *
+     * @param integer $montantloc
+     *
+     * @return Locata
+     */
+    public function setMontantloc($montantloc)
+    {
+        $this->montantloc = $montantloc;
+
+        return $this;
+    }
+
+    /**
+     * Get montantloc
+     *
+     * @return integer
+     */
+    public function getMontantloc()
+    {
+        return $this->montantloc;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param integer $remise
+     *
+     * @return Locata
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise;
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return integer
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set numbdc
+     *
+     * @param integer $numbdc
+     *
+     * @return Locata
+     */
+    public function setNumbdc($numbdc)
+    {
+        $this->numbdc = $numbdc;
+
+        return $this;
+    }
+
+    /**
+     * Get numbdc
+     *
+     * @return integer
+     */
+    public function getNumbdc()
+    {
+        return $this->numbdc;
+    }
+
+    /**
+     * Add locationssl
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locationssl $locationssl
+     *
+     * @return Locata
+     */
+    public function addLocationssl(\Bacloo\CrmBundle\Entity\Locationssl $locationssl)
+    {
+        $this->locationssl[] = $locationssl;
+
+        return $this;
+    }
+
+    /**
+     * Remove locationssl
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locationssl $locationssl
+     */
+    public function removeLocationssl(\Bacloo\CrmBundle\Entity\Locationssl $locationssl)
+    {
+        $this->locationssl->removeElement($locationssl);
+    }
+
+    /**
+     * Get locationssl
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLocationssl()
+    {
+        return $this->locationssl;
+    }
+
+    /**
+     * Set montantcarb
+     *
+     * @param string $montantcarb
+     *
+     * @return Locata
+     */
+    public function setMontantcarb($montantcarb)
+    {
+        $this->montantcarb = $montantcarb;
+
+        return $this;
+    }
+
+    /**
+     * Get montantcarb
+     *
+     * @return string
+     */
+    public function getMontantcarb()
+    {
+        return $this->montantcarb;
+    }
+
+    /**
+     * Set caution
+     *
+     * @param integer $caution
+     *
+     * @return Locata
+     */
+    public function setCaution($caution)
+    {
+        $this->caution = $caution;
+
+        return $this;
+    }
+
+    /**
+     * Get caution
+     *
+     * @return integer
+     */
+    public function getCaution()
+    {
+        return $this->caution;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Locata
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+}

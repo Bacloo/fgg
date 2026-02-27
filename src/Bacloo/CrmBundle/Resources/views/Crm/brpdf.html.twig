@@ -1,0 +1,107 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+			<!-- Side menu -->
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+	{% endblock %}
+
+
+	</head>
+	<body>
+	<table>
+		<tr>
+			<td>
+			</td>
+			<td>
+				<b>{{ client.raisonSociale }}</b><br>
+				{{ client.adresse1 }}<br>
+				{% if client.adresse2 is not empty %}{{ client.adresse2 }}{% endif %}
+				{% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %}
+				{{ client.cp }} {{ client.ville }}<br>
+				<b>N°de téléphone :</b> {{ client.telephone }}
+			</td>
+		</tr>
+	</table>
+		<br>
+			<span style="text-align:center;font-size:14pt"><b>Bon de retour n°{{ bonretour.id }}</b></span>
+		<br><br>
+			<span style="font-size:14pt"><b>Date : </b>{{ bonretour.date|date('d/m/Y') }}<br>
+				<b>Heure : </b>{{ bonretour.heure }}<br>
+				<b>Technicien : </b>{{ bonretour.user }}<br>
+			</span>
+		<br>
+		<table border="1" cellpadding="3" style="font-size:14pt">
+			<tr>
+				<td style="text-align: center;font-weight: bold;">
+					Adresse du chantier
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ locata.adresse1 }}, {% if locata.adresse2 is not empty %}{{ locata.adresse2 }},{% endif %}{% if locata.adresse3 is not empty %}, {{ locata.adresse3 }}{% endif %} <b>{{ locata.cp }} {{ locata.ville }}</b><br>
+
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;font-weight: bold;">
+					MACHINE
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>N° de parc :</b>{{ machine.code }}<br>
+					<b>Description :</b>{{ machine.description }}<br>
+					<b>N° de série :</b>{{ machine.numSerie }}
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;font-weight: bold;">
+					Contrôles
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>Clé :</b>{% if bonretour.cle == 1 %} Présente{% else %} Absente{% endif %}<br>
+					<b>Documents :</b>{% if bonretour.docadmin == 1 %} Présents{% else %} Absents{% endif %}<br>
+					<b>Horamètre :</b>{{ bonretour.horametre }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div style="text-align: center;font-weight: bold;">Commentaire</div>
+					{{ bonretour.commentaire|nl2br }}
+				</td>
+			</tr>
+		</table>
+
+		<span style="font-size:2pt"><br></span>
+	{% if document is defined and document is not empty %}
+		{% for doc in document %}
+			<br pagebreak="true"/>
+			<table border="">
+				<tr>
+					<td border="0" align="center">
+						<img width="490" src="{{ asset('uploads/br/'~ bonretour.id ~'/' ~ doc.nom ~ '') }}" class="img-thumbnail">
+					</td>
+				</tr>
+			</table>
+		{% endfor %}
+	{% endif %}
+	</body>
+</html>

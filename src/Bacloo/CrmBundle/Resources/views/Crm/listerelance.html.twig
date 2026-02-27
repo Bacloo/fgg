@@ -1,0 +1,92 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+		
+			<!-- Side menu -->	
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+		
+
+		
+	{% endblock %}
+
+
+	</head>
+	<body>
+	<span style="text-align:center;"><h2>Liste des factures échues en attente de paiement</h2></span>
+		<table border="1" lass="table table-striped col-md-12">
+			<tr style="text-align:center;">
+				<td height="20">
+					<b>Client</b>
+				</td>
+				<td width="70">
+					<b>Tel</b>
+				</td>
+				<td width="70">
+					<b>Facture n°</b>
+				</td>
+				<td width="45">
+					<b>TTC</b>
+				</td>
+				<td>
+					<b>Chantier</b>
+				</td>
+				<td width="70">
+					<b>Créée le</b>
+				</td>
+				<td width="70">
+					<b>Echéance</b>
+				</td>
+				<td>
+					<b>Utilisateur</b>
+				</td>
+				<td width="220">
+					<b>Commentaire</b>
+				</td>
+			</tr>
+		{% for liste in listerelance %}
+			{% for lista in liste.fiche %}
+			<tr>
+				<td height="15">
+					{{ liste.client }}
+				</td>
+				<td>
+					{{ lista.telephone }}
+				</td>
+				<td>
+					{{ liste.numfacture }}
+				</td>
+				<td>
+					{{ liste.totalttc }}
+				</td>
+				<td>
+					{{ liste.chantier }}
+				</td>
+				<td>
+					{{ liste.datecrea|date('d/m/Y') }}
+				</td>
+				<td>
+					{{ liste.echeance|date('d/m/Y') }}
+				</td>
+				<td>
+					{{ lista.user }}
+				</td>
+				<td>
+				</td>
+			</tr>				
+			{% endfor %}
+		{% endfor %}
+		</table>
+	</body>
+</html>	

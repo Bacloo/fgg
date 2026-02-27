@@ -1,0 +1,61 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Votre profil</h3>
+					</h3>
+				</div>			
+				<div class="panel-body">		
+				{% if test == 'nok' %}
+					<center>Pas d'achat de crédits enregistré pour le moment.</center>
+				{% else %}	
+					<h3>Liste de vos achats de crédits</h3>	
+					{# Partie Prospot #}
+					<div class="row clearfix">
+								<table id="bacloo2" class="table table-bordered">
+								<thead>
+									<tr id="dibac">
+										<th>
+											Date
+										</th>
+										<th>
+											Description
+										</th>
+										<th>
+											Montant
+										</th>
+									
+									</tr>
+								</thead>
+								{% for listi in lisachatsc %}
+									<tr class="dibacloo4">
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listi.date|date('d/m/Y') }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listi.description }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listi.totalAmount }}
+											  </div>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}	
+								</table>
+					</div>
+				{% endif %}
+				</div>
+			</div>
+{% endblock %}

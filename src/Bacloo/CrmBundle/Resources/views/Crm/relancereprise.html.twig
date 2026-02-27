@@ -1,0 +1,25 @@
+
+    <form role="form" action="{{ path('bacloocrm_relancereprise', {'codelocata':codelocata, 'codelocation':codelocation, 'mode':mode}) }}" method="post" {{form_enctype(form) }}>
+<table>
+    <tr>
+        <td>
+            <div class="form-group">
+                {% if destinataire is defined and destinataire is not same as('non') %}
+                    {{ form_widget(form.email, { 'value' : email, 'attr' : { 'class' : 'etroit110' } })  }}
+                {% else %}
+                    {{ form_widget(form.email, { 'attr' : { 'placeholder' : 'destinataire', 'class' : 'etroit110' } })  }}
+                {% endif %}
+            </div>
+        </td>
+        <td width="100">
+            Relancé le<br>{% if date is empty %}{{ date }}{% else %}{{ date|date('d/m/Y H:i') }}{% endif %}
+        </td>
+        <td>
+            <button type="submit" class="btn-xs btn-info">
+                <i class="fa fa-envelope"></i>
+            </button>
+            {{ form_row(form._token) }}
+        </td>
+    </tr>
+</table>
+    </form>

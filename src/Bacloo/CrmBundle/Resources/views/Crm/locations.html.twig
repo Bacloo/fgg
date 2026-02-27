@@ -1,0 +1,56 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Rechercher des collègues avec qui partager des fiches</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">	
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							Nouvelle location
+						</div>
+						<div class="modal-body">
+}
+										<form class="form-horizontal" action="{{ path('bacloocrm_locations', {'mode': mode}) }}" method="post" {{form_enctype(form) }}>
+											{# Les erreurs générales du formulaire. #}
+														
+														<div class="form-group">
+														  <div class="controls">
+															  <div class="col-md-12">
+																<div class="input-group">	
+																	<span class="input-group-addon large">Nom d'utilisateur</span>
+																{{  form_widget(form.username, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Nom d\'utilisateur valide' } })  }}
+																</div>						
+															  </div>
+														  </div>
+														</div>	
+													
+											<center>
+											<br>
+												{{ form_row(form._token) }}
+												<input type="submit" class="btn btn-primary" />
+											</center>
+										</form>
+											<br><br>				
+											<center><h4>Aucun nom d'utilisateur ne correspond à votre recherche</h4></center>
+
+						</div>
+						<div class="modal-footer">
+
+												<a class="btn btn-primary" href="{{ path('bacloocrm_showfavoris') }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+	
+{% endblock %}

@@ -1,0 +1,61 @@
+<div style="padding-top: 12px">
+    <form role="form" action="{{ path('bacloocrm_speedclient') }}" method="post" {{form_enctype(form2) }}>
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form_widget(form2.cliento, {'id' : 'client_1', 'attr' : { 'class' : 'client', 'placeholder' : 'Raison sociale'} })  }}<br>
+                    </div>
+                    <div id="match5"></div>
+                </td>
+                <td>
+                    <button type="submit" class="btn-xs btn-warning">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    {{ form_row(form2._token) }}
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    //Autocomplete client
+    $(document).ready(function(){
+        $(document).on('keydown', '.client', function() {
+
+            var id = this.id;
+            var splitid = id.split('_');
+            var index = splitid[1];
+
+            // Initialize jQuery UI autocomplete
+            $( '#'+id ).autocomplete({
+                position: {
+                    my:"top+30"
+                },
+                source: function( request, response ) {
+                    $('#match5').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+                    $.ajax({
+                        url: "{{ path('bacloocrm_requete2entreprise') }}",
+                        type: 'post',
+                        minLength: 2,
+                        dataType: "json",
+                        data: {
+                            search: request.term,request:1
+                        },
+                        success: function( data ) {
+                            response( data );
+                            $('#match5').text('');
+                        }
+                    });
+                },
+
+                select: function (event, ui) {
+                    $(this).val(ui.item.label); // display the selected text
+
+                    return false;
+                }
+            });
+        });
+    } );
+    //Fin autocomplete client
+</script>

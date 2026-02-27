@@ -1,0 +1,317 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	<div class="row clearfix">
+		<div class="col-md-8 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Rechercher parmi mes fiches</h3>
+					</h3>
+				</div>
+				<div class="panel-body">						
+					{{ render(controller("BaclooCrmBundle:Crm:search2", {'vue': vue, 'speed': 0, 'useracc':useracc, 'page':page })) }}	
+				</div>
+				<div class="panel-footer">
+					
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+					<h3 class="panel-title">
+						{% if vue == 'rappels' %}
+							<h3>Liste des relances au {{ au|date("d/m/Y") }} </h3>				
+						{% elseif vue == 'a_faire' %}
+							<h3>Liste des tâches au {{ au|date("d/m/Y") }} </h3>
+						{% elseif vue == 'rdv' %}
+							<h3>Liste des rendez-vous au {{ au|date("d/m/Y") }} </h3>
+						{% endif %}
+					</h3>
+				</div>
+				<div class="panel-body">
+
+	<ul class="nav nav-pills nav-stacked">
+	{% if resultrap is defined %}
+		{% if resultrap is empty %}
+			<center>
+				<form class="form-inline" role="form" action="{{ path('bacloocrm_showrappels', {'page': '1', 'pagesr': '1', 'id': id, 'vue': vue}) }}" method="post" {{form_enctype(form) }}>
+					<center>
+					{# Les erreurs générales du formulaire #}
+					{{ form_errors(form) }}	
+
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+												<span class="input-group-addon">Du</span>
+												{{ form_widget(form.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}					
+										</div>							
+									  </div>
+								  </div>
+								</div>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+												<span class="input-group-addon">Au</span>
+												{{ form_widget(form.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}						
+										</div>							
+									  </div>
+								  </div>
+								</div>
+					<br>
+					<br>
+						{{ form_rest(form) }}
+						<input type="submit" class="btn btn-custom_gris_clair" />
+			<a type="button" class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_showrappels', {'id' : 'xxx', 'vue': vue}) }}">Réinitialiser</span></a>
+					<br>
+					<br>
+							{% if vue == 'rappels' %}
+								<div class="btn-group btn-group-lg" role="group" aria-label="">
+								<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+								<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+								<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+								</div>					
+								<h4><b>Mes Relances</b></h4>
+							{% elseif vue == 'a_faire' %}
+								<div class="btn-group btn-group-lg" role="group" aria-label="">
+									<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+									<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+									<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+								</div>
+								<h4><b>Mes Tâches</b></h4>
+							{% elseif vue == 'rdv' %}
+								<div class="btn-group btn-group-lg" role="group" aria-label="">
+									<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+									<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+									<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+								</div>					
+								<h4><b>Mes Rendez-vous</b></h4>
+							{% endif %}
+					<br>
+					<br>
+					Pas de résultat
+
+				</form>
+	
+				</tbody>
+			
+	</center>	
+		{% else %}
+	<center>	
+		<form class="form-inline" role="form" action="{{ path('bacloocrm_showrappels', {'id':id, 'vue': vue}) }}" method="post" {{form_enctype(form) }}>
+		
+			{# Les erreurs générales du formulaire. #}
+			{{ form_errors(form) }}	
+
+						<div class="form-group">
+						  <div class="controls">
+							  <div class="col-md-12">
+								<div class="input-group">							
+										<span class="input-group-addon">Du</span>
+										{{ form_widget(form.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}					
+								</div>							
+							  </div>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <div class="controls">
+							  <div class="col-md-12">
+								<div class="input-group">							
+										<span class="input-group-addon">Au</span>
+										{{ form_widget(form.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}						
+								</div>							
+							  </div>
+						  </div>
+						</div>
+
+			<br>
+			<br>
+				{{ form_rest(form) }}
+				<input type="submit" class="btn btn-custom_gris_clair" />
+			<a type="button" class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_showrappels', {'id' : 'xxx' , 'vue' : vue}) }}">Réinitialiser</span></a>
+			<br><br>
+
+		</form>
+					{% if vue == 'rappels' %}
+						<div class="btn-group btn-group-lg" role="group" aria-label="">
+						<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterdv", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						</div>					
+						<h4><b>Mes Relances</b></h4>
+					{% elseif vue == 'a_faire' %}
+						<div class="btn-group btn-group-lg" role="group" aria-label="">
+							<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+							<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+							<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						</div>
+						<h4><b>Mes Tâches</b></h4>
+					{% elseif vue == 'rdv' %}
+						<div class="btn-group btn-group-lg" role="group" aria-label="">
+							<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+							<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+							<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						</div>					
+						<h4><b>Mes Rendez-vous</b></h4>
+					{% endif %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>
+						Date
+						</th>
+						<th>
+						Commentaire
+						</th>						
+					</tr>
+				</thead>
+				<tbody>							
+				{% for result in resultrap %}
+					{% for data in result.brappels %}
+						{% if data.date < date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr class="danger"  style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif data.date > date() and vue != 'a_faire' and vue != 'rdv' %}
+								<tr class="success"  style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'a_faire' %}
+								<tr class="info"  style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% elseif vue == 'rdv' %}
+								<tr class="warning"  style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">								
+						{% else %}
+								<tr  style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': result.id}) }}'">
+						{% endif %}
+								<td>
+								{{ data.date|date('d/m/Y') }}
+								</td>
+								<td>
+								{{ result.raisonSociale| truncate(25) }} : {{ data.rapTexte| truncate(40) }}
+								</td>								
+							</tr>				
+					{% endfor %}
+				 
+
+				{% endfor %}
+				</tbody>
+			</table>
+				{% if nombrePage > 0 %}
+					<ul class="pagination">
+						{% if page > 1 %}
+							<li>
+								<a href="{{ path('bacloocrm_showrappels', {'pagesr': 1, 'id': id, 'vue': vue}) }}">
+									<<
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_showrappels', {'pagesr': pagesr-1, 'id': id, 'vue': vue}) }}">
+									<
+								</a>
+							</li>
+						{% endif %}
+
+						{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+						{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+							<li {% if p == pagesr %}class="active"{% endif %}>
+								<a href="{{ path('bacloocrm_showrappels', {'pagesr': p, 'id': id, 'vue': vue}) }}">
+									{{ p }}
+								</a>
+							</li>
+						{% endfor %}
+
+						{% if page < nombrePage %}
+							<li>
+								<a href="{{ path('bacloocrm_showrappels', {'pagesr': pagesr+1, 'id': id, 'vue': vue}) }}">
+									>
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_showrappels', {'pagesr': nombrePage, 'id': id, 'vue': vue}) }}">
+									>>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+		</center>				
+		{% endif %}
+	{% else %}
+	<center>
+		<form class="form-inline" role="form" action="{{ path('bacloocrm_showrappels', {'id':id, 'vue': vue}) }}" method="post" {{form_enctype(form) }}>
+			<center>
+			{# Les erreurs générales du formulaire. #}
+			{{ form_errors(form) }}	
+
+						<div class="form-group">
+						  <div class="controls">
+							  <div class="col-md-8">
+								<div class="input-group">							
+										<span class="input-group-addon">Du</span>
+										{{ form_widget(form.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}					
+								</div>							
+							  </div>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <div class="controls">
+							  <div class="col-md-8">
+								<div class="input-group">							
+										<span class="input-group-addon">Au</span>
+										{{ form_widget(form.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}						
+								</div>							
+							  </div>
+						  </div>
+						</div>						
+
+			<br>
+			<br>
+				{{ form_rest(form) }}
+				<input type="submit" class="btn btn-custom_gris_clair" />
+			<a type="button" class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_showrappels', {'id' : 'xxx' , 'vue' : vue}) }}">Réinitialiser</span></a>
+			<br>
+			<br>				
+
+		</form>
+				{% if vue == 'rappels' %}
+					<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterdv", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+					</div>					
+					<h4><b>Mes Relances</b></h4>
+				{% elseif vue == 'a_faire' %}
+					<div class="btn-group btn-group-lg" role="group" aria-label="">
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+					</div>
+					<h4><b>Mes Tâches</b></h4>
+				{% elseif vue == 'rdv' %}
+					<div class="btn-group btn-group-lg" role="group" aria-label="">
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rappels'}) }}">{{ render(controller("BaclooCrmBundle:Crm:compterappels", {'type': 'pacl', 'useracc': useracc, 'speed': 0} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue': 'a_faire'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+						<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue': 'rdv'}) }}">{{ render(controller("BaclooCrmBundle:Crm:comptea_faire", {'type': 'pacl', 'useracc': useracc} )) }}</span></a>
+					</div>					
+					<h4><b>Mes Rendez-vous</b></h4>
+				{% endif %}
+		</center
+	{% endif %}
+	</ul>
+
+				</div>
+				<div class="panel-footer">
+				  <script>
+					  $( function() {
+						$( ".datepicker" ).datepicker({
+							dateFormat: 'dd/mm/yy', 
+							firstDay:1			
+						});
+					  } );
+				  </script>	
+					
+				</div>
+			</div>
+		</div>
+	</div>	
+{% endblock %}

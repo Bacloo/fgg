@@ -1,0 +1,6 @@
+{% if civilite == 'M.' %}Monsieur {% else %}Madame {% endif %}{{ prenom }} {{ nom }}
+
+Veuillez trouver ci-joint votre dernière facture. 
+
+Service Client Metaloc
+01 30 26 36 10

@@ -1,0 +1,11 @@
+<i class="fa fa-database"></i> : 
+{% if size/1000000 > 0 and size/1000000 < 1000 %}
+	{{ (size/1000000)|number_format(2, ',', ' ')  }} Mo
+{% elseif size/1000000 > 1000 and size/1000000 > 1000 %}
+	{{ (size/1000000)|number_format(2, ',', ' ')  }} Go
+{% elseif size/1000 > 0 and size/1000 < 1000 %}
+	{{ (size/1000)|number_format(2, ',', ' ')  }} Ko
+{% else %}
+	{{ (size)|number_format(2, ',', ' ')  }} Octets
+{% endif %} 
+/ 10Go

@@ -1,0 +1,439 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Planning des sous-locations{% if mode == 'location' %} actuellement en location {% else %} déjà enregistrées dans notre base {% endif %}</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+				<form role="form" action="{{ path('bacloocrm_planningsl', {'mode' : mode}) }}" method="post" {{form_enctype(form) }}>	
+					<div class="row clearfix">
+						<div class="col-md-2 pull-left">
+							<div class="form-group">
+								  <div class="col-md-12">
+									<div class="input-group">							
+										<span class="input-group-addon">Filtrer</span>
+										{{ form_widget(form.filtre, {'attr' : { 'class' : 'form-control' } })  }}						
+									</div>							
+								  </div>
+							</div>
+						</div>
+						<div class="col-md-2 column pull-left">
+							<input type="submit" name="submit" id="submit" value="Valider" class="btn btn-info pull-left">
+						</div>
+						<div class="col-md-8 column">
+							<a class="btn btn-success pull-right" href="{{ path('bacloocrm_machinessl', {'machineid': 0}) }}"><span>Ajouter un nouveau matériel pour la sous-location</span></a>
+						</div>
+					</div>			 
+					{{ form_row(form._token) }}				
+				</form>	
+				<br><br>
+					<div class="col-md-6 column">
+											
+					</div>	
+					<div class="col-md-6 column">
+						<table class="table table-bordered">
+							<tr>
+								<td style="border=1" bgcolor="#f0ad4e" class="col-md-1"></td>
+								<td borderless>En location</td>
+								<td bgcolor="#ef5d4d" class="col-md-1"></td>
+								<td>En panne</td>
+								<td bgcolor="#f5b0b0" class="col-md-1"></td>
+								<td>Réservé</td>
+								<td bgcolor="#85de7e" class="col-md-1"></td>
+								<td>Disponible</td>
+							</tr>
+						</table>
+					</div>
+		{# Lecture de chaque ligne du tableau annee=>valeurs #}
+		{% set a = 0 %}
+		{% set m = 0 %}
+		{% set j = 0 %}
+		{% for annee, moiss in dates %}
+			{# a Donne le nombre d'années #}
+				{% set a = a+1 %}
+			{% for mois, date in moiss %}
+				{# a Donne le nombre de mois #}
+				{% set m = m+1 %}
+				{% for dat in date %}
+					{# a Donne le nombre de jours #}
+					{% set j = j+1 %}
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		<table class="table table-bordered"><thead><tr>
+			<td rowspan="4" width="70px">
+				Loueur
+			</td>
+			<td rowspan="4">
+				Code
+			</td>
+			<td rowspan="4">
+				Client
+			</td>
+			<td rowspan="4">
+				Chantier
+			</td>
+			<td rowspan="4">
+				Début
+			</td>
+			<td rowspan="4">
+				Fin
+			</td>
+			{% set momo = 888 %}
+			{% set an = 1 %}
+			{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+			{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+			{% set coli = j%}
+			{% set colm = 0 %}
+			{% for annee, moiss in dates %}
+			{% set nban = 1 %}	
+				{% for nba in nbjannee %}
+					{% if an == 1 and nban == 1%}
+						<tr><td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+					{% set nban = nban+1 %}
+					{% elseif an == a and nban == 1 %}
+						<td colspan="{{ nba }}"><center>{{ annee }}</center></td></tr>
+					{% set nban = nban+1 %}
+					{% elseif an != 1 and an != a %}
+						{% if an == nban %}
+							<td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+						{% endif %}
+					{% set nban = nban+1 %}
+					{% endif %}
+				{% endfor %}
+				{% set an = an+1 %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+				{% for mois, date in moiss %}
+					{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+					{% for nbm in nbmois %}
+						{# Si on est au premier mois et que le compteur de mois est = 1 #}
+						{# On applique le colspan du 1er mois stocké dans nbmois #}
+						{% if mo == 1 and nbmo == 1 %}			
+							<tr><td colspan="{{ nbm }}"><center>		
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>
+						{% set nbmo = nbmo+1 %}
+						{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+						{# On applique le colspan du dernier mois #}
+						{% elseif mo == m and nbmo == m %}
+							<td colspan="{{ nbm }}"><center> 
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}					
+							</center></td></tr>
+						{% set nbmo = nbmo+1 %}
+						{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+						{# On applique le colspan du bon mois #}
+						{% elseif mo != 1 and mo != m %}
+							{% if mo == nbmo %}	
+								<td colspan="{{ nbm }}"><center>
+									{% if mois == 1 %}
+										Janvier
+									{% endif %}
+									{% if mois == 2 %}
+										Février
+									{% endif %}
+									{% if mois == 3 %}
+										Mars
+									{% endif %}
+									{% if mois == 4 %}
+										Avril
+									{% endif %}
+									{% if mois == 5 %}
+										Mai
+									{% endif %}
+									{% if mois == 6 %}
+										Juin
+									{% endif %}
+									{% if mois == 7 %}
+										Juillet
+									{% endif %}
+									{% if mois == 8 %}
+										Août
+									{% endif %}
+									{% if mois == 9 %}
+										Septembre 
+									{% endif %}
+									{% if mois == 10 %}
+										Octobre
+									{% endif %}
+									{% if mois == 11 %}
+										Novembre
+									{% endif %}
+									{% if mois == 12 %}
+										Décembre
+									{% endif %}
+								</center></td>							
+							{% endif %}
+						{% endif %}
+						{% set nbmo = nbmo+1 %}
+					{% endfor %}
+					{% set mo = mo+1 %}			
+				{% endfor %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					{% for dat in date %}
+						{% if jo == 1 %}
+							<tr class="text-center">
+								<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+									{% if dat|date('D') == 'Mon' %}
+										Lun<br>
+									{% elseif dat|date('D') == 'Tue' %}
+										Mar<br>
+									{% elseif dat|date('D') == 'Wed' %}
+										Mer<br>
+									{% elseif dat|date('D') == 'Thu' %}
+										Jeu<br>
+									{% elseif dat|date('D') == 'Fri' %}
+										Ven<br>
+									{% elseif dat|date('D') == 'Sat' %}
+										Sam<br>
+									{% elseif dat|date('D') == 'Sun' %}
+										Dim<br>
+									{% endif %}
+									{{ dat|date('d') }}	
+								</td>
+						{% elseif jo > 1 or jo < j %}
+								<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+									{% if dat|date('D') == 'Mon' %}
+										Lun<br>
+									{% elseif dat|date('D') == 'Tue' %}
+										Mar<br>
+									{% elseif dat|date('D') == 'Wed' %}
+										Mer<br>
+									{% elseif dat|date('D') == 'Thu' %}
+										Jeu<br>
+									{% elseif dat|date('D') == 'Fri' %}
+										Ven<br>
+									{% elseif dat|date('D') == 'Sat' %}
+										Sam<br>
+									{% elseif dat|date('D') == 'Sun' %}
+										Dim<br>
+									{% endif %}
+									{{ dat|date('d') }}	
+								</td>
+						{% else %}
+								<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+									{% if dat|date('D') == 'Mon' %}
+										Lun<br>
+									{% elseif dat|date('D') == 'Tue' %}
+										Mar<br>
+									{% elseif dat|date('D') == 'Wed' %}
+										Mer<br>
+									{% elseif dat|date('D') == 'Thu' %}
+										Jeu<br>
+									{% elseif dat|date('D') == 'Fri' %}
+										Ven<br>
+									{% elseif dat|date('D') == 'Sat' %}
+										Sam<br>
+									{% elseif dat|date('D') == 'Sun' %}
+										Dim<br>
+									{% endif %}
+									{{ dat|date('d') }}	
+								</td>
+							</tr>
+						{% endif %}
+						{% set jo = jo+1 %}
+					{% endfor %}
+				{% endfor %}
+			{% endfor %}
+		</thead>
+		{% for loc in locations %}
+		<tr>
+			<td>
+				<a href="{{ path('bacloocrm_voir', {'raison': loc.loueur})  }}">{{ loc.loueur }}</a>
+			</td>
+			<td>
+				<a href="{{ path('bacloocrm_machinessl', {'machineid': loc.id|number_format})  }}">{{ loc.code }}</a>
+			</td>
+			<td>
+				{% if loc.entreprise is defined %}<a href="{{ path('bacloocrm_voir', {'id': loc.clientid|number_format(0, ',', '')})  }}"><span>{{ loc.entreprise }}</span></a>{% endif %}
+			</td>
+			<td>
+				{{ loc.nomChantier }}
+			</td>
+			<td>
+				{% if loc.debutloc is null or loc.debutloc == '' %}{% else %}{{ loc.debutloc|date('d/m/Y') }}{% endif %}
+			</td>
+			<td>
+				{% if loc.finloc is null or loc.finloc == ''  %}{% else %}{{ loc.finloc|date('d/m/Y') }}{% endif %}
+			</td>
+			{# Calcul de la durée de loc #}
+			{% set datedebut = loc.debutloc %}
+			{% set datefin = loc.finloc %}
+			{% set difference = date(datefin).diff(date(datedebut)) %}
+			{% set leftDay = difference.days +1 %}
+		
+			{# Calcul de la différence entre un debut de loc < au début du planning #}
+			{% if date(dstart) > date(datedebut) %}
+				{% set difference = date(dstart).diff(date(datedebut)) %}
+				{% set joursprec = difference.days %}
+			{% else %}
+				{% set joursprec = 0 %}
+			{% endif %}
+			
+			{# Calcul de la différence entre un debut de loc > à la fin du planning #}
+			{% if date(datefin) > date(dend) %}
+				{% set difference = date(datefin).diff(date(dend)) %}
+				{% set jourssuiv = difference.days %}
+				
+			{% else %}
+				{% set jourssuiv = 0 %}
+			{% endif %}
+			
+			{% set leftDays = leftDay-joursprec-jourssuiv %}
+
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					{% for dat in date %}
+						{% if datedebut < dstart and datefin > dstart and datefin <= dend %}
+							{% set datedebut = dstart %}
+						{% endif %}
+						{% if datedebut < dstart and datefin == dstart %}
+							{% set datedebut = dstart %}
+							{% set datefin = dstart %}
+						{% endif %}	
+						{% if datedebut < dstart and datefin > dend %}
+							{% set datedebut = dstart %}
+
+							
+							
+							
+						{% endif %}	
+						{% if datedebut > dstart and datedebut < dend and datefin > dend %}
+							
+						{% endif %}
+						{# 1 #}
+						{% if datedebut|date('U') == dat|date('U') %}
+							{% if loc.etat == 'En location' or loc.etat == 'Prêt au départ' or loc.etat == 'Retour planifié'%}
+								<td style="background-color:#f0ad4e" colspan = "{{ leftDays }}">
+							{% elseif loc.etat == 'Réservé'  %}
+								<td style="background-color:#f5b0b0" colspan = "{{ leftDays }}">
+
+
+
+
+
+
+
+
+
+
+							{% endif %}
+
+
+
+						{% endif %}
+						{# 2 #}
+						{% if datefin|date('U') == dat|date('U') %}
+							</td>
+						{% endif %}	
+						{# 3 #}
+						{% if datedebut|date('U') > dat|date('U') and  datefin|date('U') > dat|date('U') %}		
+							{% if loc.etat == 'En panne' %}
+								<td style="background-color:#ef5d4d"></td>
+
+
+							{% else %}
+								<td style="background-color:#85de7e"></td>		
+							{% endif %}			
+						{% endif %}
+						{# 4 #}
+						{% if datedebut|date('U') < dat|date('U') and  datefin|date('U') < dat|date('U') %}	
+							{% if loc.etat == 'En panne' %}
+								<td style="background-color:#ef5d4d"></td>
+							{% else %}
+								<td style="background-color:#85de7e"></td>		
+							{% endif %}				
+
+
+
+
+
+						{% endif %}
+						{# 5 #}
+						{% if datedebut|date('U') < dat|date('U') and datefin|date('U') > dat|date('U') %}
+							
+						{% endif %}					
+					{% endfor %}		
+				{% endfor %}
+			{% endfor %}
+		</tr>	
+		{% endfor %}
+		</table>
+	</div>		
+{% endblock %}

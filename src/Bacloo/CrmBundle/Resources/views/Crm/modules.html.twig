@@ -1,0 +1,318 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Mes modules</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+	{# Partie Prospot #}
+		<form class="form-horizontal" action="{{ path('bacloocrm_modules')  }}" method="post" {{form_enctype(form) }}>
+		<div class="hidden">{{ form_widget(form.bb) }}</div>
+		<div class="hidden">{{ form_widget(form.bbprix) }}</div>
+		<div class="hidden">{{ form_widget(form.bbdebut) }}</div>
+		<div class="hidden">{{ form_widget(form.bbexpiration) }}</div>
+		<div class="hidden">{{ form_widget(form.bbactivation) }}</div>
+		<div class="hidden">{{ form_widget(form.module1, { 'value' : 'Partage rapide des fiches' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module2, { 'value' : 'Pipeline des ventes' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module3, { 'value' : 'Bloc devis et commandes' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module4, { 'value' : 'Recherche avancée' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module5, { 'value' : 'Synchronisation avec agenda' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module6, { 'value' : 'Fiches fournisseurs' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module7, { 'value' : 'Google Docs' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module9, { 'value' : 'Annuaire' }) }}</div>
+		<div class="hidden">{{ form_widget(form.module11, { 'value' : 'Speed menu' }) }}</div>
+		<div class="hidden">{{ form_widget(form.userid, { 'value' : userdetails.id }) }}</div>
+		<div class="hidden">{{ form_widget(form.username, { 'value' : userdetails.username }) }}</div>
+			<div class="row">
+				<div class="col-md-9">
+					<h3>
+					{% if userdetails.roleuser == 'admin' %}
+						Votre solde : {% if userdetails.credits is defined %}{{ userdetails.credits }} points {% else %} 0  point.{% endif %}<br><br>
+						Activer des modules Bacloo : cochez vos modules puis validez
+					{% else %}
+						Les modules ci-dessous sont activés ou désactivés par votre administrateur
+					{% endif %}</h3>
+				</div>
+				<div class="col-md-3">
+				</div>
+			</div>
+			<div id="carousel-example" data-ride="carousel">
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Pipeline des ventes</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Ce module vous permet de personnaliser votre pipeline en enlevant la limite à trois étapes fixée par défaut.</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}2€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module2prix, { 'value' : '2' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module2activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module2activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module2debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module2expiration) }}</div>{% else %}{{ modules.module2expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>						
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Synchronisation avec agenda</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Un bouton à droite de vos rappels vous permet de les synchroniser avec les agendas Google, IOS et Outlook.</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module5prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module5activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module5activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module5debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module5expiration) }}</div>{% else %}{{ modules.module5expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Recherche avancée</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Nouveaux champs de recherche : code postal, ville, historique, mémo état devis (si module devis activé)</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module4prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module4activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module4activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module4debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module4expiration) }}</div>{% else %}{{ modules.module4expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Compte rendu d'activité</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Obligé de faire un rapport d'activité chaque vendredi ? Laissez faire Bacloo, il a toutes les informations !</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module12prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module12activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module12activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module12debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module12expiration) }}</div>{% else %}{{ modules.module12expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>			
+			
+        </div>
+		<br><br>
+			<div id="carousel-example" data-ride="carousel">
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Bloc devis et commandes</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Permet de lister des devis et commandes en indiquant leur provenace et leur statut de progression</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module3prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module3activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module3activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module3debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module3expiration) }}</div>{% else %}{{ modules.module3expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Fiches fournisseurs</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Ce module vous permet de créer  des fiches fournisseurs sur le modèle des fiches clients et de les distinguer.</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module6prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module6activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module6activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module6debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module6expiration) }}</div>{% else %}{{ modules.module6expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Google Drive</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Permet de relier des documents Google Apps à chaque fiche. Nécessite une connexion à un compte Google</h4>
+												<h3 class="price-text-color pull-right">
+													{% if userdetails.roleuser == 'admin' %}1€/mois{% endif %}</h3><div class="hidden">{{ form_widget(form.module7prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{% if userdetails.roleuser == 'admin' %}{{ form_widget(form.module7activation) }}{% endif %}{% if table_module == 0 %} Inactif{% elseif modules.module7activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module7debut) }}</div>
+											<p class="btn-details">
+												Expiration le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module7expiration) }}</div>{% else %}{{ modules.module7expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Annuaire</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Gagnez du temps ! Accédez à l'annuaire des entreprises françaises directement de Bacloo.</h4>
+												<h3 class="price-text-color pull-right">
+													45€/mois</h3><div class="hidden">{{ form_widget(form.module9prix, { 'value' : '45' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{{ form_widget(form.module9activation) }}{% if table_module == 0 %} Inactif{% elseif modules.module9activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module9debut) }}</div>
+											<p class="btn-details">
+												Exp. le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module9expiration) }}</div>{% else %}{{ modules.module9expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>							
+						</div>
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="col-item">
+									<div class="photo">
+										<span class="middle">Speed Menu</span>
+									</div>
+									<div class="info">
+										<div class="row">
+											<div class="price col-md-12">
+												<h4>
+													Vous aimez enchainer les appels ? Ce module est fait pour vous ! Il vous permet de naviguer très rapidement entre vos fiches et relances.</h4>
+												<h3 class="price-text-color pull-right">
+													1€/mois</h3><div class="hidden">{{ form_widget(form.module11prix, { 'value' : '1' }) }}</div>
+											</div>
+										</div>
+										<div class="separator clear-left">
+											<p class="btn-add">
+												{{ form_widget(form.module11activation) }}{% if table_module == 0 %} Inactif{% elseif modules.module11activation == 1 %} Actif{% else %} Inactif{% endif %}</p>
+												<div class="hidden">{{ form_widget(form.module11debut) }}</div>
+											<p class="btn-details">
+												Exp. le :{% if table_module == 0 %}
+												<div class="hidden">{{ form_widget(form.module11expiration) }}</div>{% else %}{{ modules.module11expiration }}{% endif %}</p>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
+								</div>
+							</div>						
+						</div>
+					</div>
+				</div>
+				{{ form_row(form._token) }}	
+				{{ form_errors(form) }}
+				{% if userdetails.roleuser == 'admin' %}
+					<br><input type="submit" class="btn btn-primary" value="Valider"/>
+				{% endif %}
+			</form>
+        </div>			
+				
+	</div>
+
+</div>
+{% endblock %}	

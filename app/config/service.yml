@@ -1,0 +1,8 @@
+services:
+    crm.CrmController:
+        class: CrmBundle\Controller\CrmController
+
+    bacloo.form.registration:
+        class: Bacloo\Form\RegistrationFormType
+        tags:
+            - { name: form.type, alias: bacloo_user_registration }

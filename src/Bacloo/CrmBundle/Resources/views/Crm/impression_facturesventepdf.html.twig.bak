@@ -1,0 +1,357 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+		
+			<!-- Side menu -->	
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+		
+
+		
+	{% endblock %}
+
+
+	</head>
+	<body>
+	<table>
+		<tr>
+			<td>
+			</td>
+			<td>
+				<span style="text-align:right;font-size:0.5pt"><br></span>
+					{% if mode == 'facture' %}
+					<span style="font-size:14pt;text-align:right;"><b>Facture n° {{numfacture }}</b></span>
+						<span style="text-align:right;font-size:12pt"></span>
+					{% elseif mode == 'avoir' %}
+						<span style="text-align:right;font-size:12pt"><b>Avoir n°{{  numfacture }}</b></span>
+					{% endif %}
+				<span style="text-align:right;font-size:12pt"></span>
+			</td>
+		</tr>
+	</table>
+		<table border="0">
+			<tr>
+				<td width="270">
+					<table cellspacing="0" cellpadding="3" border="0" style="margin-left:80px">
+						<tr>
+							<td width="5" height="10">
+							</td>
+							<td width="255">
+								<span style="text-align:center;font-size:8pt;"><br><br></span><br>
+								{# <table border="0"><tr><td width="10"></td><td width="200"><span style="font-size:11pt;">Suivi par : {% if facture.user == 'anna' %}Anna Mendes{% else %}{{ facture.user }}{% endif %}</span></td></tr></table> #}
+									<span style="font-size:7.5pt;"><br></span>
+									<table><tr><td><span style="font-size:11pt;">Date : {{ facture.datecrea|date('d/m/Y') }}</span></td></tr></table>
+									<span style="font-size:0.5pt;"><br></span>
+									<table><tr><td><span style="font-size:11pt;">N° de client : {{ locata.clientid }}</span></td></tr></table>
+									<span style="font-size:1.5pt;"><br></span>
+									<table><tr><td><span style="font-size:11pt;">N° de bon de commande : {{ locata.numbdc }}</span></td></tr></table>
+									<span style="font-size:1.5pt;"><br></span>
+{#									<table><tr><td><span style="font-size:11pt;">Garantie financière COFACE</span></td></tr></table>#}
+								<br>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="8">
+				</td>
+				<td width="262">
+					<table cellspacing="0" cellpadding="3" border="0">
+						<tr>
+							<td height="50">
+								<span style="font-size:7pt"><br></span>
+								<span style="font-size:10pt"><u>Coordonnées client :</u></span><br>
+								<span style="font-size:10pt"><b>{{ clients.raisonSociale }}</b><br>
+									{{ clients.adresse1 }}<br>
+									{# {% if clients.adresse2 is not empty %}{{ clients.adresse2 }}<br>{% endif %} #}
+									{# {% if clients.adresse3 is not empty %}{{ clients.adresse3 }}<br>{% endif %} #}
+									{{ clients.cp }} {{ clients.ville }}<br>
+									Tél: {{ clients.telephone }}
+								</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="80">
+				</td>
+			</tr>
+		</table>
+		<table border="0">
+			<tr>
+				<td width="270">
+					<table cellspacing="0" cellpadding="3" border="0" style="margin-left:100px">
+						<tr>
+							<td width="5" height="100">
+							</td>
+							<td width="255">
+								<span style="font-size:10pt"><u>Adresse de livraison :</u><br>
+									{{ locata.adresse1 }}<br>
+									{% if locata.adresse2 is not empty %}{{ locata.adresse2 }}<br>{% endif %}
+									{% if locata.adresse3 is not empty %}{{ locata.adresse3 }}<br>{% endif %}
+									{{ locata.cp }} {{ locata.ville }}
+								</span><br>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="8">
+				</td>
+				<td width="262">
+				</td>
+				<td width="80">
+				</td>
+			</tr>
+		</table>
+		<span style="font-size:12pt;text-align:center;color:blue;">{% if facture.typedoc != 'avoir' %}<b>Echéance le {{ facture.echeance|date('d/m/Y') }}</b><br>Règlement par {{ clients.typepaiement }}{% endif %}<br><br></span>
+{% if mode == 'avoir' %}
+		<table cellspacing="0" cellpadding="4" border="0">
+			<tr>
+				<td height="" width="115" align="center" border="1">
+					<b>Ref.</b>
+				</td>
+				<td height="" width="200" align="center" border="1">
+					<b>Désignation</b>
+				</td>
+				<td height="" width="80" align="center" border="1">
+					<b>Prix unitaire<br>(en € HT)</b>
+				</td>
+				<td height="" width="55" align="center" border="1">
+					<b>Quantité<br>(jours)</b>
+				</td>
+				<td height="" width="70" align="center" border="1">
+					<b>Total<br>(en € HT)</b>
+				</td>
+			</tr>
+			<tr style="font-size:10pt">
+				<td height="" width="115" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					AV
+				</td>
+				<td height="" width="200" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					Avoir sur facture {{ facturedor.numfacture }}
+				</td>
+				<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+				</td>
+				<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+				</td>
+				<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					{{ facture.totalht|number_format(2, ',', ' ')}}
+				</td>
+			</tr>
+				<tr style="font-size:1pt">
+					<td height="" width="115" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="200" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="80" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="55" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+				</tr>
+		</table>
+		{% set montantventeht = locata.montantvente %}
+{% else %}
+		<table cellspacing="0" cellpadding="4" border="0">
+			<tr>
+				<td height="" width="115" align="center" border="1">
+					<b>Ref.</b>
+				</td>
+				<td height="" width="200" align="center" border="1">
+					<b>Désignation</b>
+				</td>
+				<td height="" width="80" align="center" border="1">
+					<b>Prix unitaire<br>(en € HT)</b>
+				</td>
+				<td height="" width="55" align="center" border="1">
+					<b>Quantité<br>(jours)</b>
+				</td>
+				<td height="" width="70" align="center" border="1">
+					<b>Total<br>(en € HT)</b>
+				</td>
+			</tr>
+			{% for location in locata.ventes %}
+				<tr style="font-size:10pt">
+					<td height="" width="115" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.refarticle}}
+					</td>
+					<td height="" width="200" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.description}}
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.pu|number_format(2, ',', ' ') }}
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.quantite }}
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.montantvente|number_format(2, ',', ' ') }}
+					</td>
+				</tr>
+			{% endfor %}
+			{% if locata.acompte > 0 %}
+				<tr>
+					<td height="" width="115" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="200" align="center" style="border-right: 1px solid #000000;">
+						<br><br><span style="font-size:11pt;text-align:center;"><b>Acompte déjà versé</b></span>
+					</td>
+					<td height="" width="80" align="center" style="border-right: 1px solid #000000;">
+
+					</td>
+					<td height="" width="55" align="center" style="border-right: 1px solid #000000;">
+
+					</td>
+					<td height="" width="70" align="center" style="border-right: 1px solid #000000;">
+						<br><br><span style="font-size:11pt;text-align:center;"><b>-{{ locata.acompte }}<br></b></span>
+					</td>
+				</tr>
+			{% endif %}
+			{% if locata.remise > 0 %}
+				<tr style="font-size:10pt">
+					<td height="" width="115" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="200" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						<b>Remise {{ locata.remise }}%</b>
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{% set montantremise = locata.montantvente * (locata.remise/100) %}
+						<b>-{{ montantremise|number_format(2, ',', ' ')}} €</b>
+					</td>
+
+
+
+				</tr>
+				{% set montantventeht = locata.montantvente - montantremise %}
+			{% else %}
+				{% set montantventeht = locata.montantvente %}
+			{% endif %}
+				<tr style="font-size:1pt">
+					<td height="" width="115" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="200" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="80" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="55" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+				</tr>
+		</table>
+	{% endif %}
+			{#
+				{% for i in 0..locatafrs.spacer %}
+					<span style="font-size:7pt;"><br></span>
+				{% endfor %}
+			#}
+		<br><br><br>
+		<table border="0" width="520">
+			<tr>
+				<td width="400" align="left" border="1" style="font-size:7pt;">
+				<table cellpadding="7">
+					<tr>
+						<td>
+							{% if  facture.commentaire is not empty and facture.typedoc == 'avoir' %}<h4>{{ facture.commentaire|nl2br }}</h4>
+							{% elseif  locata.commentaire is not empty %}<h4>{{ locata.commentaire|nl2br }}</h4>
+							{% else %}
+								{% if locata.factor == 1 and facture.datecrea >= '2020-10-24' %}
+									<span style="color:red">Pour être libératoire, le règlement de cette facture doit être effectué et adressé à :<br><b>BPCE FACTOR</b>  Tél : 01 58 32 80 00<br>
+											<b>10-12, avenue Winston Churchill 94676 Charenton-le-Pont Cedex</b><br>
+											<b>RIB : 30007 00011 00010500791 36 - Domiciliation : NATIXIS Paris</b><br>
+											<b>IBAN : FR76 3000 7000 1100 0105 0079 136</b><br>
+											<b>SWIFT CODE ( BIC ) : NATX FR PP XXX</b><br>
+											<b>N° ICS : FR57ZZZ483693</b><br>
+											BPCE FACTOR a acquis notre créance par voie de subrogation dans le cadre  d’un contrat d’affacturage.<br>
+											BPCE FACTOR devra être avisée de toute réclamation.<br>
+										</span>
+								{% endif %}
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td width="120" border="1">
+					<table width="120" cellspacing="0" style="font-size:10pt;" border="0">
+						{% if locata.acompte > 0 %}
+							<tr>
+								<td colspan="2" align="center">
+									<b><u>Reste dû</u></b><br>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td width="58" align="right">
+									<span style="font-size:5pt;"><br></span>
+								</td>
+								<td align="right">
+									<span style="font-size:5pt;"><br></span>
+								</td>
+							</tr>
+						{% endif %}
+						<tr>
+							<td width="58" align="right">
+								<b>Total HT :</b><br>
+							</td>
+							<td align="right">
+							{% if locata.acompte > 0 %}
+								{% set montantvente = montantventeht - locata.acompte %}
+							{% else %}
+								{% if mode == 'avoir' %}{% set montantvente = facture.totalht %}{% else %}{% set montantvente = montantventeht %}{% endif %}
+							{% endif %}
+								<b>{{ montantvente|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>TVA 20% : </b>
+							</td>
+							<td align="right">
+							{% if clients.typeclient == 'export' or locata.sanstva == 1 %}
+								{% set tva = 0 %}
+							{% else %}
+								{% set tva = facture.totalttc - facture.totalht %}
+							{% endif %}
+								<b>{{ tva|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>Total TTC : </b>
+							</td>
+							<td align="right">
+							{% set totalttc = montantvente + tva %}
+								<b>{{ totalttc|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+					</table>				
+				</td>
+			</tr>
+		</table>
+			
+		<table border="" width="520" cellpadding="7" style="font-size:7pt;" >
+			<tr>
+				<td border="0" align="center" colspan="2"  style="font-size:10pt">
+					<b></b>
+				</td>
+			</tr>
+		</table>		
+	</body>
+</html>	

@@ -1,0 +1,68 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Mes messages</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+{# Partie Prospot #}
+						<div class="col-md-12 column">	
+							
+							{% if receive is empty %}
+								<center>Vous n'avez pas de message.</center>
+							{% else %}
+									<table id="bacloo2" class="table table-hover">
+									<thead>
+										<tr>
+											<th>
+												Date
+											</th>
+											<th>
+												Expéditeur
+											</th>
+											<th>
+												Objet
+											</th>	
+										</tr>
+									</thead>
+									<tbody>
+										{% for recu in receive %}
+											{% if recu.idmsgoriginal > 0 %}
+												{% set id = recu.idmsgoriginal %}
+											{% else %}
+												{% set id = recu.id %}
+											{% endif %}
+											
+											{% if recu.lu == 'nok' %}
+												<tr class="warning" style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_senddetmessage', {'id': id, 'destid': recu.fromid }) }}'">
+											{% else %}
+												<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_senddetmessage', {'id': id, 'destid': recu.fromid }) }}'">
+											{% endif %}
+											<td>
+												<div class="form-group">
+													{{ recu.date|date('d/m/Y') }}
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													{{ recu.fromNom }} {{ recu.fromNom }}
+												</div>
+											</td>				
+											<td>
+												<div class="form-group">									
+													{{ recu.objet }} {% if recu.proprio == recu.destId %}: <b>{{ recu.raisonsociale }}</b>{% endif %}
+												</div>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+									</table>
+							{% endif %}
+						</div>	
+	</div>
+</div>
+
+{% endblock %}		

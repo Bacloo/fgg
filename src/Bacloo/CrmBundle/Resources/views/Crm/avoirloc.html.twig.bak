@@ -1,0 +1,90 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Avoir sur facture de location
+			</h4>
+		</div>
+		<div class="modal-body">
+			{% if message == 1 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!</strong> Vous avez déjà enregistré un avoir du même montant pour cette location.
+				</div>	
+			{% elseif message == 2 %}
+				<div class="alert alert-success">
+				  <strong>Bravo!</strong> Votre avoir a bien été enregistré.
+				</div>
+			{% endif %}
+			<form class="form-horizontal" action="{{ path('bacloocrm_avoirloc', {'locid':locata.id, 'message':message, 'numavoir':numavoir, 'numfacture':numfacture} ) }}" method="post" {{form_enctype(form) }}>
+				{% if message < 1 %}
+					<h5>Le montant TTC de la facture est de : {{ (locata.montantloc + locata.contributionverte + locata.assurance + locata.transportaller + locata.transportretour + locata.montantcarb + locata.montantlocavente) * 1.2 }}</h5>
+							<table>
+								<tr>
+									<td class="col-md-3"><h5><b>Avoir total</b></h5></td>
+									<td>
+										{% if avoirtotal == 0 %}
+											{{ form_widget(form.avoirtotal) }}
+										{% else %}
+											<input type="checkbox" name="avoirtotal" value="1" checked>
+										{% endif %}
+									</td>
+								</tr>		
+							</table>						
+							<hr>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b>Montant HT avoir</b></span>
+										{% if montantavoirpartiel == 0 %}
+											{{ form_widget(form.montantavoirpartiel, { 'attr' : { 'class' : 'form-control' } })  }}
+										{% else %}
+											{{ form_widget(form.montantavoirpartiel, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+										{% endif %}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<br><b>Commentaire</b>
+									{% if commentaire is same as (0) %}
+										{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control','rows' : '5'} })  }}
+									{% else %}
+										{{ form_widget(form.commentaire, { 'value' : commentaire, 'attr' : { 'class' : 'form-control','rows' : '5'} })  }}
+									{% endif %}									
+								</div>
+							</div>			
+						<center>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Valider"/>
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+							{{ form_row(form._token) }}
+						</center>	
+				{% elseif message > 0 %}					
+					<center>
+						<br>
+						{% if numavoir == 0 %}
+							<a class="btn btn-primary" href="{{ path('bacloocrm_compta', {'vue': 'locations'}) }}"><span>Fermer</span></a>
+						{% else %}
+							<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': ficheid}) }}"><span>Fermer</span></a>
+						{% endif %}
+					</center>				
+				{% endif %}
+			</form>
+		</div>
+		{# Fin Partie Locations #}
+	</div>
+</div>
+{# Fin partie invisible #}
+
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>	
+{% endblock %}

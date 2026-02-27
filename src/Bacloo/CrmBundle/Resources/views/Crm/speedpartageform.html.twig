@@ -1,0 +1,13 @@
+<div class="row clearfix">
+			<form role="form" action="{{ path('bacloocrm_speedpartage', {'id' : id}) }}" method="post" {{form_enctype(form) }}>
+			<td>
+				<div class="form-group">
+					{{ form_widget(form.pseudo, { 'attr' : { 'class' : 'form-control' } })  }}
+				</div>
+			</td>
+			<td>
+					<input type="submit" name="submit" id="submit" value="Partager" class="btn btn-info pull-right">					 
+					 {{ form_row(form._token) }}
+			</td>
+			</form>
+</div>

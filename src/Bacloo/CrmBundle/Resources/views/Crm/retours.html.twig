@@ -1,0 +1,613 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<center>
+			{% if erreur == 1 %} 
+				<div class="alert alert-danger" role="alert">
+				  <h4>Vous devez d'abord valider la livraision ce matériel avant de le récupérer.</h4>
+				</div>
+			{% endif %}
+		</center>	
+		<div class="row clearfix">
+		{# PARTIE REPRISE #}	
+			<div class="col-md-7 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row clearfix">
+							<div class="col-md-4">
+								<h3 class="panel-title">
+									<h3>Reprises</h3>
+								</h3>
+							</div>
+							<form role="form" action="{{ path('bacloocrm_retours', {'date' : now}) }}" method="post" {{form_enctype(form) }}>
+								<div class="col-md-6"><br>
+									<div class="form-group col-md-6 pull-right">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Date de reprise</b></span>
+											{{ form_widget(form.date, { 'value' : now|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2"><br>
+									<div class="form-group col-md-12 pull-left">
+										<input type="submit" class="btn btn-info align-right" value="Rechercher"  name="recherche" />
+									</div>
+								</div>
+								{{ form_row(form._token) }}
+							</form>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									{{ i }} {% if i > 1 %}machines{% else %}machine{% endif %} à récupérer
+								</h3>
+							</div>
+							<div class="panel-body">
+								{% if i == 0 %}
+									Aucun retour à planifier
+								{% else %}
+									<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												Client
+											</th>
+											<th>
+												N° Contrat
+											</th>
+											<th>
+												Bdc frs
+											</th>
+											<th>
+												Code
+											</th>
+											<th>
+												Chantier
+											</th>
+											<th>
+												CP
+											</th>
+											<th>
+												Ville
+											</th>
+											<th>
+												Fin loc
+											</th>
+											<th>
+											</th>
+											<th>
+											</th>
+										</thead>
+									{% for retour in retours %}
+										{% for ret in retour.locations %}
+												<tr>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.finloc|date('d/m/Y') }}
+													</td>
+													<td>
+														{{ render(controller("BaclooCrmBundle:Crm:relancereprise", {'codelocata':retour.id, 'codelocation':ret.id, 'mode':'parc'})) }}
+													</td>
+													<td>
+														<br><a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': retour.id, 'codelocations': ret.id, 'ecode': ret.codemachineinterne, 'mode':'reprise', 'datereprise':date }) }}">Récupérer</a>
+													</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									{% for retour in retourssl %}
+										{% for ret in retour.locationssl %}
+												<tr bgcolor="#e6e6ff">
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+														{% if retour.numbdcloueur > 0 %}<a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': ret.loueurid|number_format(0, ',', ''), 'locid':  retour.numbdcloueur, 'erreur': 0 }) }}">{{ retour.numbdcloueur }}</a>{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.finloc|date('d/m/Y') }}
+													</td>
+													<td>
+														{{ render(controller("BaclooCrmBundle:Crm:relancereprise", {'codelocata':retour.id, 'codelocation':ret.id, 'mode':'sl'})) }}
+													</td>
+													<td>
+														<br><a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': retour.id, 'codelocations': ret.id, 'ecode': ret.codemachineinterne, 'mode':'reprisesl', 'datereprise':date }) }}">Récupérer</a>
+													</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									</table>
+								{% endif %}
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									{{ a }}{% if a > 1 %} machines{% else %} machine{% endif %} en attente de reprise
+								</h3>
+							</div>
+							<div class="panel-body">
+								{% if a == 0 %}
+									Aucune machine reprise
+								{% else %}
+									<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												Client
+											</th>
+											<th>
+												N° Contrat
+											</th>
+											<th>
+												Bdc frs
+											</th>
+											<th>
+												Code
+											</th>
+											<th>
+												Chantier
+											</th>
+											<th>
+												CP
+											</th>
+											<th>
+												Ville
+											</th>
+											<th>
+												Statut
+											</th>
+											<th>
+											</th>
+										</thead>
+									{% for retour in retoursplanifies %}
+										{% for ret in retour.locations %}
+												<tr>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.etatlog }}
+													</td>
+													<td>
+														{# {% if qrcode == 0 and ret.etatloc != 'Déposé en agence' %}
+															<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': ret.codemachineinterne, 'etatlog': 'Déposé_en_agence', 'mode':'qr0', 'codelocation':ret.id }) }}">Materiel Récupéré ?</a>
+														{% else %}#}
+															{{ ret.etatloc }}
+														{# {% endif %}#}
+													</td>
+													<td>
+														{% if qrcode == 0 and ret.etatloc != 'Déposé en agence' %}
+															<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_remettreenloc', {'locataid': retour.id, 'ecode': ret.codemachineinterne }) }}">Remettre en location</a>
+														{% endif %}
+													</td>											
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									{% for retour in retoursplanifiessl %}
+										{% for ret in retour.locationssl %}
+												<tr>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+														{% if retour.numbdcloueur > 0 %}<a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': ret.loueurid|number_format(0, ',', ''), 'locid':  retour.numbdcloueur, 'erreur': 0 }) }}">{{ retour.numbdcloueur }}</a>{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.etatlog }}
+													</td>
+													<td>
+														{% if qrcode == 0 and ret.etatloc != 'Déposé en agence' %}
+															<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': ret.codemachineinterne, 'etatlog': 'Déposé_en_agence', 'mode':'qr0', 'codelocation':ret.id  }) }}">Materiel Récupéré ?</a>
+														{% else %}
+															{{ ret.etatloc }}
+														{% endif %}
+													</td>
+													<td>
+														{% if qrcode == 0 and ret.etatloc != 'Déposé en agence' %}
+															<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_remettreenloc', {'locataid': retour.id, 'ecode': ret.codemachineinterne }) }}">Remettre en location</a>
+														{% endif %}
+													</td>	
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									</table>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+				
+		{# FIN PARTIE REPRISE #}
+			
+		{# PARTIE LIVRAISON #}	
+			<div class="col-md-5 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<h3>Livraisons</h3>
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									{{ j }} {% if j > 1 %}machines{% else %}machine{% endif %} à livrer entre aujourd'hui et le {{ datelivraison|date('d/m/Y') }}
+								</h3>
+							</div>
+							<div class="panel-body">
+								{% if j == 0 %}
+									Aucune machine à livrer
+								{% else %}
+									<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												<i class="fa fa-exclamation-triangle"></i>
+											</th>
+											<th>
+												Client
+											</th>
+											<th>
+												N° Contrat
+											</th>
+											<th>
+												Bdc frs
+											</th>
+											<th>
+												Code
+											</th>
+											<th>
+												Chantier
+											</th>
+											<th>
+												CP
+											</th>
+											<th>
+												Ville
+											</th>
+											<th>
+												Début loc
+											</th>
+											<th>								
+											</th>
+										</thead>
+									{% for retour in livraisons %}
+										{% for ret in retour.locations %}
+												<tr>
+													<td>
+														{% if retour.transportok == 'non' or retour.transportok is empty %}
+															<span style="color:orange"><i class="fa fa-exclamation-triangle"></i></span>
+														{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.debutloc|date('d/m/Y') }}
+													</td>
+													<td>
+														<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': retour.id, 'codelocations': ret.id, 'ecode': ret.codemachineinterne, 'mode':'livraisons', 'datereprise':date }) }}">Valider cette livraison</a>
+													</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									{% for retour in livraisonssl %}
+										{% for ret in retour.locationssl %}
+												<tr>
+													<td>
+														{% if retour.transportok == 'non' or retour.transportok is empty %}
+															<span style="color:orange"><i class="fa fa-exclamation-triangle"></i></span>
+														{% endif %}
+														{% if ret.materielok == 'Pas réservé' or ret.materielok is null %}
+															<span style="color:red"><i class="fa fa-exclamation-triangle"></i></span>
+														{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid|number_format(0, ',', ''), 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+													</td>
+													<td>
+														{% if retour.numbdcloueur > 0 %}<a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': ret.loueurid|number_format(0, ',', ''), 'locid':  retour.numbdcloueur, 'erreur': 0 }) }}">{{ retour.numbdcloueur }}</a>{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': ret.machineid})  }}">{{ ret.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ retour.nomchantier }}<br>
+														{% if retour.adresse1 is defined %}{{ retour.adresse1 }}<br>{% endif %}
+														{% if retour.adresse2 is not empty %}{{ retour.adresse2 }}<br>{% endif %}
+														{% if retour.adresse3 is not empty %}{{ retour.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ retour.cp }}
+													</td>
+													<td>
+														{{ retour.ville }}
+													</td>
+													<td>
+														{{ ret.debutloc|date('d/m/Y') }}
+													</td>
+													<td>
+														<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': retour.id, 'codelocations': ret.id, 'ecode': ret.codemachineinterne, 'mode':'livraisons', 'datereprise':date }) }}">Valider cette livraison</a>
+													</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									</table>
+								{% endif %}
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									{{ b }}{% if b > 1 %} livraisons validées{% else %} livraison validée{% endif %} pour le {{ datelivraison|date('d/m/Y') }}
+								</h3>
+							</div>
+							<div class="panel-body">
+								{% if b == 0 %}
+									Aucune machine livrée
+								{% else %}
+									<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												Client
+											</th>
+											<th>
+												N° Contrat
+											</th>
+											<th>
+												Bdc frs
+											</th>
+											<th>
+												Code
+											</th>
+											<th>
+												Chantier
+											</th>
+											<th>
+												CP
+											</th>
+											<th>
+												Ville
+											</th>
+											<th>
+												Début loc
+											</th>
+											<th>
+												Statut
+											</th>
+											<th>
+											</th>
+											<th>
+											</th>
+										</thead>
+									{% for livraisons in livraisonsok %}
+										{% for livr in livraisons.locations %}
+												<tr>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': livraisons.clientid } ) }}">{{ livraisons.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': livraisons.clientid|number_format(0, ',', ''), 'locid':  livraisons.id, 'erreur': 0 }) }}">{{ livraisons.id }}</a>
+													</td>
+													<td>
+
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': livr.machineid})  }}">{{ livr.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ livraisons.nomchantier }}<br>
+														{% if livraisons.adresse1 is defined %}{{ livraisons.adresse1 }}<br>{% endif %}
+														{% if livraisons.adresse2 is not empty %}{{ livraisons.adresse2 }}<br>{% endif %}
+														{% if livraisons.adresse3 is not empty %}{{ livraisons.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ livraisons.cp }}
+													</td>
+													<td>
+														{{ livraisons.ville }}
+													</td>
+													<td>
+														{{ livr.debutloc|date('d/m/Y') }}
+													</td>
+													<td>
+														{% if qrcode == 0 and livr.etatlog != 'Livré chez le client' %}
+															<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': livr.codemachineinterne, 'etatlog': 'Livré', 'mode':'qr0', 'codelocation':livr.id  }) }}">Materiel Livré ?</a>
+														{% else %}
+															{{ livr.etatlog }}
+														{% endif %}
+													</td>
+													<td>
+														{% if livr.debutloc|date('U') >= now|date('U') and livr.etatlog != 'Livré chez le client' %}
+															<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_modiflivraisons', {'codecont': livraisons.id, 'codelocations': livr.id, 'ecode': livr.codemachineinterne, 'mode': 'annuler' }) }}">Annuler</a>
+														{% endif %}
+													</td>
+													<td>
+														{% if livr.debutloc|date('U') >= now|date('U') and livr.etatlog != 'Livré chez le client'  %}
+															<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_reportlivraisons', {'codecont': livraisons.id, 'codelocations': livr.id, 'ecode': livr.codemachineinterne, 'erreur': 1 }) }}">Reporter</a>
+														{% endif %}
+													</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									{% for livraisons in livraisonsoksl %}
+										{% for livr in livraisons.locationssl %}
+												<tr>
+													<td>
+														<a href="{{ path('bacloocrm_voir', {'id': livraisons.clientid } ) }}">{{ livraisons.client }}</a>
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': livraisons.clientid|number_format(0, ',', ''), 'locid':  livraisons.id, 'erreur': 0 }) }}">{{ livraisons.id }}</a>
+													</td>
+													<td>
+														{% if livraisons.numbdcloueur > 0 %}<a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': livr.loueurid|number_format(0, ',', ''), 'locid':  livraisons.numbdcloueur, 'erreur': 0 }) }}">{{ livraisons.numbdcloueur }}</a>{% endif %}
+													</td>
+													<td>
+														<a href="{{ path('bacloocrm_machines', {'machineid': livr.machineid})  }}">{{ livr.codemachineinterne }}</a>
+													</td>
+													<td>
+														{{ livraisons.nomchantier }}<br>
+														{% if livraisons.adresse1 is defined %}{{ livraisons.adresse1 }}<br>{% endif %}
+														{% if livraisons.adresse2 is not empty %}{{ livraisons.adresse2 }}<br>{% endif %}
+														{% if livraisons.adresse3 is not empty %}{{ livraisons.adresse3 }}<br>{% endif %}
+													</td>
+													<td>
+														{{ livraisons.cp }}
+													</td>
+													<td>
+														{{ livraisons.ville }}
+													</td>
+													<td>
+														{{ livr.debutloc|date('d/m/Y') }}
+													</td>
+													<td>
+														{% if qrcode == 0 %}
+															{% if livr.etatlog == 'Livré chez le client' %}
+																{{ livr.etatlog }}
+															{% else %}
+																<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': livr.codemachineinterne, 'etatlog': 'Livré', 'mode':'qr0', 'codelocation':livr.id }) }}">Machine Livrée ?</a>
+															{% endif %}
+														{% else %}
+															{{ livr.etatlog }}
+														{% endif %}
+													</td>
+														<td>
+															{% if livr.debutloc|date('U') >= now|date('U') and livr.etatlog != 'Livré chez le client' %}
+																<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_modiflivraisons', {'codecont': livraisons.id, 'codelocations': livr.id, 'ecode': livr.codemachineinterne, 'mode': 'annuler' }) }}">Annuler</a>
+															{% endif %}
+														</td>
+														<td>
+															{% if livr.debutloc|date('U') >= now|date('U') and livr.etatlog != 'Livré chez le client'  %}
+																<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_reportlivraisons', {'codecont': livraisons.id, 'codelocations': livr.id, 'ecode': livr.codemachineinterne, 'erreur': 1 }) }}">Reporter</a>
+															{% endif %}
+														</td>
+												</tr>
+										{% endfor %}
+									{% endfor %}
+									</table>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		{# FIN PARTIE LIVRAISON #}	
+		</div>
+	</div>
+{# FIN PARTIE LIVRAISON #}	
+</div>
+	<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+    {% if check == '1' %}
+        <div class="row clearfix">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" href="{{ previous }}">×</a>
+                        <h4 class="modal-title" id="myModalLabel">
+
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        Êtes vous sûr de vouloir supprimer ce matériel de votre parc ?
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <a class="btn btn-danger" href="{{ path('bacloocrm_removemachineparc', {'id': id, 'check': 'ok'}) }}"><span>Oui</span></a>
+                            <a class="btn btn-primary" href="{{ previous}}"><span>Non</span></a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row clearfix">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" href="{{ path('bacloocrm_machines', {'machineid': id}) }}">×</a>
+                        <h4 class="modal-title" id="myModalLabel">
+
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        Le matériel a bien été supprimé.
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" href="{{ path('bacloocrm_machines', {'machineid': id}) }}"><span>Fermer</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

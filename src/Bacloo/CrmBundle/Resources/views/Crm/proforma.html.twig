@@ -1,0 +1,25 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Génération de Facture pro forma
+			</h4>
+		</div>
+		<div class="modal-body">
+			{% if message == 1 %}
+				<div class="alert alert-success">
+				  <strong>Bravo!</strong> votre facture pro forma a bien été générée.
+				</div>
+			{% endif %}
+			<center>
+				<br>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocationpdf', {'ficheid': ficheid, 'locid': locid, 'mode': 'proforma'}) }}"><span>Visualiser</span></a>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': ficheid, 'locid': locid}) }}"><span>Fermer</span></a>
+			</center>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,533 @@
+<?php
+
+namespace Bacloo\CrmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Bcontacts
+ * @ORM\Entity
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bacloo\CrmBundle\Entity\BcontactsRepository")
+ */
+class Bcontacts
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=true)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_crea", type="date", nullable=true)
+     */
+    private $dateCrea;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="civilite", type="string", length=255, nullable=true)
+     */
+    private $civilite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fonction", type="string", length=255, nullable=true)
+     */
+    private $fonction;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tel1", type="string", length=255, nullable=true)
+     */
+    private $tel1;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tel2", type="integer", nullable=true)
+     */
+    private $tel2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="text", nullable=true)
+     */
+    private $commentaire;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="entreprise", type="text", nullable=true)
+     */
+    private $entreprise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user", type="text", nullable=true)
+     */
+    private $user;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="mailing_ok", type="boolean", nullable=true)
+     */
+    private $mailingOk;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="a_vendre", type="boolean", nullable=true)
+     */
+    private $aVendre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cp", type="string", length=255, nullable=true)
+     */
+    private $cp;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="recoitfact", type="boolean", nullable=true)
+     */
+    private $recoitfact;
+	
+   /**
+   * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Fiche", cascade={"persist"})
+   */		
+	Private $fiche;
+	
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+	}
+
+    /**
+     * Set dateCrea
+     *
+     * @param \DateTime $dateCrea
+     * @return Bcontacts
+     */
+    public function setDateCrea($dateCrea)
+    {
+        $this->dateCrea = $dateCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCrea
+     *
+     * @return \DateTime 
+     */
+    public function getDateCrea()
+    {
+        return $this->dateCrea;
+    }
+
+    /**
+     * Set civilite
+     *
+     * @param string $civilite
+     * @return Bcontacts
+     */
+    public function setCivilite($civilite)
+    {
+        $this->civilite = $civilite;
+
+        return $this;
+    }
+
+    /**
+     * Get civilite
+     *
+     * @return string 
+     */
+    public function getCivilite()
+    {
+        return $this->civilite;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Bcontacts
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     * @return Bcontacts
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string 
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set fonction
+     *
+     * @param string $fonction
+     * @return Bcontacts
+     */
+    public function setFonction($fonction)
+    {
+        $this->fonction = $fonction;
+
+        return $this;
+    }
+
+    /**
+     * Get fonction
+     *
+     * @return string 
+     */
+    public function getFonction()
+    {
+        return $this->fonction;
+    }
+
+    /**
+     * Set tel1
+     *
+     * @param integer $tel1
+     * @return Bcontacts
+     */
+    public function setTel1($tel1)
+    {
+        $this->tel1 = $tel1;
+
+        return $this;
+    }
+
+    /**
+     * Get tel1
+     *
+     * @return integer 
+     */
+    public function getTel1()
+    {
+        return $this->tel1;
+    }
+
+    /**
+     * Set tel2
+     *
+     * @param integer $tel2
+     * @return Bcontacts
+     */
+    public function setTel2($tel2)
+    {
+        $this->tel2 = $tel2;
+
+        return $this;
+    }
+
+    /**
+     * Get tel2
+     *
+     * @return integer 
+     */
+    public function getTel2()
+    {
+        return $this->tel2;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Bcontacts
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     * @return Bcontacts
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string 
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set mailingOk
+     *
+     * @param boolean $mailingOk
+     * @return Bcontacts
+     */
+    public function setMailingOk($mailingOk)
+    {
+        $this->mailingOk = $mailingOk;
+
+        return $this;
+    }
+
+    /**
+     * Get mailingOk
+     *
+     * @return boolean 
+     */
+    public function getMailingOk()
+    {
+        return $this->mailingOk;
+    }
+
+    /**
+     * Set aVendre
+     *
+     * @param boolean $aVendre
+     * @return Bcontacts
+     */
+    public function setAVendre($aVendre)
+    {
+        $this->aVendre = $aVendre;
+
+        return $this;
+    }
+
+    /**
+     * Get aVendre
+     *
+     * @return boolean 
+     */
+    public function getAVendre()
+    {
+        return $this->aVendre;
+	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->fiche = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add fiche
+     *
+     * @param \Bacloo\CrmBundle\Entity\Fiche $fiche
+     * @return Bcontacts
+     */
+    public function addFiche(\Bacloo\CrmBundle\Entity\Fiche $fiche=null)
+    {
+		if ($fiche) {
+			$this->fiche[] = $fiche;
+		}
+		return $this;	
+    }
+
+    /**
+     * Remove fiche
+     *
+     * @param \Bacloo\CrmBundle\Entity\Fiche $fiche
+     */
+    public function removeFiche(\Bacloo\CrmBundle\Entity\Fiche $fiche)
+    {
+        $this->fiche->removeElement($fiche);
+    }
+
+    /**
+     * Get fiche
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFiche()
+    {
+        return $this->fiche;
+    }
+
+    /**
+     * Set entreprise
+     *
+     * @param string $entreprise
+     *
+     * @return Bcontacts
+     */
+    public function setEntreprise($entreprise)
+    {
+        $this->entreprise = $entreprise;
+    
+        return $this;
+    }
+
+    /**
+     * Get entreprise
+     *
+     * @return string
+     */
+    public function getEntreprise()
+    {
+        return $this->entreprise;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Bcontacts
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set cp
+     *
+     * @param string $cp
+     *
+     * @return Bcontacts
+     */
+    public function setCp($cp)
+    {
+        $this->cp = $cp;
+    
+        return $this;
+    }
+
+    /**
+     * Get cp
+     *
+     * @return string
+     */
+    public function getCp()
+    {
+        return $this->cp;
+    }
+
+    /**
+     * Set recoitfact
+     *
+     * @param boolean $recoitfact
+     *
+     * @return Bcontacts
+     */
+    public function setRecoitfact($recoitfact)
+    {
+        $this->recoitfact = $recoitfact;
+
+        return $this;
+    }
+
+    /**
+     * Get recoitfact
+     *
+     * @return boolean
+     */
+    public function getRecoitfact()
+    {
+        return $this->recoitfact;
+    }
+}

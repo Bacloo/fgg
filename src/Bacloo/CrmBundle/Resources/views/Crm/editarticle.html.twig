@@ -1,0 +1,61 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+
+			<div class="modal-dialog">
+				<div class="modal-content">
+					{% if edit is defined and edit == 'ok' %}
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_home') }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								OK
+							</h4>
+						</div>
+						<div class="modal-body">
+							Votre article a bien été modifié
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_home') }}"><span>Fermer</span></a>
+						</div>
+					{% else %}
+						<form role="form" action="{{ path('bacloocrm_editarticle', {'id': id } ) }}" method="post" {{form_enctype(form) }}>
+							<fieldset>					
+							<div class="modal-header">
+							<a class="close" href="{{ previous }}">×</a>
+								<h4 class="modal-title" id="myModalLabel">
+									Edition de votre article
+								</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+								  <label for="objet">Titre</label>
+									{{ form_widget(form.titre, { 'attr' : { 'class' : 'form-control'} })  }}
+								</div>
+								 	
+									<div class="form-group"><div class="col-md-12 column"> 
+									<center>
+										{% for choix in form.categorie %}
+											{{ form_label(choix) }} {{ form_widget(choix) }}
+										{% endfor %}
+									</center>
+									</div>	
+								 </div>	
+								<div id='messages' class="form-group">
+									  <label for="message">Texte</label>
+										{{ form_widget(form.texte, { 'attr' : { 'class' : 'form-control' ,'rows' : '5' }} )  }}
+								</div>									
+								<div class="hidden">{{ form_widget(form.auteur) }}</div>										
+								<div class="hidden">{{ form_widget(form.date) }}</div>										
+								<div class="hidden">{{ form_widget(form.sharepartenaire) }}</div>										
+								
+								{{ form_row(form._token) }}
+							</div>
+							<div class="modal-footer"><a class="btn btn-default" href="{{ previous }}">Close</a><input type="submit" class="btn btn-primary" />
+							</div>
+							</fieldset>							
+						</form>	
+					{% endif %}
+				</div>					
+			</div>				
+</div>		
+{% endblock %}

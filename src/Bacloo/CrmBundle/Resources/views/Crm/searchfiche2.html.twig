@@ -1,0 +1,117 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/searchfiche2.html.twig #}
+
+	<ul class="nav nav-pills nav-stacked">
+
+		<center>
+			{% if mesfichestot is defined %}
+				{% if mesfiches is defined %}
+					<br><br>
+			{% if view == 'client' %}				
+				<h4><b>Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a>
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}					
+				<h4><b>Mes fournisseurs</b></h4>			
+			{% elseif view == 'corbeille' %}				
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% endif %}
+		</center><br>
+				{% if lesfichesss != 0 %}
+							<table class="table table-striped">
+								<thead class="thead-inverse">
+									<tr>
+										<th >
+											Raison sociale
+										</th>
+										<th >
+											Cp
+										</th>
+										<th >
+											Ville
+										</th>
+										<th >
+											Tel
+										</th>
+										<th >
+											Dernier commentaire
+										</th>
+										{% if modules.module1activation == 1 %}
+											<th>									
+											</th>							
+											<th>								
+											</th>
+										{% endif %}
+									</tr>
+								</thead>
+							<tbody>		
+							{% for resultat in mesfiches %}
+								<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									<td>
+											{{ resultat.raisonSociale| truncate(20) }}
+									</td>
+									<td>
+											{{ resultat.cp }}
+									</td>
+									<td>
+											{{ resultat.ville }}
+									</td>
+									<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+											{{ resultat.telephone }}
+									</td>
+										{{ render(controller("BaclooCrmBundle:Crm:showcomm", {'id': resultat.id, 'module1act': modules.module1activation})) }}
+										
+									{% if modules.module1activation == 1 %}
+										{{ render(controller("BaclooCrmBundle:Crm:speedpartage", {'id': resultat.id})) }}
+									{% endif %}
+								</tr>					
+							{% endfor %}
+							</table>
+						<center>
+							<ul class="pagination">
+									{# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+									{% for p in range(1, nombrePage) %}
+									<li{% if p == page %} class="active"{% endif %}>
+										<a href="{{ path('bacloocrm_find', {'page': p, 'id': 0, 'view':view}) }}">{{ p }}</a>
+									</li>
+									{% endfor %}
+							</ul>
+						</center>
+					{% endif %}
+				{% else %}			
+					{% if view == 'client' %}
+						<center>Vous n'avez pas de fiche client dans Bacloo.<br>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche client</a> ou 
+							<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+						<center>
+					{% elseif view == 'prospect' %}
+						<center>Vous n'avez pas de fiche prospect dans Bacloo.<br>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche prospect</a> ou 
+							<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+						<center>
+					{% elseif view == 'corbeille' %}
+					<center>Vous n'avez pas de fiche dans la corbeille.<br><center>
+					{% endif %}
+				{% endif %}
+			{% else %}
+				<center>Vous n'avez pas de fiche dans Bacloo.<br>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche</a> ou 
+				<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+			{% endif %}	
+				
+			</center>		
+
+
+	{% if id is not defined %}
+		
+
+	{% endif %}
+	</ul>

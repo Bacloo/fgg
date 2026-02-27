@@ -1,0 +1,57 @@
+{% if civilite == 'M.' %}Monsieur {% else %}Madame {% endif %}{{ prenom }} {{ nom }}
+{% set totalfac = 0 %}
+{% for liste in facturesechues %}
+    {% if liste.typedoc == 'facture' %}
+        {% set totalfac = totalfac + liste.totalttc - liste.montantdejareg %}
+    {% elseif liste.typedoc == 'avoir' %}
+        {% set totalfac = totalfac - liste.totalttc %}
+    {% endif %}
+{% endfor %}
+
+Malgré notre première relance communiquée par mail, les factures ci-dessus sont échues et à ce jour nous n’avons toujours pas enregistré votre règlement pour les factures ci-dessous.
+Nous vous saurions gré de bien vouloir effectuer le règlement dans les 8 jours sinon nous sommes dans l’obligation de bloquer votre compte.
+
+BANQUE : Crédit Agricole Nord de France
+RIB IBAN : FR76 1670 6050 9253 9665 3020 782
+BIC : AGRIFRPP867
+
+Montant total dû : {{ totalfac }}€ TTC
+
+{{ commentaire|nl2br }}
+
+{% set nbavoir = 0 %}
+{% for liste in facturesechues %}
+{% if liste.typedoc == 'avoir' %}
+{% set nbavoir = nbavoir + 1 %}
+{% endif %}
+{% endfor %}
+{% set sommefacture = 0 %}
+{% set sommeavoir = 0 %}
+{% for liste in facturesechues %}
+{% if liste.typedoc == 'facture' %}
+        - {{ liste.numfacture }} du {{ liste.datecrea|date('d/m/Y') }} d'un montant de {{ liste.totalttc }}€ TTC reste à payer {{ liste.totalttc - liste.montantdejareg }} € TTC
+{% set areg = liste.totalttc - liste.montantdejareg %}
+{% set sommefacture = sommefacture + areg %}
+{% endif %}
+{% endfor %}
+{% if nbavoir > 0 %}
+
+    Avoirs à déduire :
+
+{% endif %}
+{% for liste in facturesechues %}
+{% if liste.typedoc == 'avoir' %}
+        - {{ liste.numfacture }} du {{ liste.datecrea|date('d/m/Y') }} d'un montant de {{ liste.totalttc }}€ TTC
+{% set sommeavoir = sommeavoir + liste.totalttc %}
+{% endif %}
+{% endfor %}
+{% if nbavoir > 1 %}
+
+Total facture : {{ sommefacture }}
+Total avoir : -{{ sommeavoir }}
+Montant du : {{ sommefacture - sommeavoir }}
+{% endif %}
+
+Nous vous prions d’agréer, Madame, Monsieur, l’expression de nos sentiments distingués.
+Service comptabilité
+

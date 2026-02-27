@@ -1,0 +1,274 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+		<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+		<!-- Side menu -->
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+	{% endblock %}
+
+
+</head>
+<body>
+<table>
+	<tr>
+		<td width="290">
+		</td>
+		<td style="background-color:#eaecef;line-height:20px;" width="210">
+			{% if mode == 'facture' %}
+				<span style="text-align:center;font-size:18pt"><b>Facture</b></span>{% if facture.reglement == 1 %}<span style="font-size:14pt;font-weight:bold;color:red"> (Réglée)</span>{% endif %}
+				<span style="text-align:right;font-size:12pt"></span>
+			{% elseif mode == 'avoir' %}
+				<span style="text-align:center;font-size:18pt"><b>Avoir</b></span>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+<br>
+<span style="text-align:center;font-size:11pt;"><b></b></span>
+<span style="text-align:center;font-size:10pt"><br></span>
+<br>
+<table cellspacing="0" cellpadding="4" style="border-top-width:0.1px;border-bottom-width:0.1px;border-color:#e4e4e4;">
+	<tr style="font-weight:normal; font-size:10px;">
+		<td width="262"  style="border-left-width:0.1px;border-color:#e4e4e4;border-right-width:0.1px;">
+			<span style="font-size:10pt"><u>Adresse de livraison</u><br>
+									{{ locata.adresse1 }}<br>
+									{% if locata.adresse2 is not empty %}{{ locata.adresse2 }}<br>{% endif %}
+				{% if locata.adresse3 is not empty %}{{ locata.adresse3 }}<br>{% endif %}
+				{{ locata.cp }} {{ locata.ville }}
+								</span>
+		</td>
+		<td width="263" height="" align="left" style="border-right-width:0.1px;border-color:#e4e4e4;">
+			<table cellspacing="0" cellpadding="3" border="0">
+				<tr>
+					<td width="180">
+						<span style="font-size:9.4pt"><b>{{ locata.client }}</b><br>
+						{{ clients.adresse1 }}<br>
+						{# {% if client.adresse2 is not empty %}{{ client.adresse2 }}<br>{% endif %} #}
+							{# {% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %} #}
+							{{ clients.cp }} {{ clients.ville }}</span>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<br><br>
+<table cellspacing="0" cellpadding="4" style="border-top-width:0.1px;border-bottom-width:0.1px;border-color:#e4e4e4;">
+	<tr style="font-weight:normal; font-size:10px;">
+		<td width="262"  style="border-left-width:0.1px;border-color:#e4e4e4;border-right-width:0.1px;">
+			<span style="font-size:10pt;">N° de bon de commande : {{ locata.numbdc }}</span>
+			<span style="font-size:1.5pt;"><br></span>
+		</td>
+		<td width="263" height="" align="left" style="border-right-width:0.1px;border-color:#e4e4e4;">
+			<u>A l'attention de</u> : {{ locata.acheteur }}<br>
+			{#						Tél : {{ locata.tel }}<br>#}
+			{#						Mail : {{ locata.email }}#}
+		</td>
+	</tr>
+</table>
+
+<span style="font-size:2pt"><br></span>
+<span style="font-size:11pt"></span>
+<span style="font-size:15pt"><br></span>
+<table style="border-top-width:0.1px;border-bottom-width:0.1px;border-color:#e4e4e4;">
+	<tr style="background-color:#eaecef; font-weight:normal; font-size:9px; line-height: 25px;">
+		<td height="" width="90" align="center" style="border-left-width:0.1px;border-right-width:0.1px;border-color:#e4e4e4;">
+			Numéro
+		</td>
+		<td height="" width="70" align="center" style="border-right-width:0.1px;">
+			Date
+		</td>
+		<td height="" width="70" align="center" style="border-right-width:0.1px;">
+			Code client
+		</td>
+		<td height="" width="80" align="center" style="border-right-width:0.1px;">
+			Date d'échéance
+		</td>
+		<td height="" width="105" align="center" style="border-right-width:0.1px;">
+			Mode de règlement
+		</td>
+		<td height="" width="105" align="center" style="border-right-width:0.1px;">
+			N° de Tva intracom
+		</td>
+	</tr>
+	<tr style=" line-height: 25px;">
+		<td height="" align="center" style="border-left-width:0.1px;border-right-width:0.1px;border-color:#e4e4e4;">
+			{{ facture.numfacture }}
+		</td>
+		<td height=""  align="center" style="border-right-width:0.1px;">
+			{{ facture.datecrea|date('d/m/Y') }}
+		</td>
+		<td height="" align="center" style="border-right-width:0.1px;">
+			{{ clients.id }}
+		</td>
+		<td height="" align="center" style="border-right-width:0.1px;">
+			{% if mode == 'facture' %}{{ facture.echeance|date('d/m/Y') }}{% endif %}
+		</td>
+		<td height="" align="center" style="border-right-width:0.1px;">
+			{% if mode == 'facture' %}{% if clients.typepaiement != 'vide' %}{{ clients.typepaiement }}{% else %}{{facture.modepaiement }}{% endif %}{% endif %}
+		</td>
+		<td height="" align="center" style="border-right-width:0.1px;">
+			{{ clients.cperso2 }}
+		</td>
+	</tr>
+</table>
+<br><br><br><br>
+<table cellspacing="0" cellpadding="4" style="border-top-width:0.1px;border-bottom-width:0.1px;border-color:#e4e4e4;">
+	<tr style="background-color:#eaecef; font-weight:normal; font-size:9px; line-height: 25px;">
+		<td height="" width="60" align="center" style="border-left-width:0.1px;border-right-width:0.1px;border-color:#e4e4e4;">
+			Ref.
+		</td>
+		<td height="" width="255" align="center" style="border-right-width:0.1px;">
+			Désignation
+		</td>
+		<td height="" width="80" align="center" style="border-right-width:0.1px;">
+			P.U.H.T
+		</td>
+		<td height="" width="55" align="center" style="border-right-width:0.1px;">
+			Qté
+		</td>
+		<td height="" width="70" align="center" style="border-right-width:0.1px;">
+			Montant HT
+		</td>
+	</tr>
+	{% for ventes in locata.ventes|reverse %}
+		<tr style="font-size:10pt">
+			<td height=""align="center" style="border-left-width:0.1px;border-right-width:0.1px;">
+				{{ ventes.refarticle }}
+			</td>
+			<td height=""  style="border-right-width:0.1px;">
+				{{ ventes.description|nl2br }}
+			</td>
+			<td height="" align="right"  style="border-right-width:0.1px;">
+				{{ ventes.pu|number_format(2, ',', ' ')  }}
+			</td>
+			<td height="" align="right"  style="border-right-width:0.1px;">
+				{{ ventes.quantite }}
+			</td>
+			<td height="" align="right"  style="border-right-width:0.1px;">
+				{{ ventes.montantvente|number_format(0, ',', ' ')}} €
+			</td>
+		</tr>
+	{% endfor %}
+	<tr style="font-size:1pt">
+		<td height="" align="center" style="border-left-width:0.1px;border-right-width:0.1px;">
+		</td>
+		<td height=""  style="border-right-width:0.1px;">
+		</td>
+		<td height="" align="right"  style="border-right-width:0.1px;">
+		</td>
+		<td height="" align="right"  style="border-right-width:0.1px;">
+		</td>
+		<td height="" align="right"  style="border-right-width:0.1px;">
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+<table border="0" width="520" style="border-width:0.1px;border-bottom-width:0.1px;border-color:#e4e4e4;">
+	<tr>
+		<td width="315" align="left" style="font-size:7pt;border-left-width:0.1px;border-color:#e4e4e4;">
+			<table cellpadding="7">
+				<tr>
+					<td>
+						<span style="font-size:10pt;font-weight:normal;">Commentaire :<br></span>
+						{% if  locata.commentaire is not empty %}<h4>{{ locata.commentaire|nl2br }}</h4>{% endif %}
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="205" style="border-right-width:0.1px;">
+			<table width="205" cellspacing="0" style="font-size:10pt;" border="0">
+				<tr>
+					<td width="107" align="right" style="background-color:#eaecef;">
+						<span style="font-size:5pt;"><br></span>
+					</td>
+					<td align="right">
+						<span style="font-size:5pt;"><br></span>
+					</td>
+					<td width="50">
+					</td>
+				</tr>
+				<tr>
+					<td align="right" style="background-color:#eaecef;">
+						<b>Total HT :</b>
+					</td>
+					<td align="right" style="padding-right:100px;">
+						<b>{{ locata.montantvente|number_format(2, ',', ' ') }} €</b><br>
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" style="background-color:#eaecef;">
+						<b>TVA : </b>
+					</td>
+					<td align="right">
+						{% if clients.typeclient == 'export' %}
+							{% set tva = 0 %}
+						{% else %}
+							{% set tva = locata.montantvente * 0.20 %}
+						{% endif %}
+						<b>{{ tva|number_format(2, ',', ' ')}} €</b><br>
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" style="background-color:#eaecef;">
+						<b>Total TTC : </b>
+					</td>
+					<td align="right">
+						{% set totalttc = locata.montantvente + tva %}
+						<b>{{ totalttc|number_format(2, ',', ' ')}} €</b><br>
+					</td>
+					<td>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+
+<table>
+	{#	<tr>#}
+	{#		<td>#}
+	{#			En cas de retard de paiement, une pénalité égale à 3 fois le taux d'intérêt légal sera exigible (Décret 2009-138 du 9 février 2009).#}
+	{#			<br>Pour les professionnels, une indemnité minimum forfaitaire de 40 euros pour frais de recouvrement sera exigible <br>(Décret 2012-1115 du 9 octobre 2012).<br>#}
+	{#		</td>#}
+	{#	</tr>#}
+	<tr>
+		<td>
+			<span style="text-align:center;font-weight:bold;font-size:12px">Cachet + Signature du client précédée de la mention « lu et approuvé »</span>
+		</td>
+	</tr>
+</table>
+
+
+
+</body>
+</html>	

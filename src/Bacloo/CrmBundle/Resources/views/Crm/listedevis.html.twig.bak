@@ -1,0 +1,307 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		$("#selecctall").change(function(){
+		  $(".checkbox1").prop('checked', $(this).prop("checked"));
+		  });
+	});
+</script>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Liste des devis</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+
+		
+		<br><br><br>
+		<div class="panel panel-default">
+{# **{{ client }}**{{ mode }}	#}		
+
+<div class="panel-body">
+<form class="form-horizontal" action="{{ path('bacloocrm_listedevis', {'page': page, 'mode':'search', 'vue':vue, 'style':style }) }}" method="post" {{form_enctype(form2) }}>
+				<center>
+				<div class="col-md-12">
+
+							<div class="col-md-3"></div>
+							<div class="col-md-2">
+								<div class="form-group ">
+									<div class="controls">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-addon">Commercial</span>
+												{{ form_widget(form2.user, { 'attr' : { 'class' : 'form-control' } })  }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group ">
+									<div class="controls">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-addon">CP</span>
+												{{ form_widget(form2.cp, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group ">
+									<div class="controls">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-addon">Ville</span>
+												{{ form_widget(form2.ville, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3"></div>
+{#							<div class="col-md-2">#}
+{#								<div class="form-group">#}
+{#								  <div class="controls">#}
+{#									  <div class="col-md-12">#}
+{#										<div class="input-group">							#}
+{#											<span class="input-group-addon">Montant réglé</span>#}
+{#											{{ form_widget(form2.dejareg, { 'attr' : { 'class' : 'form-control' } })  }}				#}
+{#										</div>							#}
+{#									  </div>#}
+{#								  </div>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div></div>#}
+{#							<div></div>#}
+
+							<div class="col-md-4"></div>
+							<div class="col-md-2">
+								<div class="form-group ">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon">Du</span>
+											{{ form_widget(form2.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+										</div>
+									  </div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon">Au</span>
+											{{ form_widget(form2.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+										</div>
+									  </div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4"></div>
+
+					<div class="col-md-12">
+						<br>
+						<input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />
+						<a type="button" class="btn btn-default" href="{{ path('bacloocrm_listedevis', {'vue' : 'locations'}) }}">Réinitialiser</a>
+						<br>
+					</div>
+				</div>
+				</center>	
+{{ form_row(form2._token) }}	
+</form>
+			</div>
+		</div>
+			<div class="row">	
+				<div class="col-md-1">		
+				</div>	
+				<div class="col-md-2">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Nombre de devis effectués</center></div>
+								<hr>
+								<h2><center><b><span class="text-info"><a href="{{ path('bacloocrm_listedevis', {'page': page, 'mode':'search', 'vue':vue, 'style':'all', 'entite':entite }) }}">{{ nbdevisfaits }}</a></span></b></center></h2>
+							
+						</div>
+					</div>	
+				</div>
+				<div class="col-md-2">
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Nombre de devis acceptés</center></div>
+								<hr>
+								<h2><center><b><span><a class="text-success" href="{{ path('bacloocrm_listedevis', {'page': page, 'mode':'search', 'vue':vue, 'style':'accepte', 'entite':entite }) }}">{{ nbdevisacceptes }}</a></span></b></center></h2>
+						</div>
+					</div>	
+				</div>
+				<div class="col-md-2">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Nombre de devis en cours</center></div>
+								<hr>
+								<h2><center><b><span><a class="text-warning" href="{{ path('bacloocrm_listedevis', {'page': page, 'mode':'search', 'vue':vue, 'style':'encours', 'entite':entite }) }}">{{ nbdevisencours }}</a></span></b></center></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Nombre de devis sans suite</center></div>
+								<hr>
+								<h2><center><b><span><a class="text-danger" href="{{ path('bacloocrm_listedevis', {'page': page, 'mode':'search', 'vue':vue, 'style':'sanssuite', 'entite':entite }) }}">{{ nbdevissanssuite }}</a></span></b></center></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Taux de transformation</center></div>
+								<hr>
+							{% set trans = (nbdevisacceptes/nbdevisfaits)*100 %}
+								<h2><center><b><span class="text-success">{{ trans|number_format(0, ',', ' ')}} %</span></b></center></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>
+			
+<div>		
+	{% if vue == 'locations' %}
+		<a type="button" class="btn btn-success pull-right" style="margin-left:10px" href="{{ path('avro_csv_export_export', {'alias': 'listedevis', 'dstart':du, 'dend':au, 'user':user}) }}">
+		Exporter les devis</a>
+	{% endif %}
+</div>
+<br>
+<br>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<center>
+		<h3>Liste des devis</h3>
+		</center>		
+					<table id="bacloo3" class="table table-bordered">
+						<thead style="background-color:#eaecef; font-weight:bold; font-size:14px;">
+							<th>
+								N° de contrat
+							</th>
+							<th>
+								Date de création
+							</th>
+							<th>
+								Commercial
+							</th>
+							<th>
+								Client
+							</th>
+							<th>
+								CP
+							</th>
+							<th>
+								Ville
+							</th>
+							<th>
+								Machines
+							</th>
+							<th>
+							</th>
+						</thead>
+						{% for devi in factures %}
+							<tr>
+								<td>
+									{{ devi.id }}
+								</td>
+								<td>
+									{{ devi.datecrea|date('d/m/Y') }}
+								</td>
+								<td>
+									{{ devi.user }}
+								</td>
+								<td>
+									{{ devi.client }}
+								</td>
+								<td>
+									{{ devi.cp }}
+								</td>
+								<td>
+									{{ devi.ville }}
+								</td>
+								<td>
+									{% for dev in devi.locations %}
+										{% if dev.loyerp1 > 0 %}{% set loyer = dev.loyerp1 %}{% elseif dev.loyerp2 > 0 %}{% set loyer = dev.loyerp2 %}{% elseif dev.loyerp3 > 0 %}{% set loyer = dev.loyerp3 %}{% elseif dev.loyermensuel > 0 %}{% set loyer = dev.loyermensuel %}{% else %}{% set loyer = 0 %}{% endif %}
+										{{ dev.codemachine }} <b>à {{ loyer }} €</b> {% if dev.etatloc == 'En location' %}<span style="font-weight:bold;color:red">({{ dev.etatloc }})</span>{% elseif dev.etatloc == 'Location terminée' %}<span style="font-weight:bold;color:green">({{ dev.etatloc }})</span>{% elseif dev.debutloc|date('U') <= "now"|date('U') %}<span style="font-weight:bold;color:warning">(sans suite)</span>{% else %}<span style="font-weight:bold;color:darkblue">(En cours)</span>{% endif %}
+									{% endfor %}
+									{% for dev in devi.locationssl %}
+										{% if dev.loyerp1 > 0 %}{% set loyersl = dev.loyerp1 %}{% elseif dev.loyerp2 > 0 %}{% set loyersl = dev.loyerp2 %}{% elseif dev.loyerp3 > 0 %}{% set loyersl = dev.loyerp3 %}{% elseif dev.loyermensuel > 0 %}{% set loyersl = dev.loyermensuel %}{% else %}{% set loyersl = 0 %}{% endif %}
+										{{ dev.codemachine }} <b>à {{ loyersl }} €</b> {% if dev.etatloc == 'En location' %}<span style="font-weight:bold;color:red">({{ dev.etatloc }})</span>{% elseif dev.etatloc == 'Location terminée' %}<span style="font-weight:bold;color:green">({{ dev.etatloc }})</span>{% elseif dev.debutloc|date('U') <= "now"|date('U') %}<span style="font-weight:bold;color:warning">(sans suite)</span>{% else %}<span style="font-weight:bold;color:darkblue">(En cours)</span>{% endif %}
+									{% endfor %}
+								</td>
+								<td>
+									<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': devi.clientid, 'locid': devi.id, 'erreur': 0 }) }}">Voir</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+					<br>
+				</div>				
+			</div>
+		</div>
+
+			<center>
+				{% if nombrePage > 0 %}
+					<ul class="pagination">
+						{% if page > 1 %}
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': 1, 'mode': mode, 'date': date, 'vue': vue, 'style': style, 'compteclient': ville}) }}">
+									<<
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': -1, 'mode': mode, 'date': date, 'vue': vue, 'style': style, 'compteclient': ville}) }}">
+									<
+								</a>
+							</li>
+						{% endif %}
+
+						{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+						{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+							<li {% if p == page %}class="active"{% endif %}>
+								<a href="{{ path('bacloocrm_compta', {'page': p, 'mode': mode, 'date': date, 'vue': vue, 'style': style, 'compteclient': ville}) }}">
+									{{ p }}
+								</a>
+							</li>
+						{% endfor %}
+
+						{% if page < nombrePage %}
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': page+1, 'mode': mode, 'date': date, 'vue': vue, 'style': style, 'compteclient': ville}) }}">
+									>
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': nombrePage, 'mode': mode, 'date': date, 'vue': vue, 'style': style, 'compteclient': ville}) }}">
+									>>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+			</center>	
+
+	</div>
+</div>
+
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>
+
+{% endblock %}

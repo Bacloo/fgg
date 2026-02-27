@@ -1,0 +1,7 @@
+{% if  mode == 'accueil' %}
+	{{ prospot }} {% if prospot > 1 %}Prospects détectés{% else %}Prospect détecté{% endif %}
+{% else %}
+	<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_showprospotlist', {'nbresult' : prospot, 'insert': 'ok' }) }}">
+		{{ prospot }} {% if prospot > 1 %}Prospects détectés{% else %}Prospect détecté{% endif %}
+	</span></a>
+{% endif %}

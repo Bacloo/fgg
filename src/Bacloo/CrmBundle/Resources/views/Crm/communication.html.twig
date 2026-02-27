@@ -1,0 +1,61 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-7">
+					<div class="alert alert-success">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  <h4>Envoyez des invitations <i class="fa fa-arrow-right"></i> Gagnez des points <i class="fa fa-arrow-right"></i> Offrez-vous des prospects qualifiés</h4>
+						Invitez vos contacts à s'inscrire sur Bacloo et recevez un prospect qualifié en échange. Pour chaque invitation envoyée vous recevez 1 point. 
+						Ce dernier vous permettra d'acheter des prospects.<br>
+						<span class="pull-right">
+							<a type="button" class="btn btn-warning btn-xl" href="{{ path('bacloocrm_donemail', {'id': '0'}) }}">Envoyer une invitation</span></a><br><br>
+						</span>
+					</div>	
+				
+					<div class="panel panel-default">
+						<div class="panel-heading">
+								<h3 class="panel-title">
+									<h3>Communiquez avec vos partenaires ou d'autres commerciaux <a type="button" class="btn btn-primary pull-right" href="{{ path('bacloocrm_searchuser', {'mode' : 'bigsearch'}) }}">Trouver un<br>Partenaire</a></h3>
+								</h3>
+									<p>(Publiez auprès de tous les utilisateurs Bacloo ou uniquement auprès de vos partenaires)</p>
+							
+						</div>
+						<div class="panel-body">
+							{{ render(controller("BaclooCrmBundle:Crm:publisharticle", {'artvue': 'accueil'})) }}
+							{{ render(controller("BaclooCrmBundle:Crm:showarticles", {'artvue': 'accueil'})) }}
+						</div>
+						<div class="panel-footer">
+							
+						</div>
+					</div>		
+				</div>
+				<div class="col-md-5">
+					<div class="row">
+
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										<h3>Derniers articles sur Bacloo & Co</h3>
+									</h3>
+								</div>
+								<div class="panel-body">
+									{{ render(controller("BaclooCrmBundle:Crm:showblog", {'artvue': 'accueil'})) }}
+								</div>
+								<div class="panel-footer">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+{% endblock %}		

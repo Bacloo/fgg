@@ -1,0 +1,408 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#selecctall").change(function(){
+		  $(".checkbox1").prop('checked', $(this).prop("checked"));
+		  });
+	});
+</script>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>{% if vue == 'locations' %}Factures et avoirs{% else %}Achats{% endif %}</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+								{% if moisprecedent == 1 %}
+									{% set moisprecedent = 'Janvier' %}
+								{% endif %}
+								{% if moisprecedent == 2 %}
+									{% set moisprecedent = 'Février' %}
+								{% endif %}
+								{% if moisprecedent == 3 %}
+									{% set moisprecedent = 'Mars' %}
+								{% endif %}
+								{% if moisprecedent == 4 %}
+									{% set moisprecedent = 'Avril' %}
+								{% endif %}
+								{% if moisprecedent == 5 %}
+									{% set moisprecedent = 'Mai' %}
+								{% endif %}
+								{% if moisprecedent == 6 %}
+									{% set moisprecedent = 'Juin' %}
+								{% endif %}
+								{% if moisprecedent == 7 %}
+									{% set moisprecedent = 'Juillet' %}
+								{% endif %}
+								{% if moisprecedent == 8 %}
+									{% set moisprecedent = 'Août' %}
+								{% endif %}
+								{% if moisprecedent == 9 %}
+									{% set moisprecedent = 'Septembre' %}
+								{% endif %}
+								{% if moisprecedent == 10 %}
+									{% set moisprecedent = 'Octobre' %}
+								{% endif %}
+								{% if moisprecedent == 11 %}
+									{% set moisprecedent = 'Novembre' %}
+								{% endif %}
+								{% if moisprecedent == 12 %}
+									{% set moisprecedent = 'Décembre' %}
+								{% endif %}
+
+
+
+		<a type="button" class="btn btn-warning pull-left" href="{{ path('bacloocrm_facturation', {'vue' : 'achats'}) }}">Génération des factures d'achats à prévoir</span></a>
+		{% if vue == 'locations' %}
+			<a type="button" class="btn btn-primary pull-right" style="margin-left:10px" href="{{ path('bacloocrm_listerelance') }}">
+			Liste relance factures échues</a>
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'afacturer', 'user': 'VT'}) }}">
+			Exporter le journal des ventes du mois dernier à aujourd'hui</a>
+		{% else %}
+{#			<a type="button" class="btn btn-info pull-left" style="margin-left:10px"  href="{{ path('bacloocrm_comptadefrattrapage') }}">Hard facturation définitive</span></a>#}
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'afacturer', 'user': 'ACH'}) }}">
+			Exporter le journal des achats du mois dernier à aujourd'hui</a>
+		{% endif %}
+
+		<br><br><br>
+		<div class="panel panel-default">
+{# **{{ client }}**{{ mode }}	#}
+
+<div class="panel-body">
+<form class="form-horizontal" action="{{ path('bacloocrm_compta', {'page': page, 'mode':'search', 'vue':vue }) }}" method="post" {{form_enctype(form2) }}>
+				<table class="col-md-12">
+					<tr>
+						{# <td>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">
+										<span class="input-group-addon">Du</span>
+										{{ form_widget(form2.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">
+										<span class="input-group-addon">Au</span>
+										{{ form_widget(form2.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td> #}
+						<td class="col-md-3">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">
+										<span class="input-group-addon">Fournisseur</span>
+										{{ form_widget(form2.client, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon">N°Facture fournisseur</span>
+										{{ form_widget(form2.numfacture, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon">Total ttc</span>
+										{{ form_widget(form2.totalttc, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon">Total ttc groupe</span>
+										{{ form_widget(form2.ttcgroupe, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon">Mode de paiement</span>
+										{{ form_widget(form2.modepaiement, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								  </div>
+							  </div>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<center>
+					<br><br><br><br><br><br>
+					<input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />
+					<a type="button" class="btn btn-default" href="{{ path('bacloocrm_compta', {'vue' : 'achats'}) }}">Réinitialiser</a>
+					<br><br>
+				</center>
+{{ form_row(form2._token) }}
+</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="huge"><center>Règlements fournisseur à prévoir sur le mois.<br>Y compris les retards</center></div>
+						<hr>
+						<h2><center><b><span class="text-danger">{{ ttesfacturesimpayees|number_format(2, ',', ' ') }} € HT</span></b></center></h2>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="huge"><center>Total factures fournisseur arrivant à échéance<br> sur le mois</center></div>
+						<hr>
+						<h2><center><b><span class="text-success">{{ ttesfacturesimpayeesnonechues|number_format(2, ',', ' ') }} € HT</span></b></center></h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="huge"><center>Total factures fournisseurs<br>échues à régler</center></div>
+						<hr>
+						<h2><center><b><span class="text-warning">{{ ttesfacturesechues|number_format(2, ',', ' ') }} € HT</span></b></center></h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a type="button" class="btn btn-primary pull-left" href="{{ path('bacloocrm_ajouterlocationfrsspeed') }}">Saisie rapide de charges</span></a>
+		<a type="button" class="btn btn-success pull-right" href="{{ path('bacloocrm_extraitcomptem1') }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> Factures fournisseurs échues le mois dernier</span>
+		</a>
+		<br><br>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<center>
+		{% if mode == 'all' %}
+			{% if vue == 'locations' %}
+				<h3>Liste des factures en attente de paiement</h3>
+				<span class="pull-right"><b>Prochain code groupe libre : <span style="color:red">{% if nextcodegroupe is empty %}1{% else %}{{ nextcodegroupe }}{% endif %}</span></b></span>
+			{% else %}
+				<h3>Liste des achats en attente de paiement au fournisseur</h3>
+				<span class="pull-right"><b>Prochain code groupe libre : <span style="color:red">{% if nextcodegroupe is empty %}1{% else %}{{ nextcodegroupe }}{% endif %}</span></b></span>
+			{% endif %}
+		{% else %}
+			<h3>Résultat de votre recherche</h3>
+				<span class="pull-right"><b>Prochain code groupe libre : <span style="color:red">{% if nextcodegroupe is empty %}1{% else %}{{ nextcodegroupe }}{% endif %}</span></b></span>
+		{% endif %}
+		</center>
+					<table id="bacloo3" class="table table-bordered">
+						<thead>
+							{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+								<th>
+									<i class="fa fa-lock"></i>2
+								</th>
+{#								<th>#}
+{#									<i class="fa fa-lock"></i>2#}
+{#								</th>#}
+								<th>
+									<i class="fa fa-lock"></i>1
+								</th>
+							{% endif %}
+							<th>
+								<i class="fa fa-pencil"></i>
+							</th>
+							{#
+							<th>
+								<i class="fa fa-print"></i>
+							</th>
+							#}
+							<th>
+								pdf
+							</th>
+							{% if user == 'jmr' %}
+								<th>
+									<span style="color:red"><i class="fa fa-trash-o danger"></i></span>
+								</th>
+							{% endif %}
+							<th>
+								N°bdc
+							</th>
+							{% if vue == 'achats' %}
+								<th width="200">
+									N°facture Frs
+								</th>
+{#								<th width="60">#}
+{#									Fréquence paiement#}
+{#								</th>#}
+							{% else %}
+								<th>
+									Contrat
+								</th>
+							{% endif %}
+							<th>
+								{% if vue == 'locations'or (vue == 'facture' and mode == 'search') %}Client{% else %}Fournisseur{% endif %}
+							</th>
+							{% if vue == 'locations' %}
+								<th>
+									Chantier
+								</th>
+							{% endif %}
+							<th>
+								HT
+							</th>
+							<th>
+								TTC
+							</th>
+							<th>
+								Avoir TTC
+							</th>
+							{% if vue == 'achats' %}
+								<th>
+									Acompte
+								</th>
+							{% endif %}
+							<th>
+								Créé le
+							</th>
+							<th>
+								Echéance
+							</th>
+							<th>
+								Type
+							</th>
+							<th>
+								Reglé ?
+							</th>
+							<th>
+								Montant
+							</th>
+							<th>
+								Date paiement
+							</th>
+							<th>
+								Mode paiement
+							</th>
+							<th>
+								Déjà réglé
+							</th>
+{#							<th>#}
+{#								Encaissé ?#}
+{#							</th>#}
+							<th>
+								<center>N° groupe</center>
+							</th>
+							<th>
+								<center><i class="fa fa-save"></i></center>
+							</th>
+							<th>
+								<center><i class="fa fa-bolt"></i></center>
+							</th>
+							<th>
+								Commentaire
+							</th>
+						{% if vue == 'locations' %}
+							<th>
+								Envoi 1
+							</th>
+							<th>
+								Relance 1
+							</th>
+							<th>
+								Relance 2
+							</th>
+						{% endif %}
+							{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+								<th>
+									<i class="fa fa-trash-o"></i>
+								</th>
+							{% endif %}
+						</thead>
+						{% for facture in factures %}
+							{% if facture.totalttc is null or facture.totalttc is empty %}{% set totalttc = 0 %}{% else %}{% set totalttc = facture.totalttc %}{% endif %}
+							{{ render(controller("BaclooCrmBundle:Crm:facturestableau",{'factureid': facture.id, 'facture': facture, 'page': page, 'mode': mode, 'numfacture': facture.numfacture, 'modepaiement': facture.modepaiement, 'totalttc': totalttc, 'client': facture.client, 'vue':vue, 'style': style})) }}
+						{% endfor %}
+					</table>
+					<br>
+				</div>
+			</div>
+		</div>
+
+			<center>
+				{% if nombrePage > 0 %}
+					<ul class="pagination">
+						{% if page > 1 %}
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': 1, 'mode': mode, 'date': date, 'vue': 'achats'}) }}">
+									<<
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': -1, 'mode': mode, 'date': date, 'vue': 'achats'}) }}">
+									<
+								</a>
+							</li>
+						{% endif %}
+
+						{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+						{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+							<li {% if p == page %}class="active"{% endif %}>
+								<a href="{{ path('bacloocrm_compta', {'page': p, 'mode': mode, 'date': date, 'vue': 'achats'}) }}">
+									{{ p }}
+								</a>
+							</li>
+						{% endfor %}
+
+						{% if page < nombrePage %}
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': page+1, 'mode': mode, 'date': date, 'vue': 'achats'}) }}">
+									>
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_compta', {'page': nombrePage, 'mode': mode, 'date': date, 'vue': 'achats'}) }}">
+									>>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+			</center>
+
+	</div>
+</div>
+{#
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>
+#}
+{% endblock %}

@@ -1,0 +1,10 @@
+Cher {{ dest_prenom }},
+
+Bacloo vous a trouvé {{ diff }} {% if diff > 1 %} nouveaux prospects {% else %} nouveau prospect {% endif %} en relation avec votre activité.
+
+{% if besoin != 'nok' %}Son besoin correspond à votre mot clé : {{ besoin }}{% endif %}.
+{% if activite != 'nok' %}Son activité correspond à votre activité visée : {{ activite }}{% endif %}.
+
+Rendez-vous sur https://www.bacloo.fr pour en savoir plus. 
+
+Votre Bacloo

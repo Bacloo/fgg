@@ -1,0 +1,289 @@
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+						
+	<ul class="nav nav-pills nav-stacked">
+{% if resultats is defined %}
+	{% if resultats is empty %}
+	
+		{% if mesfichestot is defined %}
+			{% if mesfiches is not empty %}
+				<br><br>
+			{% if view == 'client' %}				
+				<h4><b>1Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}					
+				<h4><b>Mes fournisseurs</b></h4>			
+			{% elseif view == 'corbeille' %}					
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% endif %}		
+					<table class="table table-striped">
+					<thead class="thead-inverse">
+						<tr>
+							<th >
+								Raison sociale
+							</th>
+							<th >
+								Cp
+							</th>
+							<th >
+								Ville
+							</th>
+							<th >
+								Tel
+							</th>
+							<th >
+								Dernier commentaire
+							</th>
+							{% if modules.module1activation == 1 %}
+								<th>									
+								</th>			
+								<th>								
+								</th>
+							{% endif %}
+						</tr>
+					</thead>
+					<tbody>	
+						{% for resultat in mesfiches %}
+							<tr>
+								<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+										{{ resultat.raisonSociale| truncate(30) }}
+								</td>
+								<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+										{{ resultat.cp }}
+								</td>
+								<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+										{{ resultat.ville }}
+								</td>
+								<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+										{{ resultat.telephone }}
+								</td>
+									{{ render(controller("BaclooCrmBundle:Crm:showcomm", {'id': resultat.id, 'module1act': modules.module1activation})) }}
+							</tr>					
+						{% endfor %}
+					</table>
+
+
+
+				{% endif %}
+		{% else %}
+		<center>
+			{% if mesfiches is not defined %}
+				<br><br>
+					{% if view == 'client' %}			
+						<h4><b>Mes Clients2 ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'prospect' %}
+						<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'shared' %}				
+						<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'fournisseur' %}					
+						<h4><b>Mes fournisseurs</b></h4>			
+					{% elseif view == 'corbeille' %}					
+						<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+					{% endif %}
+				Aucun résultat trouvé.<br>
+				<a class="btn btn-success" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter une fiche</a> ou 
+						<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>				
+			{% elseif mesfiches == 'nok' %}
+				<br><br>
+					{% if view == 'client' %}					
+						<h4><b>Mes Clients3 ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'prospect' %}
+						<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'shared' %}					
+						<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+					{% elseif view == 'fournisseur' %}				
+						<h4><b>Mes fournisseurs</b></h4>			
+					{% elseif view == 'corbeille' %}					
+						<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+					{% endif %}
+				Aucun résultat trouvé.<br>
+				<a class="btn btn-success" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter une fiche</a> ou 
+						<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+
+			{% endif %}
+		{% endif %}
+		</center>
+
+	{% elseif resultats != 'nok' %}
+
+				<br><br>
+			<center>
+			{% if view == 'client' %}					
+				<h4><b>4Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}					
+				<h4><b>Mes fournisseurs</b></h4>					
+			{% elseif view == 'corbeille' %}					
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'search' %}				
+			<h4><b>Résultat de la recherche</b></h4>
+			{% endif %}		
+			</center>
+				<table class="table table-striped">
+				<thead class="thead-inverse">
+					<tr>
+							<th >
+								Raison sociale
+							</th>
+							<th >
+								Cp
+							</th>
+							<th >
+								Ville
+							</th>
+							<th >
+								Tel
+							</th>
+							<th >
+								Dernier commentaire
+							</th>
+						{% if modules.module1activation == 1 %}
+							<th>									
+							</th>							
+							<th>								
+							</th>
+						{% endif %}
+					</tr>
+				</thead>
+				<tbody>		
+		{% for resultat in resultats %}
+						<tr>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.raisonSociale| truncate(30) }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.cp }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.ville }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.telephone }}
+							</td>
+									{{ render(controller("BaclooCrmBundle:Crm:showcomm", {'id': resultat.id, 'module1act': modules.module1activation})) }}									
+						</tr>					
+		{% endfor %}
+		</table><p></p>
+
+	{% endif %}		
+{% elseif id is not defined %}
+
+		{% if mesfichestot is defined %}
+		<center>	
+				<br><br>initval {{ init }} {{ view }} {{ pid }}
+			{% if view == 'client' %}					
+				<h4><b>5Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}					
+				<h4><b>Mes fournisseurs</b></h4>			
+			{% elseif view == 'corbeille' %}					
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% endif %}
+		</center>
+			{% if mesfiches is not empty %}
+					<table class="table table-striped">
+					<thead class="thead-inverse">
+						<tr>
+							<th >
+								Raison sociale
+							</th>
+							<th >
+								Cp
+							</th>
+							<th >
+								Ville
+							</th>
+							<th >
+								Tel
+							</th>
+							<th >
+								Dernier commentaire
+							</th>
+							{% if modules.module1activation == 1 %}
+								<th>									
+								</th>							
+								<th>								
+								</th>
+							{% endif %}
+						</tr>
+					</thead>
+					<tbody>		
+					{% for resultat in mesfiches %}
+						<tr>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.raisonSociale| truncate(30) }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.cp }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.ville }}
+							</td>
+							<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+									{{ resultat.telephone }}
+							</td>
+									{{ render(controller("BaclooCrmBundle:Crm:showcomm", {'id': resultat.id, 'module1act': modules.module1activation})) }}								
+						</tr>					
+					{% endfor %}
+					</table>
+
+			{% else %}		
+				{% if view == 'client' %}
+					<center>Vous n'avez pas de fiche client dans Bacloo.<br>
+						<a class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche client</a> ou 
+						<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+					</center>
+				{% elseif view == 'prospect' %}
+					<center>Vous n'avez pas de fiche prospect dans Bacloo.<br>
+						<a class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche prospect</a> ou 
+						<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+					</center>
+				{% elseif view == 'shared' %}
+				<center>Aucun utilisateur ne partage des fiches avec vous.<br></center>
+				{% elseif view == 'fournisseur' %}
+				<center>Aucun fournisseur enregistré<br></center>
+				{% elseif view == 'corbeille' %}
+				<center>Vous n'avez pas de fiche dans la corbeille.<br></center>
+				{% endif %}
+			{% endif %}
+		{% else %}
+			<center>Vous n'avez pas de fiche dans Bacloo.<br>
+			<a class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche</a> ou 
+			<a class="btn btn-warning" href="{{ path('bacloocrm_searchbacloo') }}"><span class="glyphicon glyphicon-search" aria-hidden="true" aria-hidden="true"></span> Acheter des prospects</a>
+			</center>
+		{% endif %}			
+		
+	</fieldset>				
+	{% else %}
+	
+
+			<center>
+				<br><br>
+			{% if view == 'client' %}					
+				<h4><b>6Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}					
+				<h4><b>Mes fournisseurs</b></h4>			
+			{% elseif view == 'corbeille' %}				
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% endif %}	
+			<br><br>			
+			Aucun résultat trouvé.<br>
+			</center>
+{% endif %}		
+	</ul>
+
+		</div>
+	</div>

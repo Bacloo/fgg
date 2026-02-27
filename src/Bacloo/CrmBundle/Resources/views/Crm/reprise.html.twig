@@ -1,0 +1,90 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_dispatch', {'code':code, 'codecont':codecont} ) }}" method="post" {{form_enctype(form) }}>
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Choissisez une machine pour : {{ form.vars.value.typemachine }}
+			</h4>
+		</div>
+		<div class="modal-body">
+			{# Partie Locations #}	
+				<div class="hidden">
+					{{ form_widget(form.codeclient)  }}
+					{{ form_widget(form.entid) }}
+					{{ form_widget(form.entreprise) }}
+					{{ form_widget(form.machineid) }}
+					{{ form_widget(form.codemachine) }}
+					{{ form_widget(form.typemachine) }}
+					{{ form_widget(form.typemachineinit) }}
+					{{ form_widget(form.loyerp1) }}
+					{{ form_widget(form.loyerp2) }}
+					{{ form_widget(form.loyerp3) }}
+					{{ form_widget(form.loyerp4) }}
+				</div>
+				<div class="form-group">
+				  <div class="col-md-12">
+				  {% if erreur is defined and erreur == 1 %}
+					<span style="color:red">La machine sélectionnée n'est pas disponible.</span>
+				  {% elseif erreur is defined and erreur == 2 %}
+					<span style="color:red">La machine sélectionnée n'existe pas.</span>
+				  {% endif %}
+					<div class="input-group">
+						<span class="input-group-addon"><b></b>Code machine</span>
+						{{ form_widget(form.codemachineinterne, { 'codemachineinterne' : 'codemachineinterne_1', 'attr' : { 'class' : 'form-control codemachineinterne' }} )  }}<span id="match2"></span>
+				    </div>
+				  </div>
+				</div>						
+		</div>
+		<div class="modal-footer">
+			<center>
+				<br>
+				<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_adispatcher') }}"><span>Fermer</span></a>
+				{{ form_row(form._token) }}
+			</center>
+		</div>			
+	</div>		
+</div>
+</form>	
+<script>
+//Autocomplete codemachineinterne
+	$(document).ready(function(){
+	 $(document).on('keydown', '.codemachineinterne', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_updatecodemachineinterne') }}",
+		 type: 'post',
+		 minLength: 3,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+
+		return false;
+	   }
+	  });
+	 });
+} );
+//Fin autocomplete codemachineinterne
+</script>		
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<div class="row clearfix">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Profil de l'utilisateur {{ userdata.nom }}
+							</h4>
+						</div>
+						<div class="modal-body">
+						 <div class="well profile">
+							<div class="col-sm-12">
+								<div class="col-xs-12 col-sm-8">
+									<h2>{{ userdata.prenom }} {{ userdata.nom }}</h2>
+									<p><strong>Activité : </strong> {{ userdata.activite }} </p>
+									<p><strong>Ses besoins visés : </strong> {{ userdata.descRech }} </p>
+									<p><strong>Les activités qu'il vise : </strong> {{ userdata.actvise }} </p>
+									<p><strong>Ses mots clés : </strong>
+										<span class="tags">{{ userdata.tags }}</span>
+									</p>
+									<p><strong>Note :</strong>
+									{% if noteok == 'na' %}
+										Aucune évaluation pour l'instant<br>
+									{% else %}
+									<span class="ratings">
+										{% if noteok == 1 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+										{% elseif noteok == 2 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 3 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 4 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 5 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>											
+										{% endif %}	
+									</span>
+									{% endif %}	
+								</div> 
+				{# 				
+								<div class="col-xs-12 col-sm-4 text-center">
+									<figure>
+										<img src="http://www.localcrimenews.com/wp-content/uploads/2013/07/default-user-icon-profile.png" alt="" class="img-circle img-responsive">
+										<figcaption class="ratings">
+
+										</figcaption>
+									</figure>
+								</div>
+				 #}				
+							</div>            
+							<div class="col-xs-12 divider text-center">
+								<div class="col-xs-12 col-sm-4 emphasis">
+									<h2><strong> {{ nbeval }} </strong></h2>                    
+									<p><small>{% if nbfiche > '1' %}Evaluations{% else %}Evaluation{% endif %}</small></p>
+								</div>
+								<div class="col-xs-12 col-sm-4 emphasis">
+									<h2><strong>{{ nbfiche }}</strong></h2>                    
+									<p><small>{% if nbfiche > '1' %}Fiches{% else %}Fiche{% endif %}</small></p>
+								</div>
+								<div class="col-xs-12 col-sm-4 emphasis">
+									<h2><strong>{{ nbtransac }}</strong></h2>                    
+									<p><small>{% if nbfiche > '1' %}Ventes{% else %}Vente{% endif %}</small></p>
+								</div>
+							</div>
+						 </div>                 
+					
+							<br><br><br><br><br><br><br>
+							<br><br><br><br><br><br><br>
+
+
+						<div class="modal-footer left">
+						{% if noteco == 'na' %}
+							<center>Pas de commentaire enregistré.</center>
+						{% else %}
+							{% for com in noteco %}
+								{{ com.acheteur }}
+									<span class="ratings">
+										{% if noteok == 1 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+										{% elseif noteok == 2 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 3 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 4 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star-o"></span>						
+										{% elseif noteok == 5 %}
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>
+											<span class="fa fa-star"></span>											
+										{% endif %}	
+									</span>							
+								<br>"{{ com.commentaire }}"<br><hr>
+							{% endfor %}
+						{% endif %}
+						<br><a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>							
+						</div>
+					</div>					
+				</div>
+
+
+</div>		
+{% endblock %}

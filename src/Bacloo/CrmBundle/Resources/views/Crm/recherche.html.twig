@@ -1,0 +1,96 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Planning des locations</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+ <table border='1' style='border-collapse: collapse;'>
+  <thead>
+   <tr>
+	<th>Code Machine</th>
+	<th>Type machine</th>
+	<th>Type Loyerp1</th>
+	<th>Type Loyerp2</th>
+	<th>Type Loyerp3</th>
+	<th>Type Loyerp4</th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr class='tr_input'>
+	<td><input type='text' class='codemachine' id='codemachine' placeholder='Enter raisonSociale'></td>
+	<td><input type='text' class='typemachine' id='typemachine' ></td>
+	<td><input type='text' class='loyerp1' id='loyerp1' ></td>
+	<td><input type='text' class='loyerp2' id='loyerp2' ></td>
+	<td><input type='text' class='loyerp3' id='loyerp3' ></td>
+	<td><input type='text' class='loyerp4' id='loyerp4' ></td>
+   </tr>
+  </tbody>
+ </table>
+ <span id="match"></span>
+ <br>
+ <input type='button' value='Add more' id='addmore'>
+</div>	
+
+<script>
+	$(document).ready(function(){
+	 $(document).on('keydown', '.codemachine', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+		console.log(index);
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requete1grille') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		$(typemachine).val(ui.item.value); // display the selected text
+		$(loyerp1).val(ui.item.id); // display the selected text
+		$(loyerp2).val(ui.item.desc); // display the selected text
+		$(loyerp3).val(ui.item.icon); // display the selected text
+		$(loyerp4).val(ui.item.p4); // display the selected text
+
+
+		return false;
+	   }
+	  });
+	 });
+
+	 // Add more
+	 $('#addmore').click(function(){
+
+	  // Get last id 
+	  var lastname_id = $('.tr_input input[type=text]:nth-child(1)').last().attr('id');
+	  var split_id = lastname_id.split('_');
+
+	  // New index
+	  var index = Number(split_id[1]) + 1;
+
+	  // Create row with input elements
+	  var html = "<tr class='tr_input'><td><input type='text' class='raisonSociale' id='raisonSociale_"+index+"' placeholder='Enter raisonSociale'></td><td><input type='text' class='cp' id='cp_"+index+"' ></td></tr>";
+
+	  // Append data
+	  $('tbody').append(html);	 
+	 });
+	});
+</script>
+{% endblock %}

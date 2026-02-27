@@ -1,0 +1,28 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	<ul class="nav nav-tabs">
+	{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' or userdetails.username == 'jmr' %}
+		<li class="active"><a href="#tab1default" data-toggle="tab"><h3>Finances</h3></a></li>
+		<li><a href="#tab2default" data-toggle="tab"><h3>Exploitation</h3></a></li>
+	{% else %}
+		<li class="active"><a href="#tab1default" data-toggle="tab"><h3>Exploitation</h3></a></li>
+	{% endif %}
+	</ul>
+	<div class="panel-body">
+		<div class="tab-content">
+			{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' or userdetails.username == 'jmr' %}		
+					<div class="tab-pane fade in active" id="tab1default">
+						{{ render(controller("BaclooCrmBundle:Crm:statfi", {'dStart':dstart, 'dEnd':dend})) }}
+					</div>
+					<div class="tab-pane fade" id="tab2default">
+						{{ render(controller("BaclooCrmBundle:Crm:statcom")) }}
+					</div>
+			{% else %}
+					<div class="tab-pane fade in active" id="tab1default">
+						{{ render(controller("BaclooCrmBundle:Crm:statcom")) }}
+					</div>
+			{% endif %}
+		</div>
+	<div>
+{% endblock %}

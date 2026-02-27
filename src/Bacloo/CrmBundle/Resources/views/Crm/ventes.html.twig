@@ -1,0 +1,106 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Mes Ventes de Prospects</h3>
+					</h3>
+				</div>			
+				<div class="panel-body">
+					{# Partie Prospot #}
+							<div class="col-md-12 column">	
+										{# Partie transaction #}
+				{% if presenc_transac == 'nok' %}
+					<center>Pas de vente enregistrée pour le moment.</center>
+				{% else %}
+					<form class="form-horizontal" action="{{ path('bacloocrm_showachats') }}" method="post" {{form_enctype(form) }}>
+						<fieldset>
+						<div class="row clearfix">
+
+								{% macro transactionCollectionItem(formData2, vendeur) %}
+									{% if formData2.vendeur.vars.value == vendeur %}		
+									<tr class="dibacloo4">
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.date) }}</div>
+													{{ formData2.date.vars.value }}
+												  </div>
+												</div>
+											</td>
+											<td>
+											<div class="form-group">
+												  <div class="col-md-12">
+												  <div class="hidden">{{ form_widget(formData2.vendeur) }}</div>
+												  <div class="hidden">{{ form_widget(formData2.acheteur) }}</div>
+													<a href="{{ path('bacloocrm_publicprofile', {'user': formData2.acheteur.vars.value ?:0}) }}">{{ formData2.acheteur.vars.value }}</a>
+												  </div>
+												</div>
+											</td>
+											<td>
+											<div class="form-group">
+												  <div class="col-md-12">
+												  <div class="hidden">{{ form_widget(formData2.raisonsociale) }}</div>
+													{{ formData2.raisonsociale.vars.value }}
+												  </div>
+												</div>
+											</td>
+											<td>
+											<div class="form-group">
+												  <div class="col-md-12">
+												  <div class="hidden">{{ form_widget(formData2.typetransac) }}</div>
+													{{ formData2.typetransac.vars.value }}
+												  </div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+												  <div class="hidden">{{ form_widget(formData2.prix) }}</div>
+													{{ formData2.prix.vars.value }}
+												  </div>
+												</div>							
+											</td>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													<div class="hidden">{{ form_widget(formData2.note) }}</div>
+													{{ formData2.note.vars.value }}/5
+												  </div>
+												</div>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													<div class="hidden">{{ form_widget(formData2.commentaire) }}</div>
+													{{ formData2.commentaire.vars.value }}
+												  </div>
+												</div>
+												<div class="hidden">{{ form_widget(formData2.ficheid) }}</div>
+												<div class="hidden">{{ form_widget(formData2.nficheid) }}</div>
+											</td>
+										</tr>
+									{% endif %}
+								{% endmacro %}
+
+								<div id="bacloo_crmbundle_transac_transaction" data-prototype="{{ _self.transactionCollectionItem(form.transaction.vars.prototype)|e }}">
+									<table id="bacloo2" class="table table-bordered"><thead><tr id="dibac"><th class="col-md-2">Date</th><th>Acheteur</th><th class="col-md-2">Raison Sociale</th><th class="col-md-2">Type de vente</th><th class="col-md-1">Prix</th><th>Note</th><th>Commentaires</th></tr></thead>
+										{% for prospo in form.transaction %}
+													{{ _self.transactionCollectionItem(prospo, vendeur) }}
+										{% endfor %}
+									</table>		
+								</div>
+
+							{% include "BaclooCrmBundle:Crm:ajout_transaction.html.twig" %}
+							
+						</div>
+					{{ form_row(form._token) }}		
+						</fieldset>
+					</form>
+				{% endif %}
+			{# Fin Partie transaction #}
+						
+							</div>
+
+				</div>
+			</div>
+
+{% endblock %}

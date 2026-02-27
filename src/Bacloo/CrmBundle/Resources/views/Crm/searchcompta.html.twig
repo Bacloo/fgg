@@ -1,0 +1,91 @@
+<form class="form-horizontal" action="{{ path('bacloocrm_compta', {'mode': 'search'})  }}" method="post" {{form_enctype(form) }}>
+		<div class="panel panel-default">
+			<div class="panel-body">		
+				<table class="col-md-12">
+					<tr>
+						<td>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">							
+										<span class="input-group-addon">Du</span>
+										{{ form_widget(form.du, { 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>				
+						</td>
+						<td>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">							
+										<span class="input-group-addon">Au</span>
+										{{ form_widget(form.au, { 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>	
+						</td>
+						<td class="col-md-3">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">							
+										<span class="input-group-addon">Client</span>
+										{{ form_widget(form.client, { 'attr' : { 'class' : 'form-control' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>	
+						</td>
+						<td>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-10">
+									<div class="input-group">							
+										<span class="input-group-addon">Code client</span>
+										{{ form_widget(form.clientid, { 'attr' : { 'class' : 'form-control' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">							
+										<span class="input-group-addon">Paiement</span>
+										{% if mode == 'all' %}
+											{{ form_widget(form.reglement, {'value' : 'ok', 'attr' : { 'class' : 'form-control' } })  }}				
+										{% else %}
+											{{ form_widget(form.reglement, {'attr' : { 'class' : 'form-control' } })  }}				
+										{% endif %}
+									</div>							
+								  </div>
+							  </div>
+							</div>
+						</td>
+						<td class="col-md-2">
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">							
+										<span class="input-group-addon">Document</span>
+										{{ form_widget(form.typedoc, { 'attr' : { 'class' : 'form-control' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<center>
+					<br><br><br><br><br><br>
+					<input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />
+					<br><br>
+				</center>
+			</div>
+		</div>
+</form>		

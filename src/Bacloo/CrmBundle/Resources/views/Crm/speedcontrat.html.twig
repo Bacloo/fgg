@@ -1,0 +1,19 @@
+<div style="padding-top: 12px">
+    <form role="form" action="{{ path('bacloocrm_speedcontrat') }}" method="post" {{form_enctype(form3) }}>
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form_widget(form3.contrat, { 'attr' : { 'placeholder' : 'N° de contrat' } })  }}
+                    </div>
+                </td>
+                <td>
+                    <button type="submit" class="btn-xs btn-success">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    {{ form_row(form3._token) }}
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

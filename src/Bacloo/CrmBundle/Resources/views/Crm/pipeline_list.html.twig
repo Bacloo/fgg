@@ -1,0 +1,124 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Mon Pipeline</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="row clearfix">
+				<div class="container">
+					<div class="col-md-12 column">
+						<div class="page-header">
+							<h3>
+								<small>Configurez ici les différentes étapes de votre pipeline des ventes.
+								</small>
+							</h3> 
+								{% if module2activation == 0 %}<span style = "color: red">Votre pipeline est actuellement limité à 3 étapes. Pour enlever cette limite vous devez <a style="color:black" href="{{ path('bacloocrm_modules') }}">activer le module "Pipeline".</a></span>
+								{% endif %}
+							
+						</div>					
+						{# Partie Pipeline #}
+						{% if grant == 'ok' %}
+							<form class="form-horizontal" action="{{ path('bacloocrm_showpipeline') }}" method="post" {{form_enctype(form) }}>
+								<fieldset>
+								<div class="row clearfix">
+									<br><br><div class="hidden">{{ form_widget(form.userid, { 'value' : userid }) }}</div>
+										{% macro pipelineCollectionItem(formData2, userid, username) %}
+												<tr class="dibacloo4">
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.userid, { 'value' : userid }) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.username, { 'value' : username }) }}</div>
+															{{ form_widget(formData2.pipename) }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														{{ form_widget(pipeline.pipeorder, { 'attr' : { 'class' : 'form-control' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.perdu, { 'attr' : { 'class' : 'form-control' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.exclusion, { 'attr' : { 'class' : 'form-control' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.realise, { 'attr' : { 'class' : 'form-control' }} ) }}
+													</td>
+												</tr>
+										{% endmacro %}
+
+										<div id="bacloo_crmbundle_userpipe_pipeline" data-prototype="{{ _self.pipelineCollectionItem(form.pipeline.vars.prototype, userid, username)|e }}">
+																					<table id="bacloo2" class="table table-bordered"><thead><tr id="dibac"><th class="col-md-9">Etapes de votre Pipeline</th><th  class="col-md-9">Ordre</th><th><center>Perdu</center></th><th><center>Hors CA</center></th><th>Realisé</th><th></th></tr></thead>	
+												{% for prospo in form.pipeline %}
+								
+															{{ _self.pipelineCollectionItem(prospo, userid, username) }}
+
+												{% endfor %}
+											</table>
+										</div>
+
+									{% include "BaclooCrmBundle:Crm:ajout_pipeline.html.twig" %}
+									<input type="submit" class="btn btn-primary" value="Enregistrer" />
+								</div>
+							{{ form_row(form._token) }}		
+								</fieldset>
+							</form>
+						{% else %}
+							<form class="form-horizontal" action="{{ path('bacloocrm_showpipeline') }}" method="post" {{form_enctype(form) }}>
+								<fieldset>
+								<div class="row clearfix">
+									<br><br><div class="hidden">{{ form_widget(form.userid, { 'value' : userid }) }}</div>	
+									<div id="bacloo_crmbundle_userpipe_pipeline" data-prototype="{{ _self.pipelineCollectionItem(form.pipeline.vars.prototype, userid, username)|e }}">
+										<table id="bacloo2" class="table table-bordered"><thead><tr id="dibac"><th class="col-md-9">Etapes de votre Pipeline</th><th  class="col-md-9">Ordre</th><th><center>Perdu</center></th><th><center>Exclu du CA</center></th><th>Realisé</th><th></th></tr></thead>										
+									</table>
+									</div>									
+										{% macro pipelineCollectionItem(pipeline, userid, username) %}
+												<tr class="dibacloo4">
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(pipeline.userid, { 'value' : userid }) }}</div>
+														  <div class="hidden">{{ form_widget(pipeline.username, { 'value' : username }) }}</div>
+															{{ form_widget(pipeline.pipename, { 'attr' : { 'class' : 'form-control' }} ) }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														{{ form_widget(pipeline.pipeorder, { 'attr' : { 'class' : 'form-control' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.perdu, { 'attr' : { 'class' : 'form-control no-border' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.exclusion, { 'attr' : { 'class' : 'form-control no-border' }} ) }}
+													</td>
+													<td>
+														{{ form_widget(pipeline.realise, { 'attr' : { 'class' : 'form-control no-border' }} ) }}
+													</td>
+												</tr>
+										{% endmacro %}
+
+									{% include "BaclooCrmBundle:Crm:ajout_pipeline.html.twig" %}
+									<input type="submit" class="btn btn-primary" value="Enregistrer" />
+								</div>
+									{{ form_row(form._token) }}		
+								</fieldset>
+							</form>									
+						{% endif %}
+						{# Fin Partie Pipeline #}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}		

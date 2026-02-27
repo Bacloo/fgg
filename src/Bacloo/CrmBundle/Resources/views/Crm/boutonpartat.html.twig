@@ -1,0 +1,6 @@
+{% if partat > 0 %}
+	<div style="padding-top:13px; padding-left:20px;">
+		<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_showpartlist', {'modepart' : 'partenaires'}) }}">
+		<span>{{ partat }} {% if partat > 1 %}Partenaires à valider{% else %}Partenaire à valider{% endif %}</span></a>
+	</div>
+{% endif %}

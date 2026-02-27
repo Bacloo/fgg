@@ -1,0 +1,127 @@
+<h3>Liste des articles de votre réseau</h3>
+	<div class="row clearfix">
+		<ul class="timeline">	
+		{% set count = 0 %}
+			{% for arta in articles %}
+			{% set count = count + 1 %}
+				{% if(count%2 == 0) %}
+					<li class="timeline-inverted">
+					  <div class="timeline-badge 
+					  {% if(arta.categorie == 'fa fa-lightbulb-o') %}
+						info
+					  {% elseif(arta.categorie == 'fa fa-info') %}
+						success
+					  {% elseif(arta.categorie == 'fa fa-question') %}
+						danger
+					  {% elseif(arta.categorie == 'fa fa-check') %}
+						warning
+					  {% endif %}
+					  "><i class="{{ arta.categorie }}"></i></div>
+					  <div class="timeline-panel">
+						<div class="timeline-heading">
+						{% if arta.share == '1' %}<p><a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}">{{ arta.transfereur }}</a> a partagé  la publication de <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}">{{ arta.auteur }}</a></p>{% endif %}
+						{% if arta.replytexte is not empty %}
+							<h3 class="timeline-title">Rep : {{ arta.titre }}</h3>
+							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ arta.date|date('d/m/Y') }} | Auteur : <a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}">{{ arta.transfereur }}</a></small></p>
+							</div>
+							<div class="timeline-body">
+							  <p>{{ arta.replytexte }}</p>
+							</div>						
+						{% else %}
+							<h3 class="timeline-title">{{ arta.titre }}</h3>
+							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ arta.date|date('d/m/Y') }} | Auteur : <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}">{{ arta.auteur }}</a></small></p>
+							</div>
+							<div class="timeline-body">
+							  <p>{{ arta.texte }}</p>
+							</div>
+						{% endif %}
+						<div class="pull-right">
+						{% if user == 'dupont' %}
+							  <i class="fa fa-reply" aria-hidden="true"></i>
+							  <i class="fa fa-retweet" aria-hidden="true"></i>
+							  <i class="fa fa-comment-o" aria-hidden="true"></i>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}"  title="Profil"><i class="fa fa-user" aria-hidden="true"></i></a>						
+						{% else %}
+							{% if user == arta.auteur and arta.transfereur is empty %}
+							  <a href="{{ path('bacloocrm_editarticle', {'id': arta.id ?:0}) }}"  title="Editer"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_removearticle', {'id': arta.id ?:0}) }}"  title="Supprimer"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+							{% elseif user == arta.transfereur %}
+							  <a href="{{ path('bacloocrm_removearticle', {'id': arta.id ?:0}) }}"  title="Supprimer"><i class="fa fa-trash-o" aria-hidden="true"></i></a>							
+							{% elseif arta.transfereur is not empty and user != arta.transfereur %}
+							  <a href="{{ path('bacloocrm_replyarticle', {'id': arta.id ?:0}) }}"  title="Répondre"><i class="fa fa-reply" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sharearticle', {'id': arta.id ?:0}) }}" title="Partager"><i class="fa fa-retweet" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sendmessage', {'vemail': arta.transfereur, 'type': 'favoris', 'rais': '0' }) }}"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}"><i class="fa fa-user" aria-hidden="true"></i></a>							
+							{% else %}
+							  <a href="{{ path('bacloocrm_replyarticle', {'id': arta.id ?:0}) }}" title="Répondre"><i class="fa fa-reply" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sharearticle', {'id': arta.id ?:0}) }}" title="Partager"><i class="fa fa-retweet" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sendmessage', {'vemail': arta.auteur, 'type': 'favoris', 'rais': '0' }) }}" title="Message Privé"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}" title="Profil"><i class="fa fa-user" aria-hidden="true"></i></a>					
+							{% endif %}
+						{% endif %}
+						</div>
+					  </div>
+					</li>
+				{% else %}
+					<li>
+					  <div class="timeline-badge 
+					  {% if(arta.categorie == 'fa fa-lightbulb-o') %}
+						info
+					  {% elseif(arta.categorie == 'fa fa-info') %}
+						success
+					  {% elseif(arta.categorie == 'fa fa-question') %}
+						danger
+					  {% elseif(arta.categorie == 'fa fa-check') %}
+						warning
+					  {% endif %}
+					  "><i class="{{ arta.categorie }}"></i></div>
+					  <div class="timeline-panel">
+						<div class="timeline-heading">
+						{% if arta.share == '1' %}<p><a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}">{{ arta.transfereur }}</a> a partagé la publication de <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}">{{ arta.auteur }}</a></p>{% endif %}
+						{% if arta.replytexte is not empty %}
+							<h3 class="timeline-title">Rep : {{ arta.titre }}</h3>
+							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ arta.date|date('d/m/Y') }} | Auteur : <a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}">{{ arta.transfereur }}</a></small></p>
+							</div>
+							<div class="timeline-body">
+							  <p>{{ arta.replytexte }}</p>
+							</div>						
+						{% else %}
+							<h3 class="timeline-title">{{ arta.titre }}</h3>
+							<p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ arta.date|date('d/m/Y') }} | Auteur : <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}">{{ arta.auteur }}</a></small></p>
+							</div>
+							<div class="timeline-body">
+							  <p>{{ arta.texte }}</p>
+							</div>
+						{% endif %}
+						<div class="pull-right">
+						{% if user == 'dupont' %}
+							  <i class="fa fa-reply" aria-hidden="true"></i>
+							  <i class="fa fa-retweet" aria-hidden="true"></i>
+							  <i class="fa fa-comment-o" aria-hidden="true"></i>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}"  title="Profil"><i class="fa fa-user" aria-hidden="true"></i></a>						
+						{% else %}
+							{% if user == arta.auteur and arta.transfereur is empty %}
+							  <a href="{{ path('bacloocrm_editarticle', {'id': arta.id ?:0}) }}"  title="Editer"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_removearticle', {'id': arta.id ?:0}) }}"  title="Supprimer"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+							{% elseif user == arta.transfereur %}
+							  <a href="{{ path('bacloocrm_removearticle', {'id': arta.id ?:0}) }}"  title="Supprimer"><i class="fa fa-trash-o" aria-hidden="true"></i></a>							
+							{% elseif arta.transfereur is not empty and user != arta.transfereur %}
+							  <a href="{{ path('bacloocrm_replyarticle', {'id': arta.id ?:0}) }}"  title="Répondre"><i class="fa fa-reply" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sharearticle', {'id': arta.id ?:0}) }}" title="Partager"><i class="fa fa-retweet" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sendmessage', {'vemail': arta.transfereur, 'type': 'favoris', 'rais': '0' }) }}"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.transfereur ?:0}) }}"><i class="fa fa-user" aria-hidden="true"></i></a>							
+							{% else %}
+							  <a href="{{ path('bacloocrm_replyarticle', {'id': arta.id ?:0}) }}" title="Répondre"><i class="fa fa-reply" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sharearticle', {'id': arta.id ?:0}) }}" title="Partager"><i class="fa fa-retweet" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_sendmessage', {'vemail': arta.auteur, 'type': 'favoris', 'rais': '0' }) }}" title="Message Privé"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+							  <a href="{{ path('bacloocrm_publicprofile', {'user': arta.auteur ?:0}) }}" title="Profil"><i class="fa fa-user" aria-hidden="true"></i></a>					
+							{% endif %}
+						{% endif %}
+						</div>						
+					  </div>
+					</li>				
+				{% endif %}
+			{% endfor %}
+		</ul>		
+	</div>
+

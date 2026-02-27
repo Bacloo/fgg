@@ -1,0 +1,1331 @@
+<?php
+
+namespace Bacloo\CrmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Locationssl
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bacloo\CrmBundle\Entity\LocationsslRepository")
+ */
+class Locationssl
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    Public $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codeclient", type="string", length=255)
+     */
+    Public $codeclient;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="entid", type="integer", nullable=true)
+     */
+    Public $entid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="entreprise", type="string", length=255)
+     */
+    Public $entreprise;
+	
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="machineid", type="integer", nullable=true)
+     */
+    Public $machineid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codemachine", type="string", length=255)
+     */
+    Public $codemachine;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codemachineinterne", type="string", length=255, nullable=true)
+     */
+    Public $codemachineinterne;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="typemachine", type="string", length=255)
+     */
+    Public $typemachine;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="typemachineinit", type="string", length=255, nullable=true)
+     */
+    Public $typemachineinit;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="loyerp1", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $loyerp1;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="loyerp2", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $loyerp2;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="loyerp3", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $loyerp3;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="loyerp4", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $loyerp4;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="loyermensuel", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $loyermensuel;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="montantloc", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $montantloc;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="litrescarb", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $litrescarb;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="montantcarb", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $montantcarb;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etatloc", type="string", length=255, nullable=true)
+     */
+    Public $etatloc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etatlog", type="string", length=255, nullable=true)
+     */
+    Public $etatlog;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="loueur", type="string", length=255, nullable=true)
+     */
+    Public $loueur;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="loueurid", type="integer", type="integer", nullable=true)
+     */
+    Public $loueurid;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datereprise", type="string", nullable=true)
+     */
+    Public $datereprise;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="daterelancereprise", type="datetime", nullable=true)
+     */
+    Public $daterelancereprise;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="debutloc", type="string", nullable=true)
+     */
+    Public $debutloc;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="finloc", type="string", nullable=true)
+     */
+    Public $finloc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="energie", type="string", length=255, nullable=true)
+     */
+    Public $energie;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contributionverte", type="boolean", length=255, nullable=true)
+     */
+    Public $contributionverte;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="transport", type="boolean", length=255, nullable=true)
+     */
+    Public $transport;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="assurance", type="boolean", length=255, nullable=true)
+     */
+    Public $assurance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="transportaller", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $transportaller;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="transportretour", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    Public $transportretour;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbjloc", type="decimal", precision=12, scale=1, nullable=true)
+     */
+    Public $nbjloc;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbjlocass", type="integer", nullable=true)
+     */
+    Public $nbjlocass;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="jour50", type="integer", nullable=true)
+     */
+    Public $jour50;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="jour100", type="integer", nullable=true)
+     */
+    Public $jour100;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cloture", type="integer", nullable=true, options={"default" : "0"})
+     */
+    private $cloture = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="materielok", type="string", nullable=true)
+     */
+    public $materielok;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="remise", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $remise;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="oklog", type="boolean", length=255, nullable=true)
+     */
+    Public $oklog;
+	
+    /**
+     * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Locata", cascade={"persist"}, orphanRemoval=true)
+     */ 		
+	Public $locata;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * Set codeclient
+     *
+     * @param string $codeclient
+     *
+     * @return Locationssl
+     */
+    public function setCodeclient($codeclient)
+    {
+        $this->codeclient = $codeclient;
+
+        return $this;
+    }
+
+    /**
+     * Get codeclient
+     *
+     * @return string
+     */
+    public function getCodeclient()
+    {
+        return $this->codeclient;
+    }
+
+    /**
+     * Set entid
+     *
+     * @param integer $entid
+     *
+     * @return Locationssl
+     */
+    public function setEntid($entid)
+    {
+        $this->entid = $entid;
+
+        return $this;
+    }
+
+    /**
+     * Get entid
+     *
+     * @return integer
+     */
+    public function getEntid()
+    {
+        return $this->entid;
+    }
+
+    /**
+     * Set entreprise
+     *
+     * @param string $entreprise
+     *
+     * @return Locationssl
+     */
+    public function setEntreprise($entreprise)
+    {
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    /**
+     * Get entreprise
+     *
+     * @return string
+     */
+    public function getEntreprise()
+    {
+        return $this->entreprise;
+    }
+	
+    /**
+     * Set machineid
+     *
+     * @param integer $machineid
+     *
+     * @return Locationssl
+     */
+    public function setMachineid($machineid)
+    {
+        $this->machineid = $machineid;
+
+        return $this;
+    }
+
+    /**
+     * Get machineid
+     *
+     * @return integer
+     */
+    public function getMachineid()
+    {
+        return $this->machineid;
+    }
+
+    /**
+     * Set codemachine
+     *
+     * @param string $codemachine
+     *
+     * @return Locationssl
+     */
+    public function setCodemachine($codemachine)
+    {
+        $this->codemachine = $codemachine;
+
+        return $this;
+    }
+
+    /**
+     * Get codemachine
+     *
+     * @return string
+     */
+    public function getCodemachine()
+    {
+        return $this->codemachine;
+    }
+
+    /**
+     * Set codemachineinterne
+     *
+     * @param string $codemachineinterne
+     *
+     * @return Locationssl
+     */
+    public function setCodemachineinterne($codemachineinterne)
+    {
+        $this->codemachineinterne = $codemachineinterne;
+
+        return $this;
+    }
+
+    /**
+     * Get codemachineinterne
+     *
+     * @return string
+     */
+    public function getCodemachineinterne()
+    {
+        return $this->codemachineinterne;
+    }
+
+    /**
+     * Set typemachine
+     *
+     * @param string $typemachine
+     *
+     * @return Locationssl
+     */
+    public function setTypemachine($typemachine)
+    {
+        $this->typemachine = $typemachine;
+
+        return $this;
+    }
+
+    /**
+     * Get typemachine
+     *
+     * @return string
+     */
+    public function getTypemachine()
+    {
+        return $this->typemachine;
+    }
+
+    /**
+     * Set typemachineinit
+     *
+     * @param string $typemachineinit
+     *
+     * @return Locationssl
+     */
+    public function setTypemachineinit($typemachineinit)
+    {
+        $this->typemachineinit = $typemachineinit;
+
+        return $this;
+    }
+
+    /**
+     * Get typemachineinit
+     *
+     * @return string
+     */
+    public function getTypemachineinit()
+    {
+        return $this->typemachineinit;
+    }
+	
+    /**
+     * Set loyerp1
+     *
+     * @param integer $loyerp1
+     *
+     * @return Locationssl
+     */
+    public function setLoyerp1($loyerp1)
+    {
+        $this->loyerp1 = $loyerp1;
+
+        return $this;
+    }
+
+    /**
+     * Get loyerp1
+     *
+     * @return integer
+     */
+    public function getLoyerp1()
+    {
+        return $this->loyerp1;
+    }
+
+    /**
+     * Set loyerp2
+     *
+     * @param integer $loyerp2
+     *
+     * @return Locationssl
+     */
+    public function setLoyerp2($loyerp2)
+    {
+        $this->loyerp2 = $loyerp2;
+
+        return $this;
+    }
+
+    /**
+     * Get loyerp2
+     *
+     * @return integer
+     */
+    public function getLoyerp2()
+    {
+        return $this->loyerp2;
+    }
+
+    /**
+     * Set loyerp3
+     *
+     * @param integer $loyerp3
+     *
+     * @return Locationssl
+     */
+    public function setLoyerp3($loyerp3)
+    {
+        $this->loyerp3 = $loyerp3;
+
+        return $this;
+    }
+
+    /**
+     * Get loyerp3
+     *
+     * @return integer
+     */
+    public function getLoyerp3()
+    {
+        return $this->loyerp3;
+    }
+
+    /**
+     * Set loyerp4
+     *
+     * @param integer $loyerp4
+     *
+     * @return Locationssl
+     */
+    public function setLoyerp4($loyerp4)
+    {
+        $this->loyerp4 = $loyerp4;
+
+        return $this;
+    }
+
+    /**
+     * Get loyerp4
+     *
+     * @return integer
+     */
+    public function getLoyerp4()
+    {
+        return $this->loyerp4;
+    }
+
+    /**
+     * Set offreencours
+     *
+     * @param boolean $offreencours
+     *
+     * @return Locationssl
+     */
+    public function setOffreencours($offreencours)
+    {
+        $this->offreencours = $offreencours;
+
+        return $this;
+    }
+
+    /**
+     * Get offreencours
+     *
+     * @return boolean
+     */
+    public function getOffreencours()
+    {
+        return $this->offreencours;
+    }
+
+    /**
+     * Set offrerefusee
+     *
+     * @param boolean $offrerefusee
+     *
+     * @return Locationssl
+     */
+    public function setOffrerefusee($offrerefusee)
+    {
+        $this->offrerefusee = $offrerefusee;
+
+        return $this;
+    }
+
+    /**
+     * Get offrerefusee
+     *
+     * @return boolean
+     */
+    public function getOffrerefusee()
+    {
+        return $this->offrerefusee;
+    }
+
+    /**
+     * Set contrat
+     *
+     * @param boolean $contrat
+     *
+     * @return Locationssl
+     */
+    public function setContrat($contrat)
+    {
+        $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    /**
+     * Get contrat
+     *
+     * @return boolean
+     */
+    public function getContrat()
+    {
+        return $this->contrat;
+    }
+
+
+    /**
+     * Set etatloc
+     *
+     * @param string $etatloc
+     *
+     * @return Locationssl
+     */
+    public function setEtatloc($etatloc)
+    {
+        $this->etatloc = $etatloc;
+
+        return $this;
+    }
+
+    /**
+     * Get etatloc
+     *
+     * @return string
+     */
+    public function getEtatloc()
+    {
+        return $this->etatloc;
+    }
+
+    /**
+     * Set datereprise
+     *
+     * @param string $datereprise
+     *
+     * @return Locationssl
+     */
+    public function setdatereprise($datereprise)
+    {
+        $this->datereprise = $datereprise;
+
+        return $this;
+    }
+
+    /**
+     * Get datereprise
+     *
+     * @return string
+     */
+    public function getdatereprise()
+    {
+        return $this->datereprise;
+    }
+
+    /**
+     * Set etatlog
+     *
+     * @param string $etatlog
+     *
+     * @return Locationssl
+     */
+    public function setEtatlog($etatlog)
+    {
+        $this->etatlog = $etatlog;
+
+        return $this;
+    }
+
+    /**
+     * Get etatlog
+     *
+     * @return string
+     */
+    public function getEtatlog()
+    {
+        return $this->etatlog;
+    }
+
+    /**
+     * Set loueur
+     *
+     * @param string $loueur
+     *
+     * @return Locationssl
+     */
+    public function setLoueur($loueur)
+    {
+        $this->loueur = $loueur;
+
+        return $this;
+    }
+
+    /**
+     * Get loueur
+     *
+     * @return string
+     */
+    public function getLoueur()
+    {
+        return $this->loueur;
+    }
+
+    /**
+     * Set montantloc
+     *
+     * @param integer $montantloc
+     *
+     * @return Locationssl
+     */
+    public function setMontantloc($montantloc)
+    {
+        $this->montantloc = $montantloc;
+
+        return $this;
+    }
+
+    /**
+     * Get montantloc
+     *
+     * @return integer
+     */
+    public function getMontantloc()
+    {
+        return $this->montantloc;
+    }
+
+    /**
+     * Set debutloc
+     *
+     * @param string $debutloc
+     *
+     * @return Locationssl
+     */
+    public function setDebutloc($debutloc)
+    {
+        $this->debutloc = $debutloc;
+
+        return $this;
+    }
+
+    /**
+     * Get debutloc
+     *
+     * @return string
+     */
+    public function getDebutloc()
+    {
+        return $this->debutloc;
+    }
+
+    /**
+     * Set finloc
+     *
+     * @param string $finloc
+     *
+     * @return Locationssl
+     */
+    public function setFinloc($finloc)
+    {
+        $this->finloc = $finloc;
+
+        return $this;
+    }
+
+    /**
+     * Get finloc
+     *
+     * @return string
+     */
+    public function getFinloc()
+    {
+        return $this->finloc;
+    }
+
+    /**
+     * Set montantcarb
+     *
+     * @param integer $montantcarb
+     *
+     * @return Locationssl
+     */
+    public function setMontantcarb($montantcarb)
+    {
+        $this->montantcarb = $montantcarb;
+
+        return $this;
+    }
+
+    /**
+     * Get montantcarb
+     *
+     * @return integer
+     */
+    public function getMontantcarb()
+    {
+        return $this->montantcarb;
+    }
+
+    /**
+     * Set energie
+     *
+     * @param string $energie
+     *
+     * @return Locationssl
+     */
+    public function setEnergie($energie)
+    {
+        $this->energie = $energie;
+
+        return $this;
+    }
+
+    /**
+     * Get energie
+     *
+     * @return string
+     */
+    public function getEnergie()
+    {
+        return $this->energie;
+    }
+
+    /**
+     * Set contributionverte
+     *
+     * @param boolean $contributionverte
+     *
+     * @return Locationssl
+     */
+    public function setContributionverte($contributionverte)
+    {
+        $this->contributionverte = $contributionverte;
+
+        return $this;
+    }
+
+    /**
+     * Get contributionverte
+     *
+     * @return boolean
+     */
+    public function getContributionverte()
+    {
+        return $this->contributionverte;
+    }
+
+    /**
+     * Set assurance
+     *
+     * @param boolean $assurance
+     *
+     * @return Locationssl
+     */
+    public function setAssurance($assurance)
+    {
+        $this->assurance = $assurance;
+
+        return $this;
+    }
+
+    /**
+     * Get assurance
+     *
+     * @return boolean
+     */
+    public function getAssurance()
+    {
+        return $this->assurance;
+    }
+
+    /**
+     * Set transportaller
+     *
+     * @param integer $transportaller
+     *
+     * @return Locationssl
+     */
+    public function setTransportaller($transportaller)
+    {
+        $this->transportaller = $transportaller;
+
+        return $this;
+    }
+
+    /**
+     * Get transportaller
+     *
+     * @return integer
+     */
+    public function getTransportaller()
+    {
+        return $this->transportaller;
+    }
+
+    /**
+     * Set transportretour
+     *
+     * @param integer $transportretour
+     *
+     * @return Locationssl
+     */
+    public function setTransportretour($transportretour)
+    {
+        $this->transportretour = $transportretour;
+
+        return $this;
+    }
+
+    /**
+     * Get transportretour
+     *
+     * @return integer
+     */
+    public function getTransportretour()
+    {
+        return $this->transportretour;
+    }
+
+    /**
+     * Set nbjloc
+     *
+     * @param integer $nbjloc
+     *
+     * @return Locationssl
+     */
+    public function setNbjloc($nbjloc)
+    {
+        $this->nbjloc = $nbjloc;
+
+        return $this;
+    }
+
+    /**
+     * Get nbjloc
+     *
+     * @return integer
+     */
+    public function getNbjloc()
+    {
+        return $this->nbjloc;
+    }
+
+    /**
+     * Set transport
+     *
+     * @param boolean $transport
+     *
+     * @return Locationssl
+     */
+    public function setTransport($transport)
+    {
+        $this->transport = $transport;
+
+        return $this;
+    }
+
+    /**
+     * Get transport
+     *
+     * @return boolean
+     */
+    public function getTransport()
+    {
+        return $this->transport;
+    }
+
+    /**
+     * Set jour50
+     *
+     * @param integer $jour50
+     *
+     * @return Locationssl
+     */
+    public function setJour50($jour50)
+    {
+        $this->jour50 = $jour50;
+
+        return $this;
+    }
+
+    /**
+     * Get jour50
+     *
+     * @return integer
+     */
+    public function getJour50()
+    {
+        return $this->jour50;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->locata = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add locatum
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locata $locatum
+     *
+     * @return Locationssl
+     */
+    public function addLocatum(\Bacloo\CrmBundle\Entity\Locata $locatum)
+    {
+        $this->locata[] = $locatum;
+
+        return $this;
+    }
+
+    /**
+     * Remove locatum
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locata $locatum
+     */
+    public function removeLocatum(\Bacloo\CrmBundle\Entity\Locata $locatum)
+    {
+        $this->locata->removeElement($locatum);
+    }
+
+    /**
+     * Get locata
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLocata()
+    {
+        return $this->locata;
+    }
+
+    /**
+     * Set jour100
+     *
+     * @param integer $jour100
+     *
+     * @return Locationssl
+     */
+    public function setJour100($jour100)
+    {
+        $this->jour100 = $jour100;
+
+        return $this;
+    }
+
+    /**
+     * Get jour100
+     *
+     * @return integer
+     */
+    public function getJour100()
+    {
+        return $this->jour100;
+    }
+
+    /**
+     * Set nbjlocass
+     *
+     * @param integer $nbjlocass
+     *
+     * @return Locationssl
+     */
+    public function setNbjlocass($nbjlocass)
+    {
+        $this->nbjlocass = $nbjlocass;
+
+        return $this;
+    }
+
+    /**
+     * Get nbjlocass
+     *
+     * @return integer
+     */
+    public function getNbjlocass()
+    {
+        return $this->nbjlocass;
+    }
+
+    /**
+     * Set litrescarb
+     *
+     * @param string $litrescarb
+     *
+     * @return Locationssl
+     */
+    public function setLitrescarb($litrescarb)
+    {
+        $this->litrescarb = $litrescarb;
+
+        return $this;
+    }
+
+    /**
+     * Get litrescarb
+     *
+     * @return string
+     */
+    public function getLitrescarb()
+    {
+        return $this->litrescarb;
+    }
+
+    /**
+     * Set loyermensuel
+     *
+     * @param string $loyermensuel
+     *
+     * @return Locationssl
+     */
+    public function setLoyermensuel($loyermensuel)
+    {
+        $this->loyermensuel = $loyermensuel;
+
+        return $this;
+    }
+
+    /**
+     * Get loyermensuel
+     *
+     * @return string
+     */
+    public function getLoyermensuel()
+    {
+        return $this->loyermensuel;
+    }
+
+    /**
+     * Set loueurid
+     *
+     * @param integer $loueurid
+     *
+     * @return Locationssl
+     */
+    public function setLoueurid($loueurid)
+    {
+        $this->loueurid = $loueurid;
+
+        return $this;
+    }
+
+    /**
+     * Get loueurid
+     *
+     * @return integer
+     */
+    public function getLoueurid()
+    {
+        return $this->loueurid;
+    }
+
+    /**
+     * Set cloture
+     *
+     * @param integer $cloture
+     *
+     * @return Locationssl
+     */
+    public function setCloture($cloture)
+    {
+        $this->cloture = $cloture;
+
+        return $this;
+    }
+
+    /**
+     * Get cloture
+     *
+     * @return integer
+     */
+    public function getCloture()
+    {
+        return $this->cloture;
+    }
+
+    /**
+     * Set daterelancereprise
+     *
+     * @param \DateTime $daterelancereprise
+     *
+     * @return Locationssl
+     */
+    public function setDaterelancereprise($daterelancereprise)
+    {
+        $this->daterelancereprise = $daterelancereprise;
+
+        return $this;
+    }
+
+    /**
+     * Get daterelancereprise
+     *
+     * @return \DateTime
+     */
+    public function getDaterelancereprise()
+    {
+        return $this->daterelancereprise;
+    }
+
+    /**
+     * Set materielok
+     *
+     * @param string $materielok
+     *
+     * @return Locationssl
+     */
+    public function setMaterielok($materielok)
+    {
+        $this->materielok = $materielok;
+
+        return $this;
+    }
+
+    /**
+     * Get materielok
+     *
+     * @return string
+     */
+    public function getMaterielok()
+    {
+        return $this->materielok;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param string $remise
+     *
+     * @return Locationssl
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise;
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return string
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set oklog
+     *
+     * @param boolean $oklog
+     *
+     * @return Locationssl
+     */
+    public function setOklog($oklog)
+    {
+        $this->oklog = $oklog;
+
+        return $this;
+    }
+
+    /**
+     * Get oklog
+     *
+     * @return boolean
+     */
+    public function getOklog()
+    {
+        return $this->oklog;
+    }
+}

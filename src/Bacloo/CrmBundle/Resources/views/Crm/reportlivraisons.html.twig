@@ -1,0 +1,60 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	<form class="form-horizontal" action="{{ path('bacloocrm_reportlivraisons', {'codecont':codecont, 'codelocations':codelocations, 'ecode':ecode} ) }}" method="post" {{form_enctype(form) }}>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">
+					Veuillez saisir les nouvelles dates ci-dessous
+				</h4>
+			</div>
+			<div class="modal-body">
+			  {% if erreur == 0 %}
+				<div class="alert alert-success" role="alert">
+				  <h5>Les dates de location ont été modifiées avec succès !</h5>
+				</div>
+				<br>						
+				<center><a class="btn btn-primary" href="{{ path('bacloocrm_retours') }}"><span>Fermer</span></a></center>
+			  {% else %}
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>debutloc</span>
+									{{ form_widget(form.du, {'value' : du|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>finloc</span>
+									{{ form_widget(form.au, {'value' : au|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}
+								</div>
+							</div>
+						</div>
+
+					{% include "BaclooCrmBundle:Crm:ajout_locations.html.twig" %}
+					{# Fin Partie Locations #}																		
+					<center>
+						<br>
+						<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': id}) }}"><span>Fermer</span></a>
+						{{ form_row(form._token) }}
+					</center>	
+			  {% endif %}
+
+			</div>
+		</div>
+	</div>
+	{# Fin partie invisible #}
+	</form>		
+	<script>
+	  $( function() {
+		$( ".datepicker" ).datepicker({
+			dateFormat: 'dd/mm/yy', 
+			firstDay:1			
+		});
+	  } );
+	</script>	
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Liste des collègues</h3>
+			<h4>Ajoutez ici les utilisateurs Bacloo avec lesquels vous souhaitez partager des fiches (collègues).<br>
+				Pour partager une fiche, il suffit de vous rendre sur celle-ci et d'y ajouter le collègue.  
+			</h4>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="row clearfix">
+				<div class="container">
+					<div class="col-md-12 column">
+							<a type="button" class="btn btn-warning btn-xl" href="{{ path('bacloocrm_searchuser', {'mode': 'collegue'}) }}">Ajouter un collègue</span></a>
+						{# Partie Favoris #}
+						{% if grant == 'ok' %}
+							<form class="form-horizontal" action="{{ path('bacloocrm_showfavoris') }}" method="post" {{form_enctype(form) }}>
+								<fieldset>
+								<div class="row clearfix">
+									<br><br>
+										{% macro favorisCollectionItem(formData2) %}
+												<tr class="dibacloo4">
+
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.userid) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.username) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.favuserid) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.favusername) }}</div>
+															<a href="{{ path('bacloocrm_publicprofile', {'user': formData2.favusername.vars.value ?:0}) }}">{{ formData2.favusername.vars.value }}</a>
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															 <div><center>{{ form_widget(formData2.toutpart, { 'attr' : { 'class' : 'checkbox1', 'name' : 'check[]' } })  }}</center></div>
+														  </div>
+														</div>
+													</td>
+
+													<td>
+														<a class="btn btn-primary" href="{{ path('bacloocrm_sendmessagefav', {'vemail': formData2.favusername.vars.value ?:0, 'type': 'favoris', 'rais': '0' }) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+														</a>
+													</td>
+
+										{% endmacro %}
+
+										<div id="bacloo_crmbundle_userfav_favoris" data-prototype="{{ _self.favorisCollectionItem(form.favoris.vars.prototype)|e }}">
+											<table id="bacloo2" class="table table-bordered"><thead><tr id="dibac"><th class="col-md-9">Nom d'utilisateur</th><th class="col-md-3"><center>Partager toutes mes fiches</center></th><th></th><th></th></tr></thead>
+												{% for prospo in form.favoris %}
+								
+															{{ _self.favorisCollectionItem(prospo) }}
+
+												{% endfor %}
+											</table>
+										</div>
+
+									{% include "BaclooCrmBundle:Crm:ajout_favoris.html.twig" %}
+									<input type="submit" class="btn btn-primary" value="Modifier" />
+								</div>
+							{{ form_row(form._token) }}		
+								</fieldset>
+							</form>
+						{% else %}
+						<center>Vous n'avez pas encore ajouté de collègues à votre liste.<center>
+						{% endif %}
+						{# Fin Partie Favoris #}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}		

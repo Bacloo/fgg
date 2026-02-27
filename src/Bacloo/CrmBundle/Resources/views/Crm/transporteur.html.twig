@@ -1,0 +1,56 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{# window.location="http://127.0.0.1:8080/symfony2/web/b/metal/web/app_dev.php/transporteur/{{ codemachine }}/Livré/"+position.coords.latitude+"/"+position.coords.longitude; #}
+{# window.location="https://www.bacloo.fr/b/metaloc/web/app.php/transporteur/{{ codemachine }}/Livré/"+position.coords.latitude+"/"+position.coords.longitude; #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	{% if roleuser == 'chauffeur' and machines != 0 %}
+		{% if machines.etatlog == 'Prêt pour le chargement' %}
+			<center><a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_transporteur', {'codemachine': codemachine, 'etatlog': 'En_cours_de_livraison' }) }}">Je charge sur mon camion</a></center>
+		{% elseif machines.etatlog == 'En cours de livraison'  %}
+
+			<button class="btn btn-info btn-lg" onclick="getLocation()">Livré chez le client</button>
+
+			<p id="demo"></p>
+
+			<script>
+			var x = document.getElementById("demo");
+
+			function getLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(redirectToPosition);
+				} else { 
+					x.innerHTML = "Geolocation is not supported by this browser.";
+				}
+			}
+
+			function redirectToPosition(position) {
+				window.location="https://www.bacloo.fr/b/metaloc/web/app.php/transporteur/{{ codemachine }}/Livré/"+position.coords.latitude+"/"+position.coords.longitude;
+				};
+			</script>
+
+			{% elseif machines.etatlog == 'Retour planifié'  %}
+			<center><a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_transporteur', {'codemachine': codemachine, 'etatlog': 'Recupere'  }) }}">Récupéré chez le client</a></center>
+		{% elseif machines.etatlog == 'En route vers agence'  %}
+
+			<center><button class="btn btn-info btn-lg" onclick="getLocation()">Déposé en agence</button></center>
+
+			<p id="demo"></p>
+
+			<script>
+			var x = document.getElementById("demo");
+
+			function getLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(redirectToPosition);
+				} else { 
+					x.innerHTML = "Geolocation is not supported by this browser.";
+				}
+			}
+
+			function redirectToPosition(position) {
+				window.location="https://www.bacloo.fr/b/metaloc/web/app.php/transporteur/{{ codemachine }}/Déposé_en_agence/"+position.coords.latitude+"/"+position.coords.longitude;
+				};
+			</script>			
+		{% endif %}
+	{% endif %}
+{% endblock %}

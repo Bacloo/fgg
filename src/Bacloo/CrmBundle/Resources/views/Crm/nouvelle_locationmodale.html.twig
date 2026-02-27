@@ -1,0 +1,321 @@
+<br/>
+<form class="form-horizontal" action="{{ path('bacloocrm_locationsmodalecomok', {'locataid':'form.vars.value.client' } ) }}"  method="post" {{form_enctype(form) }}>
+	<div class="col-md-12">
+		<div class="col-md-4">
+				<div class="form-group"> 
+						<div class="input-group col-md-12">
+							<span><b>Raison Sociale / Nomx</b></span>
+					     	{{ form_widget(form.client, {'id':'clienta', 'attr' : { 'class' : 'form-control clienta', 'placeholder' : 'Raison sociale'} })  }}
+					</div>
+				</div><br/>
+				<div class="form-group"> 
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b></b>N° BDC</span>
+							{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'n° de bon de commande' } })  }}
+						</div>
+					</div>
+				</div>
+
+		</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+						<span class="input-group-addon large"><b></b>Chantier</span>
+						{{ form_widget(form.nomchantier, { 'id' : 'chantier', 'attr' : { 'class' : 'form-control chantier autocomplete' } })  }}<span id="match2"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Adresse1</span>
+									{{ form_widget(form.adresse1, { 'id' : 'adresse1_1', 'attr' : { 'class' : 'form-control adresse1' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Adresse2</span>
+									{{ form_widget(form.adresse2, { 'id' : 'adresse2_1', 'attr' : { 'class' : 'form-control adresse2' } })  }}
+								</div>
+							</div>
+						</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Adresse3</span>
+									{{ form_widget(form.adresse3, { 'id' : 'adresse3_1', 'attr' : { 'class' : 'form-control adresse3' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Cp</span>
+									{{ form_widget(form.cp, { 'id' : 'cp_1', 'attr' : { 'class' : 'form-control cp' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Ville</span>
+									{{ form_widget(form.ville, { 'id' : 'ville_1', 'attr' : { 'class' : 'form-control ville' } })  }}
+								</div>
+							</div>
+						</div>
+			</div>
+			<div class="col-md-12">
+				<h3>Machines de parc</h3>
+				{# Partie Locations #}
+					{# Les erreurs générales du formulaire. #}
+					<div id="bacloo_crmbundle_locata_locations" data-prototype="{{ _self.locationsCollectionItem(form.locations.vars.prototype, idresource, user, debut, fin, contrat)|e }}" >
+						<table id="bacloo3" class="table table-bordered">
+							<tr id="dibac3" style="background-color:#eaecef; font-weight:bold; font-size:14px;">
+								<td class="">Famille Machine</td>
+								<td class="">Code Machine réservée</td>
+								{# <td class="">Type machine</td> #}
+								<td class="">Début</td>
+								<td class="">Fin</td>
+								<td class="">Aller</td>
+								<td class="">Retour</td>
+								<td class="">RC</td>
+								<td class="">ECO</td>
+								<td class="">nb j</td>
+								<td class="">1j</td>
+								<td class="">2 à 5j</td>
+								<td class="">6 à 15j</td>
+								<td class="">>15j</td>
+								<td class="">Mois</td>
+								{# <td style="width:80px"><center><b>Loyer total</b></center></td> #}
+								{# <td style="width:100px"><center><b>Repris le</b></center></td> #}
+							</tr>
+					 		{% for location in form.locations|reverse(true) %}
+					            {{ _self.locationsCollectionItem(location, idresource, user, debut, fin, contrat) }}
+				            {% endfor %}
+							{% macro locationsCollectionItem(locations, idresource, user, debut, fin, contrat) %}
+							<tr  class="dibacloo3">
+								<td>
+								<div class="form-group">
+								<div class="col-md-12">
+								{% if contrat != 1 %}
+									{{ form_widget(locations.codemachine, { 'value':idresource, 'id' : 'codemachine_1', 'attr' : {'class' : 'form-control codemachine'}})  }}
+								{% else %}
+									{{ form_widget(locations.codemachine, { 'id' : 'codemachine_1', 'attr' : {'class' : 'form-control codemachine'}})  }}
+								{% endif %}
+								</div>
+								<div id="match"></div>
+							</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(locations.codemachineinterne, { 'id' : 'machine_1', 'attr' : {'class' : 'form-control machine'}}) }}
+											<div class="hidden">{{ form_widget(locations.machineid, { 'id' : 'machineid_1', 'attr' : { 'class' : 'machineid' } })  }}</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  		 <div class="col-md-12">
+											{{ form_widget(locations.debutloc,{ 'value': debut,  'attr' : { 'class' : 'form-control date' } })  }}
+									 </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.finloc, {'value': fin, 'attr' : { 'class' : 'form-control date' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.assurance, {'checked': 'checked'}) }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.contributionverte)  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									{% if locations.nbjloc.vars.value matches  '/^\\d+$/' %}
+										{{ locations.nbjloc.vars.value|number_format(0, ',', ' ')  }}
+									{% else %}
+										{{ locations.nbjloc.vars.value|number_format(1, ',', ' ')  }}
+									{% endif %}
+								</td>
+								<td>
+									<div class="form-group">
+									<div class="col-md-12">
+									{% if contrat != 1 %}
+										<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp1, {'attr' : { 'class' : 'form-control loyerp1' } })  }}</span>
+									{% else %}
+										{{ form_widget(locations.loyerp1, {'attr' : { 'class' : 'form-control loyerp1' } })  }}
+									{% endif %}
+									</div>
+									</div>
+								</td>
+								
+								<td>
+									<div class="form-group">
+									<div class="col-md-12">
+									{% if contrat != 1 %}
+										<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp2, {'attr' : { 'class' : 'form-control loyerp2' } })  }}</span>
+									{% else %}
+										{{ form_widget(locations.loyerp2, {'attr' : { 'class' : 'form-control loyerp2' } })  }}
+									{% endif %}
+									</div>
+									</div>
+								</td>
+								
+						<td>
+							<div class="form-group">
+							  <div class="col-md-12">
+							  {% if contrat != 1 %}
+								<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp3, {'attr' : { 'class' : 'form-control loyerp3' } })  }}</span>
+							  {% else %}
+								{# <div class="hidden">{{ form_widget(locations.loyerp3) }}</div>
+								{{ locations.loyerp3.vars.value }} #}
+								{{ form_widget(locations.loyerp3, {'attr' : { 'class' : 'form-control loyerp3' } })  }}
+							  {% endif %}
+							  </div>
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+							  <div class="col-md-12">
+							  {% if contrat != 1 %}
+								<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp4, {'attr' : { 'class' : 'form-control loyerp4' } })  }}</span>
+							  {% else %}
+								{# <div class="hidden">{{ form_widget(locations.loyerp4) }}</div>
+								{{ locations.loyerp4.vars.value }} #}
+								{{ form_widget(locations.loyerp4, {'attr' : { 'class' : 'form-control loyerp4' } })  }}
+							  {% endif %}
+							  </div>
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+							  <div class="col-md-12">
+							  {% if contrat != 1 %}
+								<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuel' } })  }}</span>
+							  {% else %}
+								{# <div class="hidden">{{ form_widget(locations.loyermensuel) }}</div>
+								{{ locations.loyermensuel.vars.value }} #}
+								{{ form_widget(locations.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuel' } })  }}
+							  {% endif %}
+							  </div>
+							</div>
+						</td>
+							</tr>
+							{% endmacro %}
+						</table>
+					</div>
+			</div>	
+	<div>
+</form>
+<script>
+	//Autocomplete client
+	$(document).on('keydown', '#modal .clienta', function() {
+
+		var id = this.id;
+		var splitid = id.split('_');
+		var index = splitid[1];
+
+		// Initialize jQuery UI autocomplete
+		$( '#'+id ).autocomplete({
+			position: {
+				my:"top+30"
+			},
+			source: function( request, response ) {
+				$('#match5').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+				$.ajax({
+					url: "{{ path('bacloocrm_requete2entreprise') }}",
+					type: 'post',
+					minLength: 2,
+					dataType: "json",
+					data: {
+						search: request.term,request:1
+					},
+					success: function( data ) {
+						response( data );
+						$('#match5').text('');
+					}
+				});
+			},
+
+			select: function (event, ui) {
+				$(this).val(ui.item.label); // display the selected text
+
+				return false;
+			}
+		});
+	});
+
+	//Fin autocomplete client
+</script>
+<script>
+//Autocomplete chantier
+
+	 $(document).on('keydown', '#modal .chantier', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  // Initialize jQuery UI autocomplete
+	 $( '#'+id ).autocomplete({
+			position: {
+				my:"top+30"
+			},
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_updatechantier') }}",
+		 type: 'post',
+		 minLength: 2,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+
+		return false;
+	   }
+	  });
+	 });
+//Fin autocomplete chantier
+</script>

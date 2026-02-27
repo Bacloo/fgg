@@ -1,0 +1,453 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+		<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+		<!-- Side menu -->
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+	{% endblock %}
+
+
+</head>
+<body>
+<span style="text-align:center;font-size:10pt"><br></span>
+<br>
+{% if mode == 'offreloc' %}
+	<span style="text-align:center;font-size:12pt"><b>DEVIS n°{{ locata.id }}</b></span>
+{% elseif mode == 'bdc' %}
+	<span style="text-align:center;font-size:12pt"><b>BON DECOMMANDE n°{{ locata.id }}</b></span>
+{% elseif mode == 'contrat' %}
+	<span style="text-align:center;font-size:12pt"><b>CONTRAT n°{{ locata.id }}</b></span>
+{% elseif mode == 'proforma' %}
+	<span style="text-align:center;font-size:12pt"><b>FACTURE PROFORMA n°{{ locata.id }}</b></span>
+{% endif %}
+<br>
+<span style="text-align:center;font-size:11pt;"><b>A l’attention de {{ locata.acheteur }}</b></span>
+<span style="text-align:center;font-size:10pt"><br></span>
+<span style="font-size:7.5pt;"><br></span>
+<table><tr><td><span style="font-size:11pt;">Date : {{ locata.datemodif|date('d/m/Y') }}</span></td></tr></table>
+<span style="font-size:0.5pt;"><br></span>
+<table><tr><td><span style="font-size:11pt;">N° de client : {{ locata.clientid }}</span></td></tr></table>
+<span style="font-size:1.5pt;"><br></span>
+<table><tr><td><span style="font-size:11pt;">N° de bon de commande : {{ locata.numbdc }}</span></td></tr></table>
+<span style="font-size:1.5pt;"><br></span>
+<table><tr><td><span style="font-size:11pt;"></span></td></tr></table>
+
+<br>
+<table border="0">
+	<tr>
+		<td width="250">
+			<table cellspacing="0" cellpadding="3" border="0" style="margin-left:100px">
+				<tr>
+					<td width="5" height="80">
+					</td>
+					<td width="180">
+						<span style="font-size:7pt"><br></span>
+						<span style="font-size:10pt"><u>Coordonnées client :</u></span><br>
+						<span style="font-size:10pt"><b>{{ locata.client }}</b><br>
+								{{ client.adresse1 }}<br>
+								{# {% if client.adresse2 is not empty %}{{ client.adresse2 }}<br>{% endif %} #}
+							{# {% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %} #}
+							{{ client.cp }} {{ client.ville }}<br>
+								Tél: {{ client.telephone }}</span>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="28">
+		</td>
+		<td width="262">
+			<table cellspacing="0" cellpadding="3" border="0">
+				<tr>
+					<td height="80">
+						<span style="font-size:7pt"><br></span>
+						<span style="font-size:10pt"><u>Adresse du site :</u></span><br>
+						<span style="font-size:10pt"><b>{{ locata.nomchantier }}</b><br>
+									{{ locata.adresse1 }}<br>
+									{% if locata.adresse2 is not empty %}{{ locata.adresse2 }}<br>{% endif %}
+							{% if locata.adresse3 is not empty %}{{ locata.adresse3 }}<br>{% endif %}
+							{{ locata.cp }} {{ locata.ville }}
+								</span>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="80">
+		</td>
+	</tr>
+</table>
+<span style="font-size:2pt"><br></span>
+<span style="font-size:11pt"></span>
+<span style="font-size:15pt"><br></span>
+
+<table cellspacing="0" cellpadding="4" border="0">
+	<tr style="font-size:9pt">
+		<td height="" width="60" align="center" border="1">
+			<b>Ref.</b>
+		</td>
+		<td height="" width="235" align="center" border="1">
+			<b>Désignation</b>
+		</td>
+		<td height="" width="50" align="center" border="1">
+			<b>Pu</b>
+		</td>
+		<td height="" width="40" align="center" border="1">
+			<b>% Rem.<br></b>
+		</td>
+		<td height="" width="50" align="center" border="1">
+			<b>Pu remisé</b>
+		</td>
+		<td height="" width="30" align="center" border="1">
+			<b>Qté<br></b>
+		</td>
+		<td height="" width="55" align="center" border="1">
+			<b>Total<br>(en € HT)</b>
+		</td>
+	</tr>
+	{% for location in locata.locations %}
+		<tr style="font-size:9pt">
+			<td rowspan="2" height="" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.codemachineinterne is not empty %}{{ location.codemachineinterne}}{% endif %}
+			</td>
+			<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<b>{{ location.codemachine}} : {{ location.typemachine}}</b>
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.loyerp1 > 0 %}
+					{{ location.loyerp1|number_format(2, ',', ' ')  }} €
+					{% set loyer = location.loyerp1 %}
+				{% elseif location.loyerp2 > 0 %}
+					{{ location.loyerp2|number_format(2, ',', ' ') }} €
+					{% set loyer = location.loyerp2 %}
+				{% elseif location.loyerp3 > 0 %}
+					{{ location.loyerp3|number_format(2, ',', ' ') }} €
+					{% set loyer = location.loyerp3 %}
+				{% elseif location.loyerp4 > 0 %}
+					{{ location.loyerp4|number_format(2, ',', ' ') }} €
+					{% set loyer = location.loyerp4 %}
+				{% elseif location.loyermensuel > 0 %}
+					{{ location.loyermensuel|number_format(2, ',', ' ') }} €
+					{% set loyer = location.loyermensuel %}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.remise > 0 %}
+					{{ location.remise|number_format(2, ',', ' ')}}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.remise > 0 %}
+					{% set puremise = loyer - (loyer * location.remise/100) %}
+					{{ puremise|number_format(2, ',', ' ')}}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.montantloc > 0 %}
+					{% if location.loyermensuel > 0%}{{ location.nbjloc/20 }}{% else %}{{ location.nbjloc }}{% endif %}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if location.montantloc > 0 %}
+					{{ location.montantloc|number_format(2, ',', ' ')}} €
+				{% endif %}
+			</td>
+		</tr>
+		<tr style="font-size:9pt">
+			<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				Du {{ location.debutloc|date('d/m/Y') }} au {{ location.finloc|date('d/m/Y') }}<br>
+				{% if location.contributionverte == 1 %}Participation au Recyclage 2,15%<br>{% endif %}
+				{% if location.assurance == 1 %}<br>Assurance 8%<br>{% endif %}
+				{% if location.transportaller > 0 %}Transport aller<br>{% endif %}
+				{% if location.transportretour > 0 %}Transport retour{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if location.contributionverte == 1 %}{% set pucontributionverte = (location.montantloc/location.nbjloc)*0.0215 %}{{ pucontributionverte|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if location.assurance == 1 %}{% set puassurance = (location.montantloc/location.nbjloc)*0.10 %}{{ puassurance|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if location.transportaller > 0 %}{{ location.transportaller }} €<br>{% endif %}
+				{% if location.transportretour > 0 %}{{ location.transportretour }} €{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if location.contributionverte == 1 %}{{ location.nbjloc }}<br>{% endif %}
+				{% if location.assurance == 1 %}{{ location.nbjlocass }}<br>{% endif %}
+				{% if location.transportaller > 0 %}1<br>{% endif %}
+				{% if location.transportretour > 0 %}1	{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if location.contributionverte == 1 %}{% set contributionverte = pucontributionverte * location.nbjloc %}{{ contributionverte|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if location.assurance == 1 %}{{ (location.nbjlocass * puassurance)|number_format(2, ',', ' ')  }} €<br>{% endif %}
+				{% if location.transportaller > 0 %}{{ location.transportaller }} €<br>{% endif %}
+				{% if location.transportretour > 0 %}{{ location.transportretour }} €{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	{% for locationsl in locata.locationssl %}
+		<tr style="font-size:9pt">
+			<td rowspan="2" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.codemachineinterne is not empty %}{{ locationsl.codemachineinterne}}{% endif %}
+			</td>
+			<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<b>{{ locationsl.codemachine}} : {{ locationsl.typemachine}}</b>
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.loyerp1 > 0 %}
+					{{ locationsl.loyerp1|number_format(2, ',', ' ')  }} €
+					{% set loyer = locationsl.loyerp1 %}
+				{% elseif locationsl.loyerp2 > 0 %}
+					{{ locationsl.loyerp2|number_format(2, ',', ' ') }} €
+					{% set loyer = locationsl.loyerp2 %}
+				{% elseif locationsl.loyerp3 > 0 %}
+					{{ locationsl.loyerp3|number_format(2, ',', ' ') }} €
+					{% set loyer = locationsl.loyerp3 %}
+				{% elseif locationsl.loyerp4 > 0 %}
+					{{ locationsl.loyerp4|number_format(2, ',', ' ') }} €
+					{% set loyer = locationsl.loyerp4 %}
+				{% elseif locationsl.loyermensuel > 0 %}
+					{{ locationsl.loyermensuel|number_format(2, ',', ' ') }} €
+					{% set loyer = locationsl.loyermensuel %}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.remise > 0 %}
+					{{ locationsl.remise|number_format(2, ',', ' ')}}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.remise > 0 %}
+					{% set puremise = loyer - (loyer * locationsl.remise/100) %}
+					{{ puremise|number_format(2, ',', ' ')}}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.montantloc > 0 %}
+					{% if locationsl.loyermensuel > 0%}{{ locationsl.nbjloc/20 }}{% else %}{{ locationsl.nbjloc }}{% endif %}
+				{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% if locationsl.montantloc > 0 %}
+					{{ locationsl.montantloc|number_format(2, ',', ' ') }} €
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">Du {{ locationsl.debutloc|date('d/m/Y') }} au {{ locationsl.finloc|date('d/m/Y') }}<br>
+				{% if locationsl.contributionverte == 1 %}Participation au Recyclage 2,15%<br>{% endif %}
+				{% if locationsl.assurance == 1 %}<br>Assurance 8%<br>{% endif %}
+				{% if locationsl.transportaller > 0 %}Transport aller<br>{% endif %}
+				{% if locationsl.transportretour > 0 %}Transport retour{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if locationsl.contributionverte == 1 %}{% set pucontributionverte = (locationsl.montantloc/locationsl.nbjloc)*0.0215 %}{{ pucontributionverte|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if locationsl.assurance == 1 %}{% set puassurance = (locationsl.montantloc/locationsl.nbjloc)*0.10 %}{{ puassurance|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if locationsl.transportaller > 0 %}{{ locationsl.transportaller }} €<br>{% endif %}
+				{% if locationsl.transportretour > 0 %}{{ locationsl.transportretour }} €{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if locationsl.contributionverte == 1 %}{{ locationsl.nbjloc }}<br>{% endif %}
+				{% if locationsl.assurance == 1 %}{{ locationsl.nbjlocass }}<br>{% endif %}
+				{% if locationsl.transportaller > 0 %}1<br>{% endif %}
+				{% if locationsl.transportretour > 0 %}1{% endif %}
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<br><br>
+				{% if locationsl.contributionverte == 1 %}{% set contributionverte = pucontributionverte * locationsl.nbjloc %}{{ contributionverte|number_format(2, ',', ' ') }} €<br>{% endif %}
+				{% if locationsl.assurance == 1 %}{{ (locationsl.nbjlocass * puassurance)|number_format(2, ',', ' ')  }} €<br>{% endif %}
+				{% if locationsl.transportaller > 0 %}{{ locationsl.transportaller }} €<br>{% endif %}
+				{% if locationsl.transportretour > 0 %}{{ locationsl.transportretour }} €{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	{% if locata.remise > 0 %}
+		<tr style="font-size:9pt">
+			<td height="" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				<b>Remise sur location {{ locata.remise }}%</b>
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+			</td>
+			<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				{% set montantremise = locata.montantloc * (locata.remise/100) %}
+				<b>-{{ montantremise|number_format(2, ',', ' ')}} €</b>
+			</td>
+		</tr>
+	{% endif %}
+	{% if totalvente > 0 %}
+		{% for ventes in locata.locataventes|reverse %}
+			<tr style="font-size:9pt">
+				<td height="" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					<span style="font-size:9pt">{{ ventes.refarticle }}</span>
+				</td>
+				<td height="" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					<span style="font-size:9pt">{{ ventes.description}}</span>
+				</td>
+				<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">{{ ventes.pu }} €
+				</td>
+				<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				</td>
+				<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+				</td>
+				<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">{{ ventes.quantite }}
+				</td>
+				<td height="" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">{{ ventes.montantvente }} €
+				</td>
+			</tr>
+		{% endfor %}
+	{% endif %}
+	<tr style="font-size:1pt">
+		<td height="" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+		<td height="" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+		</td>
+	</tr>
+</table>
+		{% if  locata.commentaire is not empty %}<h4>{{ locata.commentaire|nl2br }}</h4>{% endif %}
+{% for i in 0..locata.spacer %}
+    <span style="font-size:7pt;"><br></span>
+{% endfor %}
+		<table border="0" width="520">
+			<tr>
+				<td width="400" align="left" border="1" style="font-size:7pt;">
+				<table cellpadding="7">
+					<tr>
+						<td>
+{#							Les soussignés acceptent sans réserve les conditions de location du présent contrat ainci que les conditions générales figurant au verso.<br>#}
+{#							Le matériel loué est reconnu en état de marche, lelocataire déclare connaître le fonctionnement et les normes de sécurité du matériel.<br>#}
+{#							Assurance : se rapporter à l'article 10 au verso du présent contrat.<br>#}
+{#							<br>#}
+{#							<b>CONDITIONS D'UTILISATION ET CLAUSES ASSURANCES AU VERSO</b>#}
+
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td width="120" border="1">
+					<table width="120" cellspacing="0" style="font-size:10pt;" border="0">
+						<tr>
+							<td width="58" align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+							<td align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+						</tr>
+						<tr>
+							<td width="58" align="right">
+								<b>Total HT :</b>
+							</td>
+							<td align="right">
+								{% if montantremise is not defined %}{% set montantremise = 0 %}{% endif %}
+								{% set montantloc = locata.montantloc + locata.transportaller + locata.transportretour + locata.contributionverte + locata.assurance + locata.montantlocavente - montantremise %}
+								<b>{{ montantloc|number_format(2, ',', ' ') }} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>TVA 20% : </b>
+							</td>
+							<td align="right">
+							{% if client.typeclient == 'export' %}
+								{% set tva = 0 %}
+							{% else %}
+								{% set tva = montantloc * 0.20 %}
+							{% endif %}
+								<b>{{ tva|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>Total TTC : </b>
+							</td>
+							<td align="right">
+							{% set totalttc = montantloc + tva %}
+								<b>{{ totalttc|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+{#<br><br>			#}
+{#		<table border="" width="520" cellpadding="7" style="font-size:7pt;" border="1">#}
+{#			<tr>#}
+{#				<td border="0" align="left" colspan="2"  style="font-size:8pt;color:#20348a;">#}
+{#					<b><i>Pour les retours, les machines doivent impérativement être misent à l'extérieur du chantier, prêtes à partir. Cas contraire, elles ne seront pas reprises, et une facturation retour à vide peut avoir lieu.</i></b>#}
+{#				</td>#}
+{#			</tr>#}
+{#		</table>#}
+{#<br><br>#}
+{#		{% if nacelle == 1 %}#}
+{#			<table border="" width="520" cellpadding="7" style="font-size:7pt;" border="1">#}
+{#				<tr>#}
+{#					<td border="0" colspan="2"  style="font-size:8pt;">#}
+{#						<b>Le travail en hauteur est dangereux, respecter les consignes de sécurité décrites dans la fiche conseil. Il est fortement conseillé<br>#}
+{#							d'être titulaire du CACES, d'être habilité et autorisé à utiliser cette machine.<br>#}
+{#							En vente : harnais anti-chute pour la sécurité de l'opérateur et cônes de chantier pour le balisage obligatoire de la zone de travail..</b>#}
+{#					</td>#}
+{#				</tr>#}
+{#			</table>#}
+{#			<br><br>#}
+{#		{% endif %}#}
+{#		<table border="" width="520" cellpadding="7" style="font-size:7pt;" >#}
+{#			<tr>#}
+{#				<td border="0" align="center" colspan="2"  style="font-size:10pt">#}
+{#					<b>Signature précédée de la mention « bon pour accord » et cachet de l’entreprise :</b>#}
+{#				</td>#}
+{#			</tr>#}
+{#		</table>#}
+{#			{%  if locata.offreencours == 1 and locata.contrat == 0 %}#}
+{#				{% if client.typefiche == 'prospect' %}#}
+{#					<br pagebreak="true"/>#}
+{#					<table border="">#}
+{#						<tr>#}
+{#							<td border="0" align="center">#}
+{#								<img width="530" height="670" src="{{ asset('uploads/communs/cgl1.jpg') }}" class="img-thumbnail">#}
+{#							</td>#}
+{#						</tr>#}
+{#					</table>#}
+{#				{% endif %}#}
+{#			{% endif %}#}
+	</body>
+</html>	

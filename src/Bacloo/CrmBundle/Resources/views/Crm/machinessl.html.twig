@@ -1,0 +1,303 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_machinessl', {'machineid':machineid} ) }}" method="post" {{form_enctype(form) }}>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>{% if codemachine is defined %}{{ form.vars.value.code }} : {{ form.vars.value.etat }}{% else %}Création d'un nouveau matériel en sous-location{% endif %}</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="col-md-4 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Matériel
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="col-md-6 column">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="hidden">
+										{{ form_widget(form.debutloc)  }}
+										{{ form_widget(form.finloc) }}
+										{{ form_widget(form.original, { 'value' : 1 }) }}
+										{{ form_widget(form.clientid) }}
+										{{ form_widget(form.codecontrat) }}
+										{{ form_widget(form.codelocations) }}
+										{{ form_widget(form.nomchantier) }}
+										{{ form_widget(form.entreprise) }}
+										{% if machineid != 0 %}{{ form_widget(form.etat) }}{% else %}{{ form_widget(form.etat, { 'value' : 'Disponible' }) }}{% endif %}
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Famille</span>
+										{{ form_widget(form.codegenerique, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Energie</span>
+										{{ form_widget(form.energie, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+						</div>	
+						<div class="col-md-6 column">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Code</span>
+										{{ form_widget(form.code, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>N° série</span>
+										{{ form_widget(form.numSerie, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>						
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Description</span>
+										{{ form_widget(form.description, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>						
+						</div>
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-3 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Loueur
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group col-md-12">
+									{{ form_widget(form.loueur, {  'id' : 'loueur_1', 'attr' : { 'class' : 'form-control loueur' } })  }}
+								</div>
+									  <div id="match3"></div>
+							</div>
+						</div>							
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Echéances
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Prochaine VGP</span>
+									{{ form_widget(form.prochaineVgp, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Prochaine révision</span>
+									{{ form_widget(form.prochaineRevision, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+								</div>
+							</div>
+						</div>
+							
+					</div>
+				</div>		
+			<center>
+			{#
+				{% if codemachine is defined %}
+					<a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_qrcode', {'codemachine': form.vars.value.code }) }}"><span class="glyphicon glyphicon-qrcode"></span></a>
+				{% endif %}
+				{% if form.vars.value.etatlog == 'Livré chez le client' and form.vars.value.etat ==  'En location' %}
+					<a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_maps', {'latitude': form.vars.value.latitude, 'longitude': form.vars.value.longitude }) }}"><span class="glyphicon glyphicon-map-marker"></span></a>
+				{% endif %}
+			#}
+			</center>
+			</div>
+			<div class="col-md-5 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Les 6 dernières locations
+						</h3>
+					</div>				
+					<div class="panel-body">
+						{% if last5locsl == 0 or last5locsl is empty%}
+							Cette machine n'a jamais été louée
+						{% else %}
+							<table class="table table-striped col-md-12">
+								<thead>
+									<th>
+										Client
+									</th>
+									<th>
+										Nom chantier
+									</th>
+									<th>
+										Date début
+									</th>
+									<th>
+										Date fin
+									</th>
+									<th>
+										Statut
+									</th>
+								</thead>
+								{% for locata in last5locsl %}
+									{% for locations in locata.locationssl %}
+										<tr>
+											<td>
+												{{ locata.client}}
+											</td>
+											<td>
+												{{ locata.nomchantier }}<br>
+												{{ locata.cp }} {{ locata.ville }}
+											</td>
+											<td>
+												{{ locata.debutloc|date('d/m/Y') }}
+											</td>
+											<td>
+												{{ locata.finloc|date('d/m/Y') }}
+											</td>
+											<td>
+												{{ locations.etatloc }}
+											</td>
+										</tr>
+									{% endfor %}
+								{% endfor %}
+							</table>
+						{% endif %}						
+					</div>
+				</div>
+			</div>
+			<br><br>	
+			{# Partie Dimensions #}
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Dimensions
+							</h3>
+						</div>				
+						<div class="panel-body">
+							<div class="form-group">
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Longueur</span>
+										{{ form_widget(form.longueur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Largeur</span>
+										{{ form_widget(form.largeur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Hauteur</span>
+										{{ form_widget(form.hauteur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Poids</span>
+										{{ form_widget(form.poids, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Charge maximale</span>
+										{{ form_widget(form.chargemax, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Déport</span>
+										{{ form_widget(form.deport, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>					
+				<div>	
+			{# Fin partie dimensions #}
+
+								
+				</div>
+			</div>
+		</div>																		
+						<center>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_planningsl') }}"><span>Fermer</span></a>
+							{{ form_row(form._token) }}
+						</center>
+	</div>
+</div>
+</form>	
+<script>
+//Autocomplete loueur
+	$(document).ready(function(){
+	 $(document).on('keydown', '.loueur', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match3').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requeteloueur') }}",
+		 type: 'post',
+		 minLength: 2,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match3').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+		return false;
+	   }
+	  });
+	 });
+} );
+//Fin autocomplete loueur
+</script>
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>	
+{% endblock %}

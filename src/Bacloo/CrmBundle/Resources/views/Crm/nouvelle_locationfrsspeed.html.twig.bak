@@ -1,0 +1,302 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_ajouterlocationfrsspeed', {'bdcid':bdcid, 'locid':locid }) }}" method="post" {{form_enctype(form) }}>
+<div class="modal-dialog modal-xl">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Enregistrement rapide d'une charge :
+			</h4>
+		</div>
+		<div class="modal-body">
+				  <div class="col-md-12"><br><br>
+				  {% if message is defined and message is same as('ok') %}
+					<span style="color:green"><b>Votre charge a bien été enrgeistrée.</b></span>
+				  {% endif %}
+						<table id="bacloo3" class="table table-bordered">
+							<tr id="dibac3" style="background-color:#eaecef; font-weight:bold; font-size:14px;">
+								<td>Codif</td>
+								<td>Date</td>
+								<td>Echeance</td>
+								<td>N° de pièce</td>
+								<td>Raison sociale</td>
+								<td>Description</td>
+{#								<td>Pu</td>#}
+{#								<td>Qté</td>#}
+								<td><center><b>HT</b></center></td>
+								<td><center><b>TTC</b></center></td>
+								<td><center><b>Mode paiement</b></center></td>
+								<td><center><b>Avoir ?</b></center></td>
+								<td><center><b>Réglé ?</b></center></td>
+								{% if bdcid > 0 %}
+									<td class="warning"><center><b>Doc.</b></center></td>
+								{% endif %}
+							</tr>
+							<tr class="dibacloo3">
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if bdcid > 0 %}
+												{{ form_widget(form.reference, { 'value' : reference, 'attr' : { 'class' : 'form-control etroit150' } })  }}
+											{% else %}
+												{{ form_widget(form.reference, { 'attr' : { 'class' : 'form-control etroit150' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.date, { 'value' : facture.datecrea|date('d/m/Y'), 'attr' : { 'class' : 'form-control etroit150 datepicker' } })  }}
+										  {% else %}
+											  {{ form_widget(form.date, { 'attr' : { 'class' : 'form-control etroit150 datepicker' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.echeance, { 'value' : facture.echeance|date('d/m/Y'),'attr' : { 'class' : 'form-control etroit150 datepicker' } })  }}
+										  {% else %}
+											  {{ form_widget(form.echeance, { 'attr' : { 'class' : 'form-control etroit150 datepicker' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if bdcid > 0 %}
+												{{ form_widget(form.numfacfrs, { 'value' : facture.numfacfrs,'attr' : { 'class' : 'form-control etroit100' } })  }}
+											{% else %}
+												{{ form_widget(form.numfacfrs, { 'attr' : { 'class' : 'form-control etroit100' } })  }}
+											{% endif %}
+										</div>
+										<div class="hidden">{{ form_widget(form.fournisseurid, { 'id' : 'fournisseurid_1', 'attr' : { 'class' : 'fournisseurid' } })  }}</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.fournisseur, { 'value' : facture.client, 'id' : 'fournisseur_1', 'attr' : { 'class' : 'form-control fournisseur etroit200' } })  }}
+										  {% else %}
+											  {{ form_widget(form.fournisseur, { 'id' : 'fournisseur_1', 'attr' : { 'class' : 'form-control fournisseur etroit200' } })  }}
+										  {% endif %}
+									  </div>
+									  <div class="hidden">{{ form_widget(form.fournisseurid, { 'id' : 'fournisseurid_1', 'attr' : { 'class' : 'fournisseurid' } })  }}</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.designation, { 'value' : designation, 'attr' : { 'class' : 'form-control etroit200' } })  }}
+										  {% else %}
+											  {{ form_widget(form.designation, { 'attr' : { 'class' : 'form-control etroit200' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#									  <div class="col-md-12">#}
+{#										{{ form_widget(form.pu, { 'attr' : { 'class' : 'form-control etroit100' } })  }}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+{#								<td>#}
+{#									<div class="form-group">#}
+{#									  <div class="col-md-12">#}
+{#										{{ form_widget(form.quantite, { 'attr' : { 'class' : 'form-control etroit100' } })  }}#}
+{#									  </div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.montantht, { 'value' : facture.totalht, 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% else %}
+											  {{ form_widget(form.montantht, { 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.montantttc, { 'value' : facture.totalttc, 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% else %}
+											  {{ form_widget(form.montantttc, { 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.modepaiement, { 'value' : facture.modepaiement, 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% else %}
+											  {{ form_widget(form.modepaiement, { 'attr' : { 'class' : 'form-control etroit100' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 %}
+											  {{ form_widget(form.avoir, { 'attr' : { 'class' : 'form-control etroit60' } })  }}
+										  {% else %}
+											  {{ form_widget(form.avoir, { 'attr' : { 'class' : 'form-control etroit60' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										  {% if bdcid > 0 and facture.reglement == 1 %}
+										  		<b>Oui</b>
+											  <div class="hidden">{{ form_widget(form.dejaregle, {'attr' : { 'class' : 'form-control etroit60' } })  }}</div>
+										  {% else %}
+											  {{ form_widget(form.dejaregle, { 'attr' : { 'class' : 'form-control etroit60' } })  }}
+										  {% endif %}
+									  </div>
+									</div>
+								</td>
+								{% if bdcid > 0 %}
+									<td class="warning">
+											{% if documents is empty %}
+												{# Dropzone #}
+												<div class="row clearfix">
+													<div class="col-sm-12">
+														<center><div class="dropzone{{ facture.numfacture }} col-md-6" id="my-awesome-dropzone" style="border-style: dashed solid; height:20px;"><div class="dz-message" data-dz-message><span></span></div></div></center>
+													</div>
+												</div>
+
+												{# Fin dropzone #}
+												{#									{% if vue == 'achats' %}#}
+												{#										<a href="{{ path('bacloocrm_impressionbdccompta', {'codecontrat': facture.locatacloneid, 'clientid': facture.clientid, 'numlocatavente': facture.codelocata, 'mode':'bdc'} ) }}"><i class="fa fa-file-pdf-o"></i></a>#}
+												{#									{% else %}#}
+												{#										<a href="{{ path('bacloocrm_impressionfactures', {'codecontrat': facture.locatacloneid, 'clientid': facture.clientid, 'numlocatavente': facture.codelocata, 'mode':facture.typedoc, 'numfacture':facture.numfacture, 'vue':'achats'} ) }}"><i class="fa fa-file-pdf-o"></i></a>#}
+												{#									{% endif %}#}
+											{% else %}
+												<div class="row clearfix">
+													<div class="col-md-12">
+														<table>
+															<tr>
+																{% for document in documents %}
+																	<td>
+																		<a href="{{ asset('uploads/facfrs/'~ facture.id ~'/' ~ document.nom ~ '') }}"><i class="fa fa-file-pdf-o"></i></a>
+																	</td>
+																	<td class="col-md-10 pull-right">
+																		<a href="{{ path('bacloocrm_removedocument', {'iddoc': document.id, 'codecontrat': facture.id, 'type':'facfrs' }) }}"><i class="fa fa-times"></i></a>
+																	</td>
+																{% endfor %}
+															</tr>
+														</table>
+													</div>
+												</div>
+											{% endif %}
+									</td>
+								{% endif %}
+							</tr>
+						</table>
+				  </div><span id="match3"></span>						
+		</div>
+		<div class="modal-footer">
+			<center>
+				<br>
+				<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_compta', {'vue' : 'achats'}) }}"><span>Fermer</span></a>
+				{% if bdcid > 0 %}<a type="button" class="btn btn-success" href="{{ path('bacloocrm_ajouterlocationfrsspeed') }}">Nouvelle charge</span></a>{% endif %}
+				{{ form_row(form._token) }}	
+			</center>
+		</div>			
+	</div>		
+</div>
+</form>	
+<script>
+//Autocomplete fournisseur
+	$(document).ready(function(){
+	 $(document).on('keydown', '.fournisseur', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match3').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requete2loueur') }}",
+		 type: 'post',
+		 minLength: 2,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match3').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		document.getElementById('fournisseurid_'+index).value = ui.item.value;
+
+		return false;
+	   }
+	  });
+	 });
+} );
+//Fin autocomplete loueur
+</script>
+	{% if bdcid > 0 %}
+		<script>
+			// init,configure dropzone
+			Dropzone.autoDiscover = true;
+			var dropzone_default = new Dropzone(".dropzone{{ facture.numfacture }}", {
+				url: '{{ path('bacloocrm_dropzone', {'codecontrat':facture.id, 'type':'facfrs'}) }}',
+				maxFiles: 1,
+				dictMaxFilesExceeded: 'Only 1 Image can be uploaded',
+				acceptedFiles: '.jpg, .jpeg, .png, .bmp, .pdf',
+				maxFilesize: 5,  // in Mb
+				addRemoveLinks: false,
+				init: function () {
+					this.on("maxfilesexceeded", function(file) {
+						this.removeFile(file);
+					});
+					this.on("sending", function(file, xhr, formData) {
+						// send additional data with the file as POST data if needed.
+						// formData.append("key", "value");
+					});
+					this.on("success", function() {
+						if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+							location.reload();
+						}
+					});
+				}
+			});
+		</script>
+	{% endif %}
+	<script>
+		$( function() {
+			$( ".datepicker" ).datepicker({
+				dateFormat: 'dd/mm/yy',
+				firstDay:1
+			});
+		} );
+	</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+<div>
+    <!-- customize as you wish -->
+			<table>
+						{% for bcontact in form.bcontacts %}
+							<tr>
+								<td>{{ form_widget(bcontact.dateCrea)}}</td><td>{{ form_widget(bcontact.civilite)}}</td><td>{{ form_widget(bcontact.nom)}}</td><td>{{ form_widget(bcontact.prenom)}}</td><td>{{ form_widget(bcontact.fonction)}}</td>
+								<td>{{ form_widget(bcontact.tel1)}}</td><td>{{ form_widget(bcontact.tel2)}}</td><td>{{ form_widget(bcontact.email)}}</td>
+								<td>{{ form_widget(bcontact.commentaire)}}</td><td>{{ form_widget(bcontact.mailingOk)}}</td><td>{{ form_widget(bcontact.aVendre)}}</td>
+							</tr>
+						{% endfor %}
+			</table>
+</div>

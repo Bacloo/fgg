@@ -1,0 +1,213 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% block body %}
+<div class="container-fluid">
+	<div class="row">
+		{% if roleuser == 'technicien' %}
+			<div class="col-md-4">
+			</div>
+			<div class="col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="huge"><center>Liste des VGP à faire avant le {{ datevgp|date('d/m/Y') }} : {{ nbvgpafaire }} machines.</center></div>
+							<hr>
+							<b>
+								<center><table class="table table-striped col-md-12">
+								{% for vgp in vgpafaire %}
+									<tr><td><h4><a href="{{ path('bacloocrm_machines', {'machineid': vgp.id|number_format})  }}">{{ vgp.code }}</a></h4></td><td class="col-md-1"></td><td><h4>  {{ vgp.prochaineVgp|date('d/m/Y') }}</h4></td></tr>
+								{% endfor %}
+								</table></center>
+							</b></h3>
+						</div>
+					</div>
+			</div>
+			<div class="col-md-4">
+			</div>
+		
+		{% else %}
+			<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="huge"><center>Dispos</center></div>
+							<hr>
+							<b>
+								<center><table class="table table-striped col-md-12">
+								{% for key,value in listedispos %}
+									<tr><td><h4>{{ key }}</h4></td><td class="col-md-1"></td><td><h4>  {{ value }}</h4></td></tr>
+								{% endfor %}
+								</table></center>
+							</b></h3>
+						</div>
+					</div>
+			</div>
+			<div class="col-md-9">
+				<div class="col-md-3">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<a style="color:black" href="{{ path('bacloocrm_planning') }}">
+								<div class="huge"><center>Dispo Tot</center></div>
+								<hr>
+								<h2><center><b>{{ dispogene }}</b></center></h2>
+							</a>
+						</div>
+					</div>	
+				</div>
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center>Nb sous-loc</center></div>
+								<hr>
+								<h2><center><b>{{ nblocsl }}</b></center></h2>
+						</div>
+					</div>	
+				</div>
+				<div class="col-md-3">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<a style="color:black" href="{{ path('bacloocrm_planning') }}">
+								<div class="huge"><center>Loc Parc</center></div>
+								<hr>
+								<h2><center><b>{{ nblocparc }} / {{totalparc}}</b></center></h2>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">	
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<a style="color:black" href="{{ path('bacloocrm_find', {'id': 'xxx' }) }}">					
+								<div class="huge"><center>Total offres du mois</center></div>
+								<hr>
+								<h2><center><b>{{ nboffresmois }}</b></center></h2>	
+							</a>				
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="col-md-12">
+					{% if roleuser == 'admin' or user == 'jmr' %}
+						{% for statu in statsusers %}
+							{% if loop.index  == 1 %}
+								<div class="col-md-2 col-md-offset-1">					
+							{% else %}
+								<div class="col-md-2">	
+							{% endif %}
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div class="huge"><center>{{ statu.user|capitalize }}</center></div>
+										<hr>
+										<table class="table table-striped col-md-12">
+											<tr>
+												<td>
+													
+												</td>
+												<td>
+													Nb
+												</td>
+												<td>
+													CA
+												</td>
+											</tr>
+											<tr>
+												<td>
+													Offres
+												</td>
+												<td>
+													{{ statu.countoffres }}
+												</td>
+												<td>
+													{{ statu.caoffres }}
+												</td>
+											</tr>
+											<tr>
+												<td>
+													Contrats
+												</td>
+												<td>
+													{{ statu.countcontrats }}
+												</td>
+												<td>
+													{{ statu.cacontrats }}
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>					
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<hr>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="huge"><center>Devis non validés sous-location</center></div>
+							<hr>
+							<h2><center><b>{{ devisnonvalsl }}</b></center></h2>
+							{% if devisnonvalsl > 0 %}
+								<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												Client
+											</th>
+											<th>
+												Début loc
+											</th>
+											<th>
+												Matériel
+											</th>
+											<th>
+												Utilisateur
+											</th>
+								{% for devisnv in devisnonvadsl %}
+									<tr>
+										<td><h4><a href="{{ path('bacloocrm_voir', {'id': devisnv.clientid})  }}"><span>{{ devisnv.client }}</span></a></h4></td>
+										<td><h4>{% for loc in devisnv.locationssl %}{%  if loop.first %}{{ loc.debutloc|date('d/m/Y') }}<br>{% endif %}{% endfor %}</h4></td>
+										<td><h4>{% for loc in devisnv.locationssl %}{{ loc.codemachine }}<br>{% endfor %}</h4></td>
+										<td><h4>{{ devisnv.user|capitalize }}</h4></td>
+									</tr>
+								{% endfor %}
+								</table>
+							{% endif %}
+						</div>
+					</div>		
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-body">
+								<div class="huge"><center> Devis non validés parc</center></div>
+								<hr>
+								<h2><center><b>{{ devisnonval }}</b></center></h2>
+							{% if devisnonval > 0 %}
+								<table class="table table-striped col-md-12">
+										<thead>
+											<th>
+												Client
+											</th>
+											<th>
+												Début loc
+											</th>
+											<th>
+												Matériel
+											</th>
+											<th>
+												Utilisateur
+											</th>
+								{% for devisnv in devisnonvadparc %}
+									<tr>
+										<td><h4><a href="{{ path('bacloocrm_voir', {'id': devisnv.clientid})  }}"><span>{{ devisnv.client }}</span></a></h4></td>
+										<td><h4>{% for loc in devisnv.locations %}{%  if loop.first %}{{ loc.debutloc|date('d/m/Y') }}<br>{% endif %}{% endfor %}</h4></td>
+										<td><h4>{% for loc in devisnv.locations %}{{ loc.codemachine }}<br>{% endfor %}</h4></td>
+										<td><h4>{{ devisnv.user|capitalize }}</h4></td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+							</table>
+						</div>
+					</div>
+				{% endif %}
+		</div>
+	</div>
+
+{# fin graph appel #}
+
+{% endblock %}

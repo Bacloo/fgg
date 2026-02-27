@@ -1,0 +1,56 @@
+{% block collection_widget %}
+{% spaceless %}
+    <div class="collection">
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form) }}
+            <ul>
+            {% for rows in form %}
+                <li>
+                {% set fieldNum = 1 %}
+                {% for row in rows %}
+                    <div class="field{{ fieldNum }}">
+					{# Génération du label. #}{{ form_label(row) }}
+                    {{ form_widget(row, { 'attr': { 'class': 'test' }}) }}
+                    </div>
+                    {% set fieldNum = fieldNum + 1 %}
+                {% endfor %}
+
+                    <div class="clear"></div>
+                </li>
+            {% endfor %}
+            </ul>
+
+        </div>
+        <div class="clear"></div>
+
+
+    </div>
+    <div class="clear"></div>
+{% endspaceless %}
+{% endblock collection_widget %}
+ 
+{% block collection_item_widget %}
+{% spaceless %}
+    <li>
+    {% set fieldNum = 1 %}
+    {% for row in prototype %}
+        <div class="field{{ fieldNum }}">
+			<div class="control-group">
+			  <div class="controls">
+				<div class="input-prepend">		
+					<span class="add-on">{# Génération du label. #}{{ form_label(row) }}</span>
+					{{ form_widget(row, { 'attr': { 'class': 'test' }}) }}
+				</div>
+			  </div>
+			</div>					
+        </div>
+        {% set fieldNum = fieldNum + 1 %}
+    {% endfor %}
+
+        <div class="clear"></div>
+    </li>
+{% endspaceless %}
+{% endblock collection_item_widget %}

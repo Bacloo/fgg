@@ -1,0 +1,35 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3>
+						Exporter des données externes						
+					</h3>	
+					<div class="alert alert-success">
+						<strong>Instructions pour l'exportation</strong><br>
+						Les informations sont exportées dans un fichier au format CSV. Celui-ci peut être utilisé avec Excel ou d'autres tableurs du marché.
+					</div>					
+					<div class="row">
+						<div class="col-md-4">
+							<a type="button" class="btn btn-default btn-lg btn-block" href="{{ path('avro_csv_export_export', {'alias': 'fiche', 'user': user}) }}">
+							<h3>Exporter toutes vos fiches<br>administratives</h3></a>
+						</div>
+						<div class="col-md-4">
+							<a type="button" class="btn btn-default btn-lg btn-block" href="{{ path('avro_csv_export_export', {'alias': 'contact', 'user': user}) }}">
+							<h3>Exporter tous vos<br>contacts</h3></a>
+						</div>
+						<div class="col-md-4">
+							<a type="button" class="btn btn-default btn-lg btn-block" href="{{ path('avro_csv_export_export', {'alias': 'event', 'user': user}) }}">
+							<h3>Exporter tous vos historiques<br>d'évènements</h3></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

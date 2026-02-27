@@ -1,0 +1,303 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_dispatchtransport', {'formnum': 1}) }}" method="post" {{form_enctype(form1) }}>
+{% if listuser|length > 0 %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<h3>Rapports de tournée à imprimer</h3>
+			</h3>
+		</div>
+		<div class="panel-body">
+		<table class="pull-right">
+			<tr>
+				{% for list in listuser %}
+					{% if list.user is not empty %}
+						<td><center><a href="{{ path('bacloocrm_dispatchtransportpdf', {'chauffeur': list.user} ) }}"><h4><i class="fa fa-file-pdf-o"></i><br>{{ list.user }}</h4></a></center></td><td>&nbsp;&nbsp;&nbsp;</td>
+					{% else %}
+						Pas de tournée à imprimer
+					{% endif%}
+				{% endfor%}
+			<tr>
+		</table>
+		</div>
+	</div>
+{% endif %}
+	<div class="panel-body"><div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Affecter les reprises</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+	<div class="hidden">{{ form_widget(form1.etatlog) }}</div>
+		{# Partie Locations #}		
+			{# Les erreurs générales du formulaire. #}		
+			<div id="bacloo_crmbundle_logisrep_logistiquerep" data-prototype="{{ _self.logistiquerepCollectionItem(form1.logistiquerep.vars.prototype, datelivraison)|e }}">
+				<table id="bacloo3" class="table table-striped col-md-12">
+					<thead>
+						<th>
+							Client
+						</th>
+						<th>
+							Chantier
+						</th>
+						<th>
+							Contact sur place
+						</th>
+						<th>
+							Type de matériel
+						</th>
+						<th>
+							Matériel
+						</th>
+						<th>
+							Commentaire logistique
+						</th>
+						<th>
+							Chauffeur
+						</th>
+						<th>
+							Ordre de reprise
+						</th>
+						<th>
+							Statut
+						</th>
+					</thead>
+					{% for logistiq in form1.logistiquerep|reverse(true) %}
+						{{ _self.logistiquerepCollectionItem(logistiq, datelivraison) }}
+					{% endfor %}						
+					{% macro logistiquerepCollectionItem(logistiquerep, datelivraison) %}
+						{% if logistiquerep.etatlog.vars.value == "Retour planifié" %}
+							<tr class="dibacloo3">
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">
+												{{ form_widget(logistiquerep.client) }}
+												{{ form_widget(logistiquerep.codelocations) }}
+												{{ form_widget(logistiquerep.codecontrat) }}
+											</div>
+											{{ logistiquerep.client.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistiquerep.nomchantier) }}</div>
+											{{ logistiquerep.nomchantier.vars.value }}<br>
+											{{ logistiquerep.adresse1.vars.value }}<br>
+											{{ logistiquerep.adresse2.vars.value }}<br>
+											{{ logistiquerep.adresse3.vars.value }}<br>
+											{{ logistiquerep.cp.vars.value }} {{ logistiquerep.cp.vars.value }}<br>										
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistiquerep.contactchantier) }}</div>
+											{{ logistiquerep.contactchantier.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistiquerep.typemateriel) }}</div>
+											{{ logistiquerep.typemateriel.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistiquerep.materiel) }}</div>
+											{{ logistiquerep.materiel.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistiquerep.memolog, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistiquerep.user, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistiquerep.ordretransport, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistiquerep.etatlog) }}</div>
+											{{ logistiquerep.etatlog.vars.value }}
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endif %}
+					{% endmacro %}
+				</table>
+			</div>
+			{# Fin Partie logistique #}																		
+			<center>
+				<br>
+				{% if listuser is not empty %}<input type="submit" class="btn btn-primary" value="Enregistrer"/>{% else %}Pas de reprise prévue.{% endif %}
+				{{ form_row(form1._token) }}
+			</center>				
+	</div>
+</div>
+</form>
+<form class="form-horizontal" action="{{ path('bacloocrm_dispatchtransport', {'formnum': 2}) }}" method="post" {{form_enctype(form2) }}>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Affecter les livraisons</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+	<div class="hidden">{{ form_widget(form2.etatlog) }}</div>
+		{# Partie Locations #}		
+			{# Les erreurs générales du formulaire. #}		
+			<div id="bacloo_crmbundle_logis_logistique" data-prototype="{{ _self.logistiqueCollectionItem(form2.logistique.vars.prototype, datelivraison)|e }}">
+				<table id="bacloo3" class="table table-striped col-md-12">
+					<thead>
+						<th>
+							Client
+						</th>
+						<th>
+							Chantier
+						</th>
+						<th>
+							Contact sur place
+						</th>
+						<th>
+							Type de matériel
+						</th>
+						<th>
+							Matériel
+						</th>
+						<th>
+							Commentaire logistique
+						</th>
+						<th>
+							Chauffeur
+						</th>
+						<th>
+							Ordre de livraison
+						</th>
+						<th>
+							Statut
+						</th>
+					</thead>
+					{% for logistiq in form2.logistique|reverse(true) %}
+						{{ _self.logistiqueCollectionItem(logistiq, datelivraison) }}
+					{% endfor %}						
+					{% macro logistiqueCollectionItem(logistique, datelivraison) %}
+						{% if logistique.etatlog.vars.value == "Prêt pour le chargement" %}
+							<tr class="dibacloo3">
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">
+												{{ form_widget(logistique.client) }}
+												{{ form_widget(logistique.codelocations) }}
+												{{ form_widget(logistique.codecontrat) }}
+											</div>
+											{{ logistique.client.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistique.nomchantier) }}</div>
+											{{ logistique.nomchantier.vars.value }}<br>
+											{{ logistique.adresse1.vars.value }}<br>
+											{% if logistique.adresse2.vars.value is not empty %}{{ logistique.adresse2.vars.value }}<br>{% endif %}
+											{% if logistique.adresse3.vars.value is not empty %}{{ logistique.adresse3.vars.value }}<br>{% endif %}
+											{{ logistique.cp.vars.value }} {{ logistique.ville.vars.value }}		
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistique.contactchantier) }}</div>
+											{{ logistique.contactchantier.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistique.typemateriel) }}</div>
+											{{ logistique.typemateriel.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistique.materiel) }}</div>
+											{{ logistique.materiel.vars.value }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistique.memolog, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistique.user, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(logistique.ordretransport, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(logistique.etatlog) }}</div>
+											{{ logistique.etatlog.vars.value }}
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endif %}
+					{% endmacro %}
+				</table>
+			</div>
+			{# Fin Partie logistique #}																		
+			<center>
+				<br>
+				{% if listuser is not empty %}<input type="submit" class="btn btn-primary" value="Enregistrer"/>{% else %}Pas de Livraison prévue.{% endif %}
+				{{ form_row(form2._token) }}
+			</center>				
+	</div>
+</div>
+</form>	
+{% endblock %}

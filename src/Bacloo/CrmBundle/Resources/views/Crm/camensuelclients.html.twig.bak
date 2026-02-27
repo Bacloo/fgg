@@ -1,0 +1,359 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<a type="button" class="btn btn-primary pull-left" href="{{ path('bacloocrm_home') }}"><<< Retour au statistiques financières</span></a>
+<br><br>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Chiffre d'affaires par client</h3>
+		</h3>
+	</div>
+	<div class="panel-body">	
+		<div class="col-md-3 column">
+			<form role="form" action="{{ path('bacloocrm_camensuelclients', {'dStart' : dstart, 'dEnd' : dend}) }}" method="post" {{form_enctype(form) }}>					
+				<div class="row clearfix">
+					<table class="col-md-12">
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Du</span>
+											{{ form_widget(form.du, {'value' : dstart, 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>				
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Au</span>
+											{{ form_widget(form.au, {'value' : dend, 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Client</span>
+											{{ form_widget(form.client, {'attr' : { 'class' : 'form-control' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<br><center><input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />				
+								<a type="button" class="btn btn-default" href="{{ path('bacloocrm_camensuelclients') }}">Réinitialiser</a></center>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				<br>			 
+				{{ form_row(form._token) }}				
+			</form>			
+		</div>	
+		<div class="col-md-10 column">
+				
+		</div>	
+		<div class="col-md-12 column">
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'camensuelclients', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px"><i class="fa fa-file-excel-o"></i></span></a><br><br><br>			
+		</div>		
+		{# Lecture de chaque ligne du tableau annee=>valeurs #}
+		{% set a = 0 %}
+		{% set m = 0 %}
+		{% set j = 0 %}
+		{% for annee, moiss in dates %}
+			{# a Donne le nombre d'années #}
+				{% set a = a+1 %}
+			{% for mois, date in moiss %}
+				{# a Donne le nombre de mois #}
+				{% set m = m+1 %}
+				{% for dat in date %}
+					{# a Donne le nombre de jours #}
+					{% set j = j+1 %}
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		<table class="table table-bordered"><thead><tr style="background-color:#eaecef;">
+			<td rowspan="4">
+				
+			</td>
+			{% set momo = 888 %}
+			{% set an = 1 %}
+			{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+			{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+			{% set coli = j%}
+			{% set colm = 0 %}
+			{% for annee, moiss in dates %}
+			{% set nban = 1 %}	
+				{% for nba in nbjannee %}{# xx{{ nba }}xxaaa{{a}}ans{{ ans }}nban{{ nban }} #}
+					{% if an == 1 and nban == 1%}
+						<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;"><td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+					{% set nban = nban+1 %}
+					{% elseif an == a and nban == ans %}
+						<td colspan="{{ nba }}"><center>{{ annee }}</center></td></tr>
+					{% set nban = nban+1 %}
+					{% elseif an != 1 and an != a %}
+						{% if an == nban %}
+							<td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+						{% endif %}
+					{% endif %}
+					{% set nban = nban+1 %}
+				{% endfor %}
+				{% set an = an+1 %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+				{% for mois, date in moiss %}
+					{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+					{% for nbm in nbmois %}
+						{# Si on est au premier mois et que le compteur de mois est = 1 #}
+						{# On applique le colspan du 1er mois stocké dans nbmois #}
+						{% if mo == 1 and nbmo == 1 %}			
+							<tr style="background-color:#eaecef; font-weight:bold; font-size:16px;"><td colspan="{{ nbm }}"><center>		
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>
+						{% set nbmo = nbmo+1 %}
+						{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+						{# On applique le colspan du dernier mois #}
+						{% elseif mo == m and nbmo == m %}
+							<td colspan="{{ nbm }}"><center> 
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}					
+							</center></td></tr>
+						{% set nbmo = nbmo+1 %}
+						{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+						{# On applique le colspan du bon mois #}
+						{% elseif mo != 1 and mo != m %}
+							{% if mo == nbmo %}	
+								<td colspan="{{ nbm }}"><center>
+									{% if mois == 1 %}
+										Janvier
+									{% endif %}
+									{% if mois == 2 %}
+										Février
+									{% endif %}
+									{% if mois == 3 %}
+										Mars
+									{% endif %}
+									{% if mois == 4 %}
+										Avril
+									{% endif %}
+									{% if mois == 5 %}
+										Mai
+									{% endif %}
+									{% if mois == 6 %}
+										Juin
+									{% endif %}
+									{% if mois == 7 %}
+										Juillet
+									{% endif %}
+									{% if mois == 8 %}
+										Août
+									{% endif %}
+									{% if mois == 9 %}
+										Septembre 
+									{% endif %}
+									{% if mois == 10 %}
+										Octobre
+									{% endif %}
+									{% if mois == 11 %}
+										Novembre
+									{% endif %}
+									{% if mois == 12 %}
+										Décembre
+									{% endif %}
+								</center></td>							
+							{% endif %}
+						{% endif %}
+						{% set nbmo = nbmo+1 %}
+					{% endfor %}
+					{% set mo = mo+1 %}			
+				{% endfor %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					
+				{% endfor %}
+			{% endfor %}
+		</thead>
+		{% for loca in commerciaux %}
+		<tr>
+		{% set caff6 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				{{ loca }}
+			</td>
+			
+				{% set mo = 1 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+		{% set caff = 0 %}
+		{% set caff1 = 0 %}
+		{% set caff2 = 0 %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}			
+								<td colspan="{{ nbm }}">{% for loc in ca %}{% if annee~mois == loc.datemodif|date('Ym') and loca == loc.client %}{% set caff = caff + loc.montantloc + loc.contributionverte + loc.assurance + loc.transportaller + loc.transportretour + loc.montantcarb + loc.montantlocavente %}{% endif %}{% endfor %}{% if caff > 0 %}{{ caff|number_format(2, ',', ' ')  }}€{% if caff6 > 0 %}{% set evol = ((caff-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}{% endif %}</td>{% set caff6 = caff %}	
+							{% set nbmo = nbmo+1 %}
+							{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+							{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}
+								<td colspan="{{ nbm }}">{% for loc in ca %}{% if annee~mois == loc.datemodif|date('Ym') and loca == loc.client %}{% set caff1 = caff1 + loc.montantloc + loc.contributionverte + loc.assurance + loc.transportaller + loc.transportretour + loc.montantcarb + loc.montantlocavente %}{% endif %}{% endfor %}{% if caff1 > 0 %}{{ caff1|number_format(2, ',', ' ')  }}€{% if caff6 > 0 %}{% set evol = ((caff1-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}{% endif %}</td>{% set caff6 = caff1 %}	
+							{% set nbmo = nbmo+1 %}
+							{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+							{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}	
+									<td colspan="{{ nbm }}">{% for loc in ca %}{% if annee~mois == loc.datemodif|date('Ym') and loca == loc.client %}{% set caff2 = caff2 + loc.montantloc + loc.contributionverte + loc.assurance + loc.transportaller + loc.transportretour + loc.montantcarb + loc.montantlocavente %}{% endif %}{% endfor %}{% if caff2 > 0 %}{{ caff2|number_format(2, ',', ' ')  }}€{% if caff6 > 0 %}{% set evol = ((caff2-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}{% endif %}</td>{% set caff6 = caff2 %}							
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>	
+		{% endfor %}
+		</table>
+	</div>
+</div>
+			<center>
+				{% if nombrePage > 0 %}
+					<ul class="pagination">
+						{% if page > 1 %}
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclients', {'mode': mode, 'page': 1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									<<
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclients', {'mode': mode, 'page': -1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									<
+								</a>
+							</li>
+						{% endif %}
+
+						{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+						{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+							<li {% if p == page %}class="active"{% endif %}>
+								<a href="{{ path('bacloocrm_camensuelclients', {'mode': mode, 'page': p, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									{{ p }}
+								</a>
+							</li>
+						{% endfor %}
+
+						{% if page < nombrePage %}
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclients', {'mode': mode, 'page': page+1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									>
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclients', {'mode': mode, 'page': nombrePage, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									>>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+			</center>		
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>		
+{% endblock %}

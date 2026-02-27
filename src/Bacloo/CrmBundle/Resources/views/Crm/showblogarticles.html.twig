@@ -1,0 +1,12 @@
+{% for blo in blog %}
+	<h3 class="timeline-title">{{ blo.titre }}</h3>
+	<p><small class="text-muted pull"><i class="glyphicon glyphicon-time"></i> {{ blo.date|date('d/m/Y') }}</small></p>
+	<div class="timeline-body">
+	  <p>{{ blo.extrait }}</p>
+	</div>
+	<div class="pull-right">
+		<a href="{{ blo.lien }}" target="_blank">Lire la suite <i class="fa fa-arrow-circle-right"></i></a>
+	</div>
+	<br>
+	<hr>
+{% endfor %}

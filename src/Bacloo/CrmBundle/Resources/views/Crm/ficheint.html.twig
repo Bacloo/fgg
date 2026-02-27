@@ -1,0 +1,85 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Liste des fiches que vous pouvez partager</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			{# Partie Prospot #}
+					<div class="row clearfix">
+								<table id="bacloo2" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>
+											Raison sociale
+										</th>
+										<th>
+											Cp
+										</th>
+										<th>
+											Ville
+										</th>
+										<th>
+											Activité
+										</th>
+										<th>
+											Besoins
+										</th>
+										<th>
+										</th>	
+									</tr>
+								</thead>
+								<tbody>
+									{% for listfi in listficheint %}
+									<tr class="success">
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listfi.RaisonSociale }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listfi.cp }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listfi.ville }}
+											  </div>
+											</div>
+										</td>				
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listfi.activite }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12">
+												{{ listfi.besoins }}
+											  </div>
+											</div>
+										</td>
+										<td><a href="{{ path('bacloocrm_voir', {'id': listfi.ficheid}) }}" class="btn btn-success" role="button">Voir</a> 
+										</td>
+									</tr>
+									
+									{% endfor %}
+								</tbody>
+								</table>	
+					</div>
+		</div>
+	</div>
+</div>
+{% endblock %}				

@@ -1,0 +1,23 @@
+
+    <form role="form" action="{{ path('bacloocrm_litrescarb', {'codelocation':codelocation, 'litrescarb':litrescarb}) }}" method="post" {{form_enctype(form) }}>
+<table>
+    <tr>
+        <td>
+            <div class="form-group">
+                {% if litrescarb is defined and litrescarb > 0 %}
+                    {{ form_widget(form.litrescarb, { 'value' : litrescarb, 'attr' : { 'class' : 'etroit110' } })  }}
+                {% else %}
+                    {{ form_widget(form.litrescarb, { 'attr' : { 'placeholder' : 'Litres à facturer', 'class' : 'etroit110' } })  }}
+                {% endif %}
+                <div class="hidden">{{ form_widget(form.codelocation, { 'value' : codelocation })  }}</div>
+            </div>
+        </td>
+        <td>
+            <button type="submit" class="btn-xs btn-info">
+                <i class="fa fa-save"></i>
+            </button>
+            {{ form_row(form._token) }}
+        </td>
+    </tr>
+</table>
+    </form>

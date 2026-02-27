@@ -1,0 +1,26 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Erreur !
+			</h4>
+		</div>
+		<div class="modal-body">
+			{% if erreur == 1 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!!!<br></strong>Impossible de supprimer ce contrat, il a déjà été facturé.
+				</div>
+			{% endif %}
+		</div>
+		<center>
+			<br>
+			<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': id}) }}"><span>Fermer</span></a>
+			<br><br><br>
+		</center>			
+	</div>
+</div>
+	
+{% endblock %}

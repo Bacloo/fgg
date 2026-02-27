@@ -1,0 +1,700 @@
+<?php
+
+namespace Bacloo\CrmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Venda
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bacloo\CrmBundle\Entity\VendaRepository")
+ */
+class Venda
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="string", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="clientid", type="integer")
+     */
+    private $clientid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client", type="string", length=255)
+     */
+    private $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user", type="string", length=255)
+     */
+    private $user;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse1", type="string", length=255, nullable=true)
+     */
+    private $adresse1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse2", type="string", length=255, nullable=true)
+     */
+    private $adresse2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse3", type="string", length=255, nullable=true)
+     */
+    private $adresse3;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cp", type="integer", nullable=true)
+     */
+    private $cp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
+     */
+    private $ville;
+	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="offreencours", type="boolean", length=255, nullable=true)
+     */
+    private $offreencours;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bdcrecu", type="boolean", length=255, nullable=true)
+     */
+    private $bdcrecu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="offrerefusee", type="boolean", length=255, nullable=true)
+     */
+    private $offrerefusee;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numbdc", type="string", length=255, nullable=true)
+     */
+    private $numbdc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="acheteur", type="string", length=255, nullable=true)
+     */
+    private $acheteur;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="montantvente", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $montantvente;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="acompte", type="integer", nullable=true)
+     */
+    private $acompte;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="text", nullable=true)
+     */
+    private $commentaire;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="remise", type="integer", nullable=true)
+     */
+    public $remise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sanstva", type="boolean", length=255, nullable=true)
+     */
+    public $sanstva;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="factor", type="boolean", length=255, nullable=true)
+     */
+    public $factor;
+
+    /**
+    * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Ventes", cascade={"persist"}, orphanRemoval=true)
+    */	
+	Private $ventes;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set clientid
+     *
+     * @param integer $clientid
+     *
+     * @return Venda
+     */
+    public function setClientid($clientid)
+    {
+        $this->clientid = $clientid;
+
+        return $this;
+    }
+
+    /**
+     * Get clientid
+     *
+     * @return integer
+     */
+    public function getClientid()
+    {
+        return $this->clientid;
+    }
+
+    /**
+     * Set client
+     *
+     * @param string $client
+     *
+     * @return Venda
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return string
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Venda
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set adresse1
+     *
+     * @param string $adresse1
+     *
+     * @return Venda
+     */
+    public function setAdresse1($adresse1)
+    {
+        $this->adresse1 = $adresse1;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse1
+     *
+     * @return string
+     */
+    public function getAdresse1()
+    {
+        return $this->adresse1;
+    }
+
+    /**
+     * Set adresse2
+     *
+     * @param string $adresse2
+     *
+     * @return Venda
+     */
+    public function setAdresse2($adresse2)
+    {
+        $this->adresse2 = $adresse2;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse2
+     *
+     * @return string
+     */
+    public function getAdresse2()
+    {
+        return $this->adresse2;
+    }
+
+    /**
+     * Set adresse3
+     *
+     * @param string $adresse3
+     *
+     * @return Venda
+     */
+    public function setAdresse3($adresse3)
+    {
+        $this->adresse3 = $adresse3;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse3
+     *
+     * @return string
+     */
+    public function getAdresse3()
+    {
+        return $this->adresse3;
+    }
+
+    /**
+     * Set cp
+     *
+     * @param integer $cp
+     *
+     * @return Venda
+     */
+    public function setCp($cp)
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    /**
+     * Get cp
+     *
+     * @return integer
+     */
+    public function getCp()
+    {
+        return $this->cp;
+    }
+
+    /**
+     * Set ville
+     *
+     * @param string $ville
+     *
+     * @return Venda
+     */
+    public function setVille($ville)
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * Get ville
+     *
+     * @return string
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ventes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add vente
+     *
+     * @param \Bacloo\CrmBundle\Entity\Ventes $vente
+     *
+     * @return Venda
+     */
+    public function addVente(\Bacloo\CrmBundle\Entity\Ventes $vente)
+    {
+        $this->ventes[] = $vente;
+
+        return $this;
+    }
+
+    /**
+     * Remove vente
+     *
+     * @param \Bacloo\CrmBundle\Entity\Ventes $vente
+     */
+    public function removeVente(\Bacloo\CrmBundle\Entity\Ventes $vente)
+    {
+        $this->ventes->removeElement($vente);
+    }
+
+    /**
+     * Get ventes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVentes()
+    {
+        return $this->ventes;
+    }
+
+    /**
+     * Set offreencours
+     *
+     * @param boolean $offreencours
+     *
+     * @return Venda
+     */
+    public function setOffreencours($offreencours)
+    {
+        $this->offreencours = $offreencours;
+
+        return $this;
+    }
+
+    /**
+     * Get offreencours
+     *
+     * @return boolean
+     */
+    public function getOffreencours()
+    {
+        return $this->offreencours;
+    }
+
+    /**
+     * Set bdcrecu
+     *
+     * @param boolean $bdcrecu
+     *
+     * @return Venda
+     */
+    public function setBdcrecu($bdcrecu)
+    {
+        $this->bdcrecu = $bdcrecu;
+
+        return $this;
+    }
+
+    /**
+     * Get bdcrecu
+     *
+     * @return boolean
+     */
+    public function getBdcrecu()
+    {
+        return $this->bdcrecu;
+    }
+
+    /**
+     * Set offrerefusee
+     *
+     * @param boolean $offrerefusee
+     *
+     * @return Venda
+     */
+    public function setOffrerefusee($offrerefusee)
+    {
+        $this->offrerefusee = $offrerefusee;
+
+        return $this;
+    }
+
+    /**
+     * Get offrerefusee
+     *
+     * @return boolean
+     */
+    public function getOffrerefusee()
+    {
+        return $this->offrerefusee;
+    }
+
+    /**
+     * Set numbdc
+     *
+     * @param string $numbdc
+     *
+     * @return Venda
+     */
+    public function setNumbdc($numbdc)
+    {
+        $this->numbdc = $numbdc;
+
+        return $this;
+    }
+
+    /**
+     * Get numbdc
+     *
+     * @return string
+     */
+    public function getNumbdc()
+    {
+        return $this->numbdc;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Venda
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set montantvente
+     *
+     * @param string $montantvente
+     *
+     * @return Venda
+     */
+    public function setMontantvente($montantvente)
+    {
+        $this->montantvente = $montantvente;
+
+        return $this;
+    }
+
+    /**
+     * Get montantvente
+     *
+     * @return string
+     */
+    public function getMontantvente()
+    {
+        return $this->montantvente;
+    }
+
+    /**
+     * Set acompte
+     *
+     * @param integer $acompte
+     *
+     * @return Venda
+     */
+    public function setAcompte($acompte)
+    {
+        $this->acompte = $acompte;
+
+        return $this;
+    }
+
+    /**
+     * Get acompte
+     *
+     * @return integer
+     */
+    public function getAcompte()
+    {
+        return $this->acompte;
+    }
+
+    /**
+     * Set acheteur
+     *
+     * @param string $acheteur
+     *
+     * @return Venda
+     */
+    public function setAcheteur($acheteur)
+    {
+        $this->acheteur = $acheteur;
+
+        return $this;
+    }
+
+    /**
+     * Get acheteur
+     *
+     * @return string
+     */
+    public function getAcheteur()
+    {
+        return $this->acheteur;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Venda
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param integer $remise
+     *
+     * @return Venda
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise;
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return integer
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set factor
+     *
+     * @param boolean $factor
+     *
+     * @return Venda
+     */
+    public function setFactor($factor)
+    {
+        $this->factor = $factor;
+
+        return $this;
+    }
+
+    /**
+     * Get factor
+     *
+     * @return boolean
+     */
+    public function getFactor()
+    {
+        return $this->factor;
+    }
+
+    /**
+     * Set sanstva
+     *
+     * @param boolean $sanstva
+     *
+     * @return Venda
+     */
+    public function setSanstva($sanstva)
+    {
+        $this->sanstva = $sanstva;
+
+        return $this;
+    }
+
+    /**
+     * Get sanstva
+     *
+     * @return boolean
+     */
+    public function getSanstva()
+    {
+        return $this->sanstva;
+    }
+}

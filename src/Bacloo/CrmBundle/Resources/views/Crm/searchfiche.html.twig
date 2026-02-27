@@ -1,0 +1,321 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/searchfiche.html.twig #}
+
+	<ul class="nav nav-pills nav-stacked">
+
+		<form class="form-horizontal" action="{{ path('bacloocrm_search') }}" method="post" {{form_enctype(form) }}>
+		<fieldset>
+			{# Les erreurs générales du formulaire. #}
+			{{ form_errors(form) }}	
+				{# Les erreurs générales du formulaire. #}
+							
+		{% if modules.module9activation != 1 and view == 'annuaire' %}
+			<div class="row clearfix">		
+				<div class="col-md-6  col-md-offset-3 column">					
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.activitefilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : activitefilter })  }}</span>
+							{{  form_widget(form.activite, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Activité' } })  }}							
+							</div>							
+						  </div>
+					</div>		
+				</div>		
+			</div>
+			<center>
+			<a style="color:black" href="{{ path('bacloocrm_modules') }}">>>> L'affichage des champs de recherche est réduit. Veuillez activer le module annuaire pour afficher tous les champs. <<<</a>	
+		{% else %}		
+			<div class="row clearfix">
+				<div class="col-md-6 column">					
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+								<span class="input-group-addon large">{{ form_widget(form.rsfilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : rsfilter })  }}</span>
+								{{  form_widget(form.raisonSociale, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Raison Sociale' } })  }}
+							</div>						
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.nomfilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : nomfilter })  }}</span>
+							{{  form_widget(form.nom, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Nom' } })  }}								
+							</div>							
+						  </div>
+					</div>
+				{% if modules.module4activation == 1 %}
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.cpfilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : cpfilter })  }}</span>
+							{{  form_widget(form.cp, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Code postal' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.memofilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : memofilter })  }}</span>
+							{{  form_widget(form.memo, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Memo' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.fonctionfilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : fonctionfilter })  }}</span>
+							{{  form_widget(form.fonction, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Fonction' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.cperso2filter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : cperso2filter })  }}</span>
+							{{  form_widget(form.cperso2, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Champ 2' } })  }}						
+							</div>							
+						  </div>
+					</div>
+				{% endif %}					
+				</div>
+				<div class="col-md-6 column">					
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.activitefilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : activitefilter })  }}</span>
+							{{  form_widget(form.activite, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Activité' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.besoinfilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : besoinfilter })  }}</span>
+							{{ form_widget(form.besoins, { 'attr' : { 'class' : 'form-control' } })  }}							
+							</div>							
+						  </div>					 
+					</div>
+				{% if modules.module4activation == 1 %}
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.villefilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : villefilter })  }}</span>
+							{{  form_widget(form.ville, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Ville' } })  }}						
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.histofilter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : histofilter })  }}</span>
+							{{  form_widget(form.histo, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Historique' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.cperso1filter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : cperso1filter })  }}</span>
+							{{  form_widget(form.cperso1, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Champ 1' } })  }}							
+							</div>							
+						  </div>
+					</div>
+					<div class="form-group">
+						  <div class="col-md-12">
+							<div class="input-group">	
+							<span class="input-group-addon large">{{ form_widget(form.cperso3filter, { 'attr' : { 'class' : 'no-bg no-border'}, 'value' : cperso3filter })  }}</span>
+							{{  form_widget(form.cperso3, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Champ 3' } })  }}							
+							</div>							
+						  </div>
+					</div>
+				{% endif %}					
+				</div>	
+			</div>
+		<center>			
+		{% endif %}
+
+		<br><br>
+				{{ form_row(form._token) }}
+				<input type="submit" class="btn btn-custom_gris_clair" />
+			<a type="button" class="btn btn-custom_gris_clair" href="{{ path('bacloocrm_search', {'speed' : 3}) }}">Réinitialiser</span></a>
+			{% if mesfichestot is defined %}
+				{% if mesfiches is defined %}
+					<br><br>
+			{% if view == 'client' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{#  <a type="button" class="btn btn-custom_jaune btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Mes Clients ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'prospect' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{#  <a type="button" class="btn btn-custom_jaune btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>
+				<h4><b>Mes Prospects ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'shared' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{#  <a type="button" class="btn btn-custom_jaune btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Les fiches partagées par mes collègues ({{ lesfichesss }})</b></h4>
+			{% elseif view == 'fournisseur' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{#  <a type="button" class="btn btn-custom_jaune btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Mes fournisseurs</b></h4>
+			{% elseif view == 'annuaire' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{# <a type="button" class="btn btn-custom_jaunefonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Annuaire</b></h4>			
+			{% elseif view == 'corbeille' %}
+				<div class="btn-group btn-group-lg" role="group" aria-label="">
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'client'}) }}">Clients</a>
+					<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'prospect'}) }}">Prospects</a>
+					{#  <a type="button" class="btn btn-custom_jaune btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'annuaire'}) }}">Annuaire</a> #}
+					{# <a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'shared'}) }}">Partagées</a> #}
+					{% if modules.module6activation == 1 %}<a type="button" class="btn btn-custom_gris_fonce btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'fournisseur'}) }}">Fournisseurs</a>{% endif %}
+					<a type="button" class="btn btn-custom_gris_clair btn-xl" href="{{ path('bacloocrm_search', {'vue' : vue, 'view': 'corbeille'}) }}">Corbeille</a>
+				</div>					
+				<h4><b>Les prospects dans la corbeille ({{ lesfichesss }})</b></h4>
+			{% endif %}
+				{% if lesfichesss != 0 %}
+							<table class="table table-striped">
+								<thead class="thead-inverse">
+									<tr>
+										<th >
+											Raison sociale
+										</th>
+										<th >
+											Cp
+										</th>
+										<th >
+											Ville
+										</th>
+										<th >
+											Tel
+										</th>
+										<th >
+											Dernier commentaire
+										</th>
+										{% if modules.module1activation == 1 %}
+											<th>									
+											</th>							
+											<th>								
+											</th>
+										{% endif %}
+									</tr>
+								</thead>
+							<tbody>		
+							{% for resultat in mesfiches %}
+								{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}<tr style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">{% else %}</tr>{% endif %}
+									<td>
+											{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}{{ resultat.raisonSociale| truncate(30) }}{% else %}{{ resultat.raisonSociale| truncate(1) }}{% endif %}
+									</td>
+									<td>
+											{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}{{ resultat.cp }}{% else %}{{ resultat.cp| truncate(2) }}{% endif %}
+									</td>
+									<td>
+											{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}{{ resultat.ville }}{% else %}{{ resultat.ville| truncate(2) }}{% endif %}
+									</td>
+									<td style="cursor:pointer" onclick="location.href='{{ path('bacloocrm_voir', {'id': resultat.id}) }}'">
+											{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}{{ resultat.telephone }}{% else %}{{ resultat.telephone| truncate(4) }}{% endif %}
+									</td>
+										{% if modules.module9activation == 1  and view == 'annuaire' or view != 'annuaire' %}{{ render(controller("BaclooCrmBundle:Crm:showcomm", {'id': resultat.id, 'module1act': modules.module1activation})) }}{% else %}<td><a style="color:black" href="{{ path('bacloocrm_modules') }}">>>> Veuillez activer le module annuaire pour voir plus de détails. <<<</a></td>{% endif %}	
+										
+									{% if modules.module1activation == 1 %}
+										{{ render(controller("BaclooCrmBundle:Crm:speedpartage", {'id': resultat.id})) }}
+									{% endif %}
+								</tr>					
+							{% endfor %}
+							</table>
+						<center>
+							{% if nombrePage > 0 %}
+								<ul class="pagination">
+									{% if page > 1 %}
+										<li>
+											<a href="{{ path('bacloocrm_find', {'page': 1, 'id': 0, 'view':view}) }}">
+												<<
+											</a>
+										</li>
+										<li>
+											<a href="{{ path('bacloocrm_find', {'page': page-1, 'id': 0, 'view':view}) }}">
+												<
+											</a>
+										</li>
+									{% endif %}
+
+									{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+									{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+										<li {% if p == page %}class="active"{% endif %}>
+											<a href="{{ path('bacloocrm_find', {'page': p, 'id': 0, 'view':view}) }}">
+												{{ p }}
+											</a>
+										</li>
+									{% endfor %}
+
+									{% if page < nombrePage %}
+										<li>
+											<a href="{{ path('bacloocrm_find', {'page': page+1, 'id': 0, 'view':view}) }}">
+												>
+											</a>
+										</li>
+										<li>
+											<a href="{{ path('bacloocrm_find', {'page': nombrePage, 'id': 0, 'view':view}) }}">
+												>>
+											</a>
+										</li>
+									{% endif %}
+								</ul>
+							{% endif %}
+						</center>
+					{% endif %}
+				{% else %}			
+					{% if view == 'client' %}
+						<center>Vous n'avez pas de fiche client dans Bacloo.<br>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche client</a>
+						<center>
+					{% elseif view == 'prospect' %}
+						<center>Vous n'avez pas de fiche prospect dans Bacloo.<br>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche prospect</a>
+						<center>
+					{% elseif view == 'corbeille' %}
+					<center>Vous n'avez pas de fiche dans la corbeille.<br><center>
+					{% endif %}
+				{% endif %}
+			{% else %}
+				<center>Vous n'avez pas de fiche dans Bacloo.<br>
+				<a class="btn btn-primary" href="{{ path('bacloocrm_ajouter') }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Ajouter ma première fiche</a>
+			{% endif %}	
+				
+			</center>
+		</fieldset>			
+		</form>
+
+	{% if id is not defined %}
+		
+
+	{% endif %}
+	</ul>

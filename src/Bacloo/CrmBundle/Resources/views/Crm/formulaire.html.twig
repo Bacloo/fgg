@@ -1,0 +1,397 @@
+
+
+	<form class="form-horizontal" action="{{ path('bacloocrm_ajouter') }}" method="post" {{form_enctype(form) }}>
+		<fieldset>
+	<div class="row clearfix">
+		<div class="col-md-9 column">		
+		
+				<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+
+		</div>	
+		<div class="col-md-3 column">	
+			<div class="form-group">
+			  <div class="col-md-12">
+				<div class="input-group pull-right">
+				  <span class="input-group-addon large">Type de fiche</span>
+				  {{ form_widget(form.typefiche, { 'attr' : { 'class' : 'form-control' } })  }}
+				</div>    
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Fiche administrative
+					</h3>
+				</div>
+				<div class="panel-body">
+							
+	{# Les erreurs générales du formulaire. #}
+	{{ form_errors(form) }}	
+
+
+<div class="form-group">
+  <div class="col-md-12">
+    <div class="input-group">
+      <span class="input-group-addon large">Raison Sociale</span>
+	  {{ form_widget(form.raisonSociale, { 'attr' : { 'class' : 'form-control' } })  }}
+	  <div class="hidden">{{ form_widget(form.lastmodif, { 'value' : date }) }}</div>
+	  <div class="hidden">{{ form_widget(form.usersociete, { 'value' : usersociete }) }}</div>
+	</div>    
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-md-12">
+    <div class="input-group">
+      <span class="input-group-addon large">Adresse 1</span>
+	  {{ form_widget(form.adresse1, { 'attr' : { 'class' : 'form-control' } })  }}
+	</div>    
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-md-12">
+    <div class="input-group">
+      <span class="input-group-addon large">Adresse 2</span>
+	  {{ form_widget(form.adresse2, { 'attr' : { 'class' : 'form-control' } })  }}
+	</div>    
+  </div>
+</div>	
+
+<div class="form-group">
+  <div class="col-md-12">
+    <div class="input-group">
+      <span class="input-group-addon large">Adresse 3</span>
+	  {{ form_widget(form.adresse3, { 'attr' : { 'class' : 'form-control' } })  }}
+	</div>    
+  </div>
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Code Postal</span>
+			  {{ form_widget(form.cp, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Ville</span>
+			  {{ form_widget(form.ville, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>	
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Téléphone</span>
+			  {{ form_widget(form.telephone, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Fax</span>
+			  {{ form_widget(form.fax, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>	
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-5 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Suivi par</span>
+			  {{ form_widget(form.user, { 'value' : user, 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+	<div class="col-md-7 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Site Web</span>
+			  {{ form_widget(form.siteWeb, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="form-group">
+  <div class="col-md-12">
+	<div class="input-group">
+	  <span class="input-group-addon large">Activité</span>
+	  {{ form_widget(form.activite, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Tapez ici l\'activité de ce client' } })  }}
+	</div>
+  </div>
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Siret : </span>
+			  {{ form_widget(form.cperso1, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+	<div class="col-md-6 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">N° TVA : </span>
+			  {{ form_widget(form.cperso2, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+</div>
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="form-group">
+		  <div class="col-md-12">
+			<div class="input-group">
+			  <span class="input-group-addon large">Mail : </span>
+			  {{ form_widget(form.cperso3, { 'attr' : { 'class' : 'form-control' } })  }}
+			</div>    
+		  </div>
+		</div>
+	</div>
+</div>
+
+				
+				
+
+	{# On charge la bibliothèque jQuery. Ici, je la prends depuis le CDN google mais si vous l'avez en local, changez simplement l'adresse. #}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+				</div>
+				<div class="panel-footer">
+				
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Mémo
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+					  <div class="col-md-12">                     
+						{{ form_widget(form.memo.texte, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+					  </div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Rappels
+					</h3>
+				</div>
+				<div class="panel-body">
+				{# Partie brappels #}
+					<div id="bacloo_crmbundle_fiche_brappels" data-prototype="{{ _self.brappelsCollectionItem(form.brappels.vars.prototype, user, usersociete)|e }}">
+						<table id="bacloo3" class="table table-bordered"><tr id="dibac3"><td class="col-md-3">Date</td><td class="col-md-2">User</td><td class="col-md-7">Commentaire</td><td class="col-md-2"></td></tr>
+							{% macro brappelsCollectionItem(brappels, user, usersociete) %}
+								<tr>
+									<td>
+										<div class="form-group">
+										  <div class="col-md-12">
+											<div class="hidden">{{ form_widget(brappels.entreprise, { 'value' : usersociete }) }}</div>										  
+											{{ form_widget(brappels.date, { 'attr' : { 'class' : 'form-control date'}})  }}
+										  </div>
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+										  <div class="col-md-12">
+											{{ form_widget(brappels.user, { 'value' : user, 'attr' : { 'class' : 'form-control' }} )  }}
+										  </div>
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+										  <div class="col-md-12">
+											{{ form_widget(brappels.rapTexte, { 'attr' : { 'class' : 'form-control' } })  }}
+										  </div>
+										</div>
+									</td>
+								</tr>
+							{% endmacro %}
+						</table>
+					</div>		
+				{# Fin Partie brappels #}
+				{% include "BaclooCrmBundle:Crm:ajout_rappels.html.twig" %}
+				</div>
+				<div class="panel-footer">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Contacts
+					</h3>
+				</div>
+				<div class="panel-body">		
+					<div id="bacloo_crmbundle_fiche_bcontacts" data-prototype="{{ _self.bcontactsCollectionItem(form.bcontacts.vars.prototype)|e }}">
+						<table id="bacloo" class="table table-bordered"><tr id="dibac"><td style="width:100px;">Civilité</td><td style="width:150px;">Nom</td><td style="width:150px;">Prénom</td><td style="width:330px;">Fonction</td><td style="width:160px;">Téléphone</td><td class="col-md-2">E-mail</td style="width:110px;"><td class="col-md-3">Commentaire</td><td></td></tr>
+
+						{% macro bcontactsCollectionItem(bcontacts) %}
+
+						<tr>
+
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.civilite, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.nom, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.prenom, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.fonction, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.tel1, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.email, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="col-md-12">
+									{{ form_widget(bcontacts.commentaire, { 'attr' : { 'class' : 'form-control' } })  }}
+								  </div>
+								</div>
+							</td>
+						</tr>
+
+						{% endmacro %}</table>
+					</div>
+					{# Fin Partie bcontatcs #}
+					{% include "BaclooCrmBundle:Crm:ajout_contacts.html.twig" %}
+				
+				</div>
+				<div class="panel-footer">
+					
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Evènements : Qu'est-ce qu'on s'est dit lors du dernier appel ?
+					</h3>
+				</div>
+				<div class="panel-body">
+{# Partie event #}
+	
+	<div id="bacloo_crmbundle_fiche_event" data-prototype="{{ _self.eventCollectionItem(form.event.vars.prototype, date, user)|e }}">
+		<table id="bacloo2" class="table table-bordered"><tr id="dibac2"><td class="col-md-2">Date</td><td class="col-md-1">Utilisateur</td><td class="col-md-9">Commentaire</td><td class="col-md-9"></td></tr>
+			{% macro eventCollectionItem(event, date, user) %}
+				<tr>
+					<td>
+						<div class="form-group">
+						  <div class="col-md-12">
+							{{ form_widget(event.eventDate, { 'value' : date, 'attr' : { 'class' : 'form-control' }} )  }}
+						  </div>
+						</div>
+					</td>					
+					<td>
+						<div class="form-group">
+						  <div class="col-md-12">
+							{{ form_widget(event.user, { 'value' : user, 'attr' : { 'class' : 'form-control' }} )  }}
+						  </div>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+						  <div class="col-md-12">
+							{{ form_widget(event.eventComment, { 'attr' : { 'class' : 'form-control' } })  }}
+						  </div>
+						</div>
+					</td>
+				</tr>
+			{% endmacro %}
+		</table>
+	</div>
+{# Fin Partie event #}
+{% include "BaclooCrmBundle:Crm:ajout_event.html.twig" %}
+				</div>
+				<div class="panel-footer">
+					
+				</div>
+			</div>
+
+			
+				<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+
+		</div>		
+	{{ form_row(form._token) }}	
+	</fieldset>
+	</div>	
+	</form>
+	

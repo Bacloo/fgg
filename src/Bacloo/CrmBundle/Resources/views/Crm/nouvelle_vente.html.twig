@@ -1,0 +1,387 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_ventes', {'ficheid':client.id, 'vendaid':vendaid, 'mode':mode } ) }}" method="post" {{form_enctype(form) }}>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>{% if vendaid > 0 %} Devis de vente{% else %} Nouveau devis de vente{% endif %} pour : <b>{{ client.raisonSociale }}</b></h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="col-md-6 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Adresse de livraison
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="hidden">
+									{{ form_widget(form.client, { 'value' : client.raisonSociale }) }}
+									{{ form_widget(form.clientid, { 'value' : client.id }) }}
+									{{ form_widget(form.user, { 'value' : user }) }}
+									{{ form_widget(form.date, { 'value' : date }) }}
+									{{ form_widget(form.montantvente, { 'value' : totalvente }) }}
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>adresse1</span>
+											{{ form_widget(form.adresse1, { 'id' : 'adresse1_1', 'attr' : { 'class' : 'form-control adresse1' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>adresse2</span>
+											{{ form_widget(form.adresse2, { 'id' : 'adresse2_1', 'attr' : { 'class' : 'form-control adresse2' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>adresse3</span>
+											{{ form_widget(form.adresse3, { 'id' : 'adresse3_1', 'attr' : { 'class' : 'form-control adresse3' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>cp</span>
+											{{ form_widget(form.cp, { 'id' : 'cp_1', 'attr' : { 'class' : 'form-control cp' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>ville</span>
+											{{ form_widget(form.ville, { 'id' : 'ville_1', 'attr' : { 'class' : 'form-control ville' } })  }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Commentaire
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+						  <div class="col-md-12">                     
+							{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+						  </div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						
+					</div>
+				</div>				
+			</div>
+			<div class="col-md-3 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Etat de la vente
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row clearfix">
+							<div class="col-md-12 column">						
+								<table>
+									<tr>
+										{% if bdcrecu != 1 %}
+											<td class="moyen"><span>Offre </span></td>
+											<td class="moyen"><span>{{ form_widget(form.offreencours) }} </span></td>
+											<td class="moyen">&nbsp;&nbsp;<a href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'offrevente', 'erreur': 0 }) }}"><i class="fa fa-file-pdf-o"></i></a></td>
+										{% else %}
+											{% if form.vars.value.offreencours == 1 %}
+												<div class="hidden">{{ form_widget(form.offreencours) }}</div>
+												<td class="moyen">Offre :</td><td class="moyen">Oui</td>
+												<td class="moyen">&nbsp;&nbsp;<a href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'offrevente', 'erreur': 0 }) }}"><i class="fa fa-file-pdf-o"></i></a></td>
+											{% else %}
+												<div class="hidden">{{ form_widget(form.offreencours) }}</div>
+												<td class="moyen">Offre :</td><td class="moyen">Non</td>
+											{% endif %}
+										{% endif %}
+									</tr>
+									<tr>
+										{% if bdcrecu != 1 %}
+											<td class="moyen"><span>Refus &nbsp;&nbsp;</span></td>
+											<td class="moyen">{{ form_widget(form.offrerefusee) }}</td>
+										{% elseif bdcrecu == 1 and userdetails.roleuser == 'admin' %}
+											<td class="moyen"><span>Refus &nbsp;&nbsp;</span></td>
+											<td class="moyen">{{ form_widget(form.offrerefusee) }}</td>
+										{% else %}
+											{% if form.vars.value.offrerefusee == 1 %}
+												<div class="hidden">{{ form_widget(form.offrerefusee) }}</div>
+												<td>Refus :</td><td class="moyen">Oui</td>
+											{% else %}
+												<div class="hidden">{{ form_widget(form.offrerefusee) }}</div>
+												<td class="moyen">Refus :</td><td class="moyen">Non</td>
+											{% endif %}
+										{% endif %}
+									</tr>
+									<tr>
+										{# {% if bdcrecu != 1 %} #}
+											<td class="moyen"><span>Accepté ? </span></td>
+											<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+											<td class="moyen"></td>
+										{# {% elseif bdcrecu == 1 and form.vars.value.bdcrecu == 0 %}
+											<td class="moyen"><span>Bdc </span></td>
+											<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+											<td class="moyen"></td>
+										{% else %}
+											{% if bdcrecu == 1 %}
+												<div class="hidden">{{ form_widget(form.bdcrecu) }}</div>
+												<td class="moyen">Bdc :</td>
+												<td class="moyen">Oui</td>
+												<td class="moyen"></td>
+											{% else %}
+												<div class="hidden">{{ form_widget(form.bdcrecu) }}</div>
+												<td class="moyen">Bdc :</td>
+												<td class="moyen">Non</td>
+											{% endif %}
+										{% endif %} #}
+									</tr>
+									<tr>
+											<td class="moyen">{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control-sm', 'placeholder' : 'n° de bon de commande' } })  }}</td>
+									</tr>
+									<tr>
+										<td class="moyen"><span style="color:red"><b>Sans tva ? &nbsp;&nbsp;</b></span></td>
+										<td class="moyen">{{ form_widget(form.sanstva) }}</td>
+									</tr>
+									<tr>
+										{% if bdcrecu != 1 %}
+											<td class="moyen"><span>Remise</span></td>
+											<td style="width:40px">
+												<div style="width:40px">{{ form_widget(form.remise, { 'attr' : { style: 'height:18px; width:40px;' } })  }}</div>	
+											</td>
+											<td class="moyen">%</td>
+										{% else %}
+											{# <div class="hidden">{{ form_widget(form.remise) }}</div>
+											<td class="moyen">Remise&nbsp;&nbsp;</td><td class="moyen">{{ form.vars.value.remise }}</td><td class="moyen">{% if form.vars.value.remise > 0 %}%{% endif %}</td> #}
+											<td class="moyen"><span>Remise</span></td>
+											<td style="width:40px">
+												<div style="width:40px">{{ form_widget(form.remise, { 'attr' : { style: 'height:18px; width:40px;' } })  }}</div>	
+											</td>
+											<td class="moyen">%</td>											
+										{% endif %}
+									</tr>
+									<tr>
+											<td class="moyen" colspan="3"><br></td>
+									</tr>
+									<tr>
+										<td colspan="3">
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b></b>Acompte</span>
+														{{ form_widget(form.acompte, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Montant de l\'acompte' } })  }}
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>				
+								</table>				
+							</div>
+						</div>				
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Qui achète
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Acheteur</span>
+									{{ form_widget(form.acheteur, { 'attr' : { 'class' : 'form-control' } })  }}<br>
+								</div>
+							</div>
+						</div>
+					</div>							
+				</div>				
+				<div>
+				{% if afac == 'ok' %}
+					<div class="col-md-12"><center>
+						<a type="button" class="btn btn-success btn-lg" href="{{ path('bacloocrm_avoirventes', {'vendaid': vendaid, 'numfacture': numfacture}) }}">
+						Créer un avoir</a>
+					</div></center>						
+				{% endif %}
+				</div>				
+			</div>
+			{% if vendaid > 0 %}						
+				<div class="col-md-3 column">
+							<table class="table table-hover">
+								<tbody>
+									<tr>
+										<td><h4>Total Vente</h4></td>
+										<td class="text-right"><h6><strong>{{ totalvente|number_format(2, ',', ' ') }}</strong></h6></td>
+									</tr>
+									{% if form.vars.value.remise > 0 %}
+										<tr>
+											<td>
+												<h5>Remise</h5>
+											</td>
+											<td class="text-right">
+												<h5><strong>- {{ totalvente * form.vars.value.remise/100 }}{% set totalventeok = totalvente - (totalvente * form.vars.value.remise/100) %}</strong></h5>
+											</td>
+										</tr>
+									{% else %}
+										{% set totalventeok = totalvente %}
+									{% endif %}
+									<tr>
+									<tr>
+										<td>
+											<h6>TVA (20%)</h6>
+										</td>
+										<td class="text-right">							
+											{% if client.typeclient != 'export' and form.vars.value.sanstva != 1 %}
+												<h6><strong>{% set tauxtva = '0.20' %}{% set tva = tauxtva * totalventeok %}{{ tva|number_format(2, ',', ' ')  }}</strong></h6>
+											{% else %}
+												<h6><strong>{% set tauxtva = '0' %}{% set tva = tauxtva * totalventeok %}{{ tva|number_format(2, ',', ' ')  }}</strong></h6>
+											{% endif %}
+										</td>
+									</tr>
+									<tr>
+										<td><h4>Total TTC</h4></td>
+										<td class="text-right"><h4><strong>{{ (totalventeok + tva)|number_format(2, ',', ' ') }} €</strong></h4></td>
+									</tr>
+								</tbody>
+							</table>	
+				
+				</div>						
+				<div class="col-md-3 column">
+					<div class="col-md-12">
+					{% if form.vars.value.bdcrecu ==  1 %}
+						<a type="button" class="btn btn-warning btn-lg" href="{{ path('bacloocrm_impressionfactures', {'codecontrat': vendaid, 'clientid': client.id, 'numlocatavente': 'V-' ~ vendaid, 'mode':'facture', 'numfacture':idfac} ) }}">Facture</a>
+					{% endif %}
+					</div>			
+				</div>
+			{% else %}
+				<div class="col-md-6 column">				
+				</div>				
+			{% endif %}			
+			</div>
+			<br><br>	
+			{# Partie Ventes #}
+			<div class="col-md-12 column">
+				{# Les erreurs générales du formulaire. #}		
+				<div id="bacloo_crmbundle_venda_ventes" data-prototype="{{ _self.ventesCollectionItem(form.ventes.vars.prototype, user, date, bdcrecu)|e }}">
+					<table id="bacloo3" class="table table-bordered">
+						<tr id="dibac3">
+							<td class="">Codif.</td>
+							<td class="">Ref.Article</td>
+							<td class="">Description</td>
+							<td class="">Quantité</td>
+							<td class="">Prix Unitaire</td>		
+							<td class="">Prix Net</td>
+						</tr>
+						{% for vente in form.ventes|reverse(true) %}
+							{{ _self.ventesCollectionItem(vente, user, date, bdcrecu) }}
+						{% endfor %}						
+						{% macro ventesCollectionItem(ventes, user, date, bdcrecu) %}
+							<tr class="dibacloo3">
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										{{ form_widget(ventes.codifvente, { 'attr' : { 'class' : 'form-control' }} )  }}
+									  {# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.codifvente, { 'attr' : { 'class' : 'form-control description' }} )  }}
+									  {% else %}
+									  <div class="hidden">{{ form_widget(ventes.codifvente) }}</div>
+									    {{ ventes.codifvente.vars.value }}
+									  {% endif %} #}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="hidden">
+										{{ form_widget(ventes.date, { 'value' : date }) }}
+										{{ form_widget(ventes.user, { 'value' : user }) }}
+									</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(ventes.refarticle, {'attr' : {'class' : 'form-control'}})  }}
+										{# {% if bdcrecu != 1 %}
+											{{ form_widget(ventes.refarticle, {'attr' : {'class' : 'form-control'}})  }}
+										{% else %}
+										<div class="hidden">{{ form_widget(ventes.refarticle) }}</div>
+											{{ ventes.refarticle.vars.value }}
+										{% endif %} #}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										{{ form_widget(ventes.description, { 'attr' : { 'class' : 'form-control description' }} )  }}
+									  {# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.description, { 'attr' : { 'class' : 'form-control description' }} )  }}
+									  {% else %}
+									  <div class="hidden">{{ form_widget(ventes.description) }}</div>
+									    {{ ventes.description.vars.value }}
+									  {% endif %} #}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										{{ form_widget(ventes.quantite, { 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite' } })  }}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										{{ form_widget(ventes.pu, { 'attr' : { 'class' : 'form-control' } })  }}				  
+									  {# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.pu, { 'attr' : { 'class' : 'form-control' } })  }}
+									  {% else %}
+										<div class="hidden">{{ form_widget(ventes.pu) }}</div>
+									    {{ ventes.pu.vars.value|number_format(2, ',', ' ')}}
+									  {% endif %} #}
+									  </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+									  <div class="hidden">{{ form_widget(ventes.montantvente) }}</div>
+									    <span><center><h5><b>{{ ventes.montantvente.vars.value|number_format(2, ',', ' ')}} {% if ventes.montantvente.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+									  </div>
+									</div>
+								</td>
+							</tr>
+						{% endmacro %}
+					</table>
+				</div>	
+				{% include "BaclooCrmBundle:Crm:ajout_ventes.html.twig" %}
+						
+				<center>
+					<br>
+					<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+					<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>
+					{{ form_row(form._token) }}
+				</center>	
+			</div>
+		</div>
+	</div>
+</div>
+</form>	
+{% endblock %}

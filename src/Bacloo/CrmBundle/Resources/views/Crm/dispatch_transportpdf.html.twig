@@ -1,0 +1,237 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+		
+			<!-- Side menu -->	
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+		
+
+		
+	{% endblock %}
+
+
+	</head>
+	<body>
+<br><br><br><br>
+<h2><span style="text-align:center;">Tournée de {{ chauffeur }} du {{ datelivraison|date('d/m/Y') }}</span></h2>
+<br><br><br>			
+			<table cellspacing="0" cellpadding="1" border="1">
+					<tr>
+						<td>
+							<h3><span style="text-align:center;">Reprises</span></h3>
+						</td>
+					</tr>
+			</table>
+	<br><br>
+	
+		{# Partie Locations #}		
+				<table cellspacing="0" cellpadding="1" border="1">
+					<tr>
+						<td>
+							Client
+						</td>
+						<td>
+							Chantier
+						</td>
+						<td>
+							Contact sur place
+						</td>
+						<td>
+							Type de matériel
+						</td>
+						<td>
+							Matériel
+						</td>
+						<td>
+							Commentaire logistique
+						</td>
+						<td>
+							Ordre de reprise
+						</td>
+						<td>
+							Statut
+						</td>
+					</tr>
+						{% for log in logistiquerep %}
+							{% if chauffeur == log.user %}
+								<tr>
+									<td>
+										
+											
+												{{ log.client }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.nomchantier }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.contactchantier }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.typemateriel }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.materiel }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.memolog }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.ordretransport }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.etatlog }}
+											
+										
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+				</table>
+	
+		
+<br><br><br>			
+			{# Fin Partie logistiquerep #}				
+			<table cellspacing="0" cellpadding="1" border="1">
+					<tr>
+						<td>
+							<h3><span style="text-align:center;">Livraisons</span></h3>
+						</td>
+					</tr>
+			</table>
+<br><br>			
+		{# Partie Locations #}		
+			{# Les erreurs générales du formulaire. #}		
+				<table cellspacing="0" cellpadding="1" border="1">
+					<tr>
+						<td>
+							Client
+						</td>
+						<td>
+							Chantier
+						</td>
+						<td>
+							Contact sur place
+						</td>
+						<td>
+							Type de matériel
+						</td>
+						<td>
+							Matériel
+						</td>
+						<td>
+							Commentaire logistique
+						</td>
+						<td>
+							Ordre de reprise
+						</td>
+						<td>
+							Statut
+						</td>
+					</tr>
+						{% for log in logistique %}
+							{% if chauffeur == log.user %}
+								<tr>
+									<td>
+										
+											
+												{{ log.client }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.nomchantier }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.contactchantier }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.typemateriel }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.materiel }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.memolog }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.ordretransport }}
+											
+										
+									</td>
+									<td>
+										
+											
+												{{ log.etatlog }}
+											
+										
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+				</table>			
+			{# Fin Partie logistique #}		
+	
+	</body>
+</html>	

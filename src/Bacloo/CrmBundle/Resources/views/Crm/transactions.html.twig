@@ -1,0 +1,124 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		{# Partie Prospot #}
+				<div class="col-md-6 column">	
+					<center><h4>Achats</h4></center>
+					{% if achats is empty %}
+						<center>Pas d'achat enregistré pour le moment</center>
+					{% else %}
+							<table id="bacloo2" class="table table-hover">
+							<thead>
+								<tr>
+									<th>
+										Date
+									</th>
+									<th>
+										Vendeur
+									</th>
+									<th>
+										Raison sociale
+									</th>
+									<th>
+										Type de vente
+									</th>
+									<th>
+										Prix
+									</th>	
+								</tr>
+							</thead>
+							<tbody>
+								{% for achat in achats %}
+								<tr class="warning">
+									<td>
+										<div class="form-group">
+											{{ achat.date|date('d/m/Y') }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											{{ achat.vendeur }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<a href="{{ path('bacloocrm_voir', {'id': achat.nficheid}) }}">{{ achat.raisonsociale }}</a>
+										</div>
+									</td>				
+									<td>
+										<div class="form-group">
+											{{ achat.typetransac }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											{{ achat.prix }} cr
+										</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							</table>
+					{% endif %}
+				</div>
+				<div class="col-md-6 column">
+					<center><h4>Ventes</h4></center>
+					{% if ventes is empty %}
+						<center>Pas de vente enregistrée pour le moment</center>
+					{% else %}
+							<table id="bacloo2" class="table">
+							<thead>
+								<tr>
+									<th>
+										Date
+									</th>
+									<th>
+										Vendeur
+									</th>
+									<th>
+										Raison sociale
+									</th>
+									<th>
+										Type de vente
+									</th>
+									<th>
+										Prix
+									</th>	
+								</tr>
+							</thead>
+							<tbody>
+								{% for vente in ventes %}
+								<tr class="success">
+									<td>
+										<div class="form-group">
+											{{ vente.date|date('d/m/Y') }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											{{ vente.acheteur }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<a href="{{ path('bacloocrm_voir', {'id': vente.ficheid}) }}">{{ vente.raisonsociale }}</a>
+										</div>
+									</td>				
+									<td>
+										<div class="form-group">
+											{{ vente.typetransac }}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											{{ vente.prix }} cr
+										</div>
+									</td>
+								</tr>
+								
+								{% endfor %}
+							</tbody>
+							</table>
+					{% endif %}
+				</div>
+		</div>
+</div>

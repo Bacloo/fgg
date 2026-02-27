@@ -1,0 +1,21 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+			<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ path('bacloocrm_home') }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								
+							</h4>
+						</div>
+						<div class="modal-body">
+							La publication a été partagée avec votre réseau de partenaires.
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ path('bacloocrm_home') }}"><span>Fermer</span></a>
+						</div>
+				</div>					
+			</div>				
+</div>		
+{% endblock %}

@@ -1,0 +1,211 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title" id="myModalLabel">
+				Transfert de matériel
+			</h3>
+		</div>
+		<div class="modal-body">
+			{% if message == 1 %}
+				<div class="alert alert-success">
+				  <strong>Bravo!</strong> Transfert enregistré avec succès.
+				</div>
+				<div>
+					<center>
+						<br>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': clientid, 'locid': codecontrat}) }}"><span>Fermer</span></a>
+					</center>
+				</div>
+			{% elseif message == 2 %}
+				<div class="alert alert-success">
+				  <strong>Bravo!</strong> Transfert enregistré avec succès.
+				</div>
+				<div>
+					<center>
+						<br>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': clientid, 'locid': codecontrat}) }}"><span>Fermer</span></a>
+					</center>
+				</div>		
+			{% else %}
+				<h4>De Chantier actuel, vers :</h4>
+				<form class="form-horizontal" action="{{ path('bacloocrm_transferts', {'codelocations':codelocations, 'typeloc':typeloc, 'ecode':ecode, 'codecontrat':codecontrat } ) }}" method="post" {{form_enctype(form) }}>			
+				<div class="col-md-12">
+					<div class="col-md-7 column">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									Chantier de destination
+								</h3>
+							</div>				
+							<div class="panel-body">
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="hidden">
+											{{ form_widget(form.chantierid, {'id' : 'chantierid_1', 'attr' : { 'class' : 'chantierid' } })  }}
+											{{ form_widget(form.date, { 'value' : date|date('Y-m-d') }) }}
+										</div>
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Chantier</span>
+											{{ form_widget(form.nomchantier, { 'id' : 'chantier_1', 'attr' : { 'class' : 'form-control chantier' } })  }}<span id="match2"></span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Adresse1</span>
+											{{ form_widget(form.adresse1, { 'id' : 'adresse1_1', 'attr' : { 'class' : 'form-control adresse1' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Adresse2</span>
+											{{ form_widget(form.adresse2, { 'id' : 'adresse2_1', 'attr' : { 'class' : 'form-control adresse2' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Adresse3</span>
+											{{ form_widget(form.adresse3, { 'id' : 'adresse3_1', 'attr' : { 'class' : 'form-control adresse3' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>cp</span>
+											{{ form_widget(form.cp, { 'id' : 'cp_1', 'attr' : { 'class' : 'form-control cp' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>ville</span>
+											{{ form_widget(form.ville, { 'id' : 'ville_1', 'attr' : { 'class' : 'form-control ville' } })  }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>
+					<div class="col-md-5 column">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									Détails du transfert
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Tarif transport</span>
+											{{ form_widget(form.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}<br>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Demandeur</span>
+											{{ form_widget(form.demandeur, { 'attr' : { 'class' : 'form-control' } })  }}<br>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Contact</span>
+											{{ form_widget(form.contact, { 'attr' : { 'class' : 'form-control' } })  }}<br>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row clearfix">
+									<div class="col-md-12 column">						
+										<table>
+											<tr>
+												<td class="moyen"><span>Bdc reçu ?</span></td>
+												<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+												<td class="moyen"></td>
+											</tr>
+											<tr>
+												<td class="moyen" colspan="3">{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control-sm', 'placeholder' : 'n° de bon de commande' } })  }}</td>
+											</tr>		
+										</table>				
+									</div>
+								</div>
+							</div>							
+						</div>						
+					</div>
+				</div>
+				<div>
+					<center>
+						<br>
+						<input type="submit" class="btn btn-primary" value="Valider"/>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': clientid, 'locid': codecontrat}) }}"><span>Fermer</span></a>
+						{{ form_row(form._token) }}
+					</center>
+				</div>
+				</form>					
+			{% endif %}
+		</div>
+		{# Fin Partie Locations #}
+	</div>
+</div>
+{# Fin partie invisible #}
+</form>		
+<script>
+//Autocomplete chantier
+	$(document).ready(function(){
+	 $(document).on('keydown', '.chantier', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_updatechantier') }}",
+		 type: 'post',
+		 minLength: 2,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		document.getElementById('chantierid_'+index).value = ui.item.value;
+		document.getElementById('adresse1_'+index).value = ui.item.adresse1;
+		document.getElementById('adresse2_'+index).value = ui.item.adresse2;
+		document.getElementById('adresse3_'+index).value = ui.item.adresse3;
+		document.getElementById('cp_'+index).value = ui.item.cp;
+		document.getElementById('ville_'+index).value = ui.item.ville;
+
+
+		return false;
+	   }
+	  });
+	 });
+} );
+//Fin autocomplete chantier
+</script>	
+{% endblock %}

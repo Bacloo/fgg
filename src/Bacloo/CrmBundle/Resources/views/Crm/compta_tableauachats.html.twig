@@ -1,0 +1,371 @@
+<form class="form-horizontal" action="{{ path('bacloocrm_facturestableau', {'factureid': facture.id, 'factures': 0, 'page': page, 'mode': mode, 'numfacture': facture.numfacture, 'modepaiement': facture.modepaiement, 'totalttc': totalttc, 'client': facture.client, 'style': style, 'vue': 'achats'}) }}"  method="post" {{form_enctype(form) }}>
+{% if 'V-' ~ facture.locatacloneid == facture.codelocata %}
+	{% set doc = 'ventes' %}
+{% elseif vue == 'achats' %}
+	{% set doc = 'achats' %}
+{% elseif facture.typedoc == 'avoir' %}
+	{% set doc = 'avoir' %}
+{% else %}
+	{% set doc = 'locations' %}
+{% endif %}
+					<tr>
+						{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+							<td>
+							{% if facture.numfacfrs is not empty and facture.validation2 == 1 %}
+								{% if facture.encompta == 1 %}
+									{% if facture.typedoc == 'avoir frs' %}
+										<span style="color:orange"><i class="fa fa-lock"></i></span>
+									{% else %}
+										<a href="{{ path('bacloocrm_recupfacturefrs', {'numfacture': facture.id, 'locatacloneid': facture.locatacloneid, 'vue':doc, 'mode':mode, 'page':page} ) }}" title="Recuperer la facture validee definitivement"><span style="color:orange"><i class="fa fa-lock"></i></span></a>
+									{% endif %}
+								{% else %}
+									{% if facture.typedoc == 'avoir frs' %}
+										<span style="color:orange"><i class="fa fa-lock"></i></span>
+									{% else %}
+										<a href="{{ path('bacloocrm_comptadef', {'numfacture': facture.id, 'mode': mode, 'page': page, 'doc': doc} ) }}"><span style="color:green"><i class="fa fa-unlock"></i></span></a>
+									{% endif %}
+								{% endif %}
+							{% endif %}
+							</td>
+{#							<td>#}
+{#								{% if facture.numfacfrs is not empty and facture.validation1 == 1 %}#}
+{#									{% if facture.validation1 == 1 and facture.validation2 == 1 %}#}
+{#										{% if facture.encompta == 0 %}#}
+{#											<a href="{{ path('bacloocrm_devalidation2', {'numfacture': facture.numfacfrs, 'vue':doc, 'mode':mode, 'page':page} ) }}" title="Recuperer la facture validee definitivement"><span style="color:orange"><i class="fa fa-lock"></i></span></a>#}
+{#										{% else %}#}
+{#											<span style="color:orange"><i class="fa fa-lock"></i>#}
+{#										{% endif %}#}
+{#									{% elseif facture.validation1 == 1 and facture.validation2 == 0 %}#}
+{#										{% if facture.encompta == 0 %}#}
+{#											<a href="{{ path('bacloocrm_validation2', {'numfacture': facture.numfacfrs, 'vue':doc, 'mode':mode, 'page':page} ) }}"><span style="color:green"><i class="fa fa-unlock"></i></span></a>#}
+{#										{% else %}#}
+{#											<span style="color:green"><i class="fa fa-unlock"></i>#}
+{#										{% endif %}#}
+{#									{% endif %}#}
+{#								{% endif %}#}
+{#							</td>#}
+							<td>
+							{% if facture.numfacfrs is not empty %}
+								{% if facture.validation1 == 1 %}
+									{% if facture.encompta == 0 %}
+										<a href="{{ path('bacloocrm_devalidation1', {'numfacture': facture.id, 'vue':doc, 'mode':mode, 'page':page} ) }}" title="Recuperer la facture validee definitivement"><span style="color:orange"><i class="fa fa-lock"></i></span></a>
+									{% else %}
+										<span style="color:orange"><i class="fa fa-lock"></i>
+									{% endif %}
+								{% else %}
+									{% if facture.encompta == 0 %}
+										<a href="{{ path('bacloocrm_validation1', {'numfacture': facture.id, 'vue':doc, 'mode':mode, 'page':page} ) }}"><span style="color:green"><i class="fa fa-unlock"></i></span></a>
+									{% else %}
+										<span style="color:green"><i class="fa fa-unlock"></i>
+									{% endif %}
+								{% endif %}
+							{% endif %}
+							</td>
+						{% endif %}
+						<td>
+							{% if facture.typedoc != 'avoir frs' %}
+								{% if 'H-' ~ facture.locatacloneid == facture.codelocata and facture.typedoc == 'facture frs' %}
+									<center><a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': facture.clientid, 'locid': facture.locatacloneid, 'erreur': facture.id }) }}"><i class="fa fa-pencil"></i></a></center>
+								{% elseif 'H-' ~ facture.locatacloneid != facture.codelocata and facture.typedoc == 'facture frs' %}
+									<center><a href="{{ path('bacloocrm_modifierfacfrs', {'ficheid': facture.clientid, 'locid': facture.locatacloneid, 'type': facture.achatsimple, 'erreur': '0'} ) }}"><i class="fa fa-pencil"></i></a></center>
+								{% elseif facture.typedoc == 'avoir frs' %}
+									{% if 'H-' ~ facture.locatacloneid == facture.codelocata %}
+										<center><a href="{{ path('bacloocrm_avoirachatnormal', {'vendaid': facture.locatacloneid, 'numavoir': facture.numfacture}) }}"><i class="fa fa-pencil"></i></a></center>
+									{% else %}
+										<center><a href="{{ path('bacloocrm_avoirloc', {'locid': facture.locatacloneid, 'numavoir': facture.numfacture, 'mode': 'achatsousloc'}) }}"><i class="fa fa-pencil"></i></a></center>
+									{% endif %}
+								{% endif %}
+							{% endif %}
+						</td>
+						<td>
+							{% if facture.numfacfrs is not empty %}
+								{% if documents is empty %}
+									{# Dropzone #}
+									<div class="row clearfix">
+											<div class="col-sm-12">
+												<center><div class="dropzone{{ facture.numfacture }} col-md-6" id="my-awesome-dropzone" style="border-style: dashed solid; height:20px;"><div class="dz-message" data-dz-message><span></span></div></div></center>
+											</div>
+									</div>
+
+									{# Fin dropzone #}
+{#									{% if vue == 'achats' %}#}
+{#										<a href="{{ path('bacloocrm_impressionbdccompta', {'codecontrat': facture.locatacloneid, 'clientid': facture.clientid, 'numlocatavente': facture.codelocata, 'mode':'bdc'} ) }}"><i class="fa fa-file-pdf-o"></i></a>#}
+{#									{% else %}#}
+{#										<a href="{{ path('bacloocrm_impressionfactures', {'codecontrat': facture.locatacloneid, 'clientid': facture.clientid, 'numlocatavente': facture.codelocata, 'mode':facture.typedoc, 'numfacture':facture.numfacture, 'vue':'achats'} ) }}"><i class="fa fa-file-pdf-o"></i></a>#}
+{#									{% endif %}#}
+								{% else %}
+									<div class="row clearfix">
+										<div class="col-md-12">
+											<table>
+												<tr>
+													{% for document in documents %}
+														<td>
+															<a href="{{ asset('uploads/facfrs/'~ facture.id ~'/' ~ document.nom ~ '') }}"><i class="fa fa-file-pdf-o"></i></a>
+														</td>
+														<td class="col-md-10 pull-right">
+															<a href="{{ path('bacloocrm_removedocument', {'iddoc': document.id, 'codecontrat': facture.id, 'type':'facfrs' }) }}"><i class="fa fa-times"></i></a>
+														</td>
+													{% endfor %}
+												</tr>
+											</table>
+										</div>
+									</div>
+								{% endif %}
+							{% endif %}
+						</td>
+						{% if userdetails.username == 'jmr' %}
+							<td>
+								{% if facture.encompta == 1 %}{% else %}{% if facture.locatacloneid == facture.codelocata %}{% set typedoc = 'facture frs' %}{% elseif 'V-' ~ facture.locatacloneid == facture.codelocata %}{% set typedoc = 'vente' %}{% else %}{% set typedoc = 'achat' %}{% endif %}<a href="{{ path('bacloocrm_removefacturedef', {'numfacture': facture.id, 'locatacloneid': facture.locatacloneid, 'type': 'achat'} ) }}"><span style="color:red"><i class="fa fa-trash-o danger"></i></span></a>{% endif %}
+							</td>
+						{% endif %}
+						{% if vue == 'locations' %}
+							<td>
+								{{ facture.numfacture }}<div class="hidden">{{ form_widget(form.numfacture, {'value': facture.numfacture} ) }}</div>
+							</td>
+						{% else %}
+						{% endif %}
+						<th>
+							{{ facture.codelocata }}
+						</th>
+						<td>
+						{% if vue == 'achats' %}
+							{% if facture.encompta == 1 and facture.numfacfrs is not empty %}
+								{{ facture.numfacfrs }}
+										<div class="hidden">{{ form_widget(form.numfacfrs, { 'value': facture.numfacfrs }) }}</div>
+							{% elseif facture.typedoc == 'avoir frs' and facture.numfacfrs is empty %}
+								{{ form_widget(form.numfacfrs, { 'value': facture.numfacfrs, 'attr' : { 'class' : ' etroit200' } }) }}
+							{% else %}
+								{{ form_widget(form.numfacfrs, { 'value': facture.numfacfrs, 'attr' : { 'class' : ' etroit200' } }) }}
+							{% endif %}
+						{% endif %}
+						</td>
+{#						<td>#}
+{#							{% if facture.achatsimple == 1 %}#}
+{#								Une fois#}
+{#							{% else %}#}
+{#								Paiement mensuel#}
+{#							{% endif %}#}
+{#						</td>#}
+						{% if vue == 'locations' %}
+							<td>
+								{{ facture.codelocata }}
+							</td>
+						{% endif %}
+						<td>
+							<a href="{{ path('bacloocrm_voir', {'id': facture.clientid } ) }}">{{ facture.client }}</a>
+						</td>
+						{% if vue == 'locations' %}
+							<td>
+								{{ facture.chantier }}
+							</td>
+						{% endif %}
+						<td>
+							{{ form_widget(form.totalht, { 'value': facture.totalht, 'attr' : { 'class' : ' etroit100' } }) }}
+						</td>
+						<td>
+							{{ form_widget(form.totalttc, { 'value': facture.totalttc, 'attr' : { 'class' : ' etroit100' } }) }}
+						</td>
+						 <td>
+							 {% if facture.typedoc != 'avoir frs' %}
+							 	{{ form_widget(form.montantavoir, { 'value': facture.montantavoir, 'attr' : { 'class' : ' etroit100' } }) }}
+							 {% endif %}
+						</td>
+						{% if vue == 'achats' %}
+						 <td>
+							 {% if facture.typedoc != 'avoir frs' %}
+							 	{{ form_widget(form.acompte, { 'value': facture.acompte, 'attr' : { 'class' : ' etroit100' } }) }}
+							 {% endif %}
+						</td>
+						{% endif %}
+						<td>
+						{% if facture.typedoc != 'avoir' %}
+							{% if facture.encompta == 1 %}
+								{{ facture.datecrea|date('d/m/Y') }}
+										<div class="hidden">{{ form_widget(form.datecrea, { 'value': facture.datecrea|date('d/m/Y') }) }}</div>
+							{% else %}
+								{% if facture.datecrea is not empty %}
+									{{ form_widget(form.datecrea, { 'value': facture.datecrea|date('d/m/Y'), 'attr' : { 'class' : ' etroit80' } }) }}
+								{% else %}
+									{{ form_widget(form.datecrea, {'attr' : { 'class' : ' etroit80' } }) }}
+								{% endif %}
+							{% endif %}
+						{% else %}
+							{% if facture.encompta == 1 %}
+								{{ facture.datecrea|date('d/m/Y') }}
+								<div class="hidden">{{ form_widget(form.datecrea, { 'value': facture.datecrea|date('d/m/Y') }) }}</div>
+							{% else %}
+								{{ form_widget(form.datecrea, { 'value': facture.datecrea|date('d/m/Y'), 'attr' : { 'class' : ' etroit80' } }) }}
+							{% endif %}
+						{% endif %}
+						</td>
+						<td>
+						{% if facture.typedoc != 'avoir' %}
+							{% if facture.encompta == 1 %}
+								{{ facture.echeance|date('d/m/Y') }}
+								<div class="hidden">{{ form_widget(form.echeance, { 'value': facture.echeance|date('d/m/Y') }) }}</div>
+							{% else %}
+								{% if facture.echeance is not empty %}
+									{{ form_widget(form.echeance, { 'value': facture.echeance|date('d/m/Y'), 'attr' : { 'class' : 'datepicker etroit80' } }) }}
+								{% else %}
+									{{ form_widget(form.echeance, {'attr' : { 'class' : 'datepicker etroit80' } }) }}
+								{% endif %}
+
+							{% endif %}
+						{% endif %}
+						</td>
+						<td>
+							{{ facture.typedoc }}
+						</td>
+					{% if facture.typedoc == 'avoir' or facture.typedoc == 'avoir frs' %}
+						<td>
+
+						</td>
+						{% if facture.typedoc == 'avoir'  %}
+							<td colspan="6" class="col-md-12">
+						{% elseif facture.typedoc == 'avoir frs' %}
+							<td colspan="5" class="col-md-12">
+						{% endif %}
+							<b>Commentaire</b>
+							{{ form_widget(form.commentaire, { 'value': facture.commentaire, 'attr' : { 'class' : 'form-control', 'rows' : '3'}}) }}
+						</td>
+						<td>
+						{# {% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %} #}
+							<button type="submit" class="btn btn-info" value="Enregistrer"  name="save" >
+							   <i class="fa fa-save"></i>
+							</button>
+						{# {% endif %} #}
+						</td>
+						<td>
+
+						</td>
+						<td>
+
+						</td>
+						<td>
+
+						</td>
+					{% else %}
+						<td>
+							{% if facture.montantdejareg > 0  and facture.montantdejareg + facture.montantavoir < facture.totalttc %}Partiel{% elseif facture.montantdejareg > 0  and facture.montantdejareg + facture.montantavoir == facture.totalttc %}Regle{% elseif facture.reglement == 1 %}Regle{% endif %}
+						</td>
+						<td>
+							{% if vue == 'achats' and facture.numfacfrs is empty and facture.encompta is not defined or facture.encompta == 0 %}{% else %}{{ form_widget(form.montantreg, { 'value': facture.montantreg, 'attr' : { 'class' : 'etroit80' } }) }}{% endif %}
+						</td>
+						<td>
+							{% if vue == 'achats' and facture.numfacfrs is empty and facture.encompta is not defined or facture.encompta == 0 %}
+							{% else %}
+								{% if facture.datepaiement is not empty %}
+									{{ form_widget(form.datepaiement, { 'value': facture.datepaiement|date('d/m/Y'), 'attr' : { 'class' : 'datepicker etroit80' } }) }}
+								{% else %}
+									{{ form_widget(form.datepaiement, {'attr' : { 'class' : 'etroit80' } }) }}
+								{% endif %}
+							{% endif %}
+						</td>
+						<td>
+							{% if vue == 'achats' and facture.numfacfrs is empty %}{% else %}{{ form_widget(form.modepaiement, { 'value': facture.modepaiement} ) }}{% endif %}
+						</td>
+						<td>
+							{{ facture.montantdejareg }}
+							<div class="hidden">{{ form_widget(form.montantdejareg, {'value': facture.montantdejareg} ) }}</div>
+						</td>
+{#						<td>#}
+{#							{% if vue == 'achats' and facture.numfacfrs is empty %}{% else %}{{ form_widget(form.encaisse, { 'value': facture.encaisse} ) }}{% endif %}#}
+{#						</td>#}
+						<td>
+							{% if facture.typedoc == 'avoir frs' %}{% elseif vue == 'achats' and facture.numfacfrs is empty %}{% if facture.codegroupe > 0 %}{{ facture.codegroupe }}{% endif %}{% else %}<span style="color:red">{% if facture.codegroupe == 0 %}{{ form_widget(form.codegroupe, {'attr' : { 'class' : 'etroit60' } }) }}{% else %}{{ form_widget(form.codegroupe, { 'value': facture.codegroupe, 'attr' : { 'class' : 'datepicker etroit60' } }) }}{% endif %}</span>{% endif %}
+						</td>
+						<td>
+						{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+                            <button type="submit" class="btn btn-info" value="Enregistrer"  name="save" >
+                                <i class="fa fa-save"></i>
+                            </button>
+						{% endif %}
+						</td>
+						<td>
+							{% if facture.reglement == 0 and (userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user') %}
+								{% if vue == 'achats' and facture.numfacfrs is empty and facture.encompta is not defined or facture.encompta == 0 %}{% else %}
+									<button type="submit" class="btn btn-success" value="regler"  name="pay" >
+										Regler
+									</button>
+								{% endif %}
+							{% endif %}
+						</td>
+						{% if facture.typedoc != 'avoir frs' %}
+							<td>
+							<b>Commentaire</b>
+							{{ form_widget(form.commentaire, { 'value': facture.commentaire, 'attr' : { 'class' : 'form-control', 'rows' : '3'}}) }}
+							</td>
+						{% endif %}
+						{% if vue == 'locations' %}
+							<td>
+								{% if facture.daterelance1 is not empty %}
+									{{ facture.daterelance1|date('d/m/Y') }}
+								{% endif %}
+							</td>
+							<td>
+								{% if facture.daterelance2 is not empty %}
+									{{ facture.daterelance2 }}
+								{% else %}
+									<center><a href="{{ path('bacloocrm_envoyerfacture', {'numfacture': facture.numfacture, 'mode': facture.typedoc, 'page': page, relance:1} ) }}"><i class="fa fa-envelope"></i></a></center>
+								{% endif %}
+							</td>
+							<td>
+								{% if facture.daterelance3 is not empty %}
+									{{ facture.daterelance3 }}
+								{% else %}
+									<center><a href="{{ path('bacloocrm_envoyerfacture', {'numfacture': facture.numfacture, 'mode': facture.typedoc, 'page': page, relance:2} ) }}"><i class="fa fa-envelope"></i></a></center>
+								{% endif %}
+							</td>
+{#							{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' and facture.numfacture == 'En attente' %}#}
+{#								<td>#}
+{#									{% if facture.encompta == 1 %}{% else %}{% if facture.locatacloneid == facture.codelocata %}{% set typedoc = 'facture' %}{% elseif 'V-' ~ facture.locatacloneid == facture.codelocata %}{% set typedoc = 'vente' %}{% else %}{% set typedoc = 'achat' %}{% endif %}<a href="{{ path('bacloocrm_removefacture', {'numfacture': facture.numfacture, 'locatacloneid': facture.locatacloneid, 'typedoc': typedoc} ) }}"><i class="fa fa-trash-o"></i></a>{% endif %}#}
+{#								</td>#}
+{#							{% endif %}#}
+						{% endif %}
+						{% if vue == 'achats' %}
+							<td>
+								{% if facture.numfacture != 'En attente' and facture.typedoc == 'facture' %}{% else %}{% if facture.locatacloneid == facture.codelocata %}{% set typedoc = 'facture' %}{% elseif 'V-' ~ facture.locatacloneid == facture.codelocata %}{% set typedoc = 'vente' %}{% else %}{% set typedoc = 'achat' %}{% endif %}<a href="{{ path('bacloocrm_removefacturedef', {'numfacture': facture.id, 'locatacloneid': facture.locatacloneid, 'type': 'achat'} ) }}"><span style="color:red"><i class="fa fa-trash-o danger"></i></span></a>{% endif %}
+							</td>
+						{% endif %}
+					{% endif %}
+					</tr>
+{{ form_row(form._token) }}
+</form>
+{% if facture.numfacfrs is not empty %}
+	<script>
+		// init,configure dropzone
+		Dropzone.autoDiscover = true;
+		var dropzone_default = new Dropzone(".dropzone{{ facture.numfacture }}", {
+			url: '{{ path('bacloocrm_dropzone', {'codecontrat':facture.id, 'type':'facfrs'}) }}',
+			maxFiles: 1,
+			dictMaxFilesExceeded: 'Only 1 Image can be uploaded',
+			acceptedFiles: '.jpg, .jpeg, .png, .bmp, .pdf',
+			maxFilesize: 5,  // in Mb
+			addRemoveLinks: false,
+			init: function () {
+				this.on("maxfilesexceeded", function(file) {
+					this.removeFile(file);
+				});
+				this.on("sending", function(file, xhr, formData) {
+					// send additional data with the file as POST data if needed.
+					// formData.append("key", "value");
+				});
+				this.on("success", function() {
+					if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+						location.reload();
+					}
+				});
+			}
+		});
+	</script>
+{% endif %}
+{#
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>
+#}

@@ -1,0 +1,15 @@
+<form role="form" action="{{ path('bacloocrm_carburantok') }}" method="post" {{form_enctype(form)}}>
+	<table>
+		<tr>
+			<td class="moyen"></td>
+			<td style="width:100px">
+				{{ form_widget(form.montantcarb, { 'attr' : { style: 'height:20px; width:80px;', 'placeholder' : 'carburant'  } })  }}
+				<div class="hidden">{{ form_widget(form.codelocations, { 'value' : codelocations }) }}</div>
+			</td>
+			<td>
+				<input type="submit" name="submit" id="submit" class="btn btn-primary btn-xs" value="Enregistrer"/>					 
+				{{ form_row(form) }}{{ form_row(form._token) }}	
+			</td>
+		</tr>
+	</table>
+</form>	

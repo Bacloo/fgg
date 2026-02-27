@@ -1,0 +1,5 @@
+{% if type == 'accueil' %}
+	{{ nbrappels }}
+{% else %}
+	{% if nbrappels > 1 %}{{ nbrappels }} Relances{% elseif nbrappels == 1 %}{{ nbrappels }} Relance {% else %}0 Relances{% endif %}
+{% endif %}	

@@ -1,0 +1,1316 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form id="sigform" class="form-horizontal" action="{{ path('bacloocrm_ventes', {'ficheid':client.id, 'vendaid':vendaid, 'typevente':typevente } ) }}" method="post" {{form_enctype(form) }}>
+	<div class="hidden">
+		{{ form_widget(form.clientid, {'value':client.id, 'attr' : { 'class' : 'form-control' } })  }}
+		{{ form_widget(form.client, {'value':client.raisonSociale, 'attr' : { 'class' : 'form-control' } })  }}
+		{{ form_widget(form.user) }}
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>{% if vendaid > 0 %} Bon d'intervention n°{{ vendaid }}{% else %} Nouveau bon d'intervention{% endif %} pour : <b>{{ client.raisonSociale }}</b></h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="col-md-3 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Adresse du chantier
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Adresse 1</b></span>
+											{% if locata is not same as(0) %}
+												{{ form_widget(form.adresse1, { 'value' : locata.adresse1, 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{{ form_widget(form.adresse1, {'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Adresse 2</b></span>
+											{% if locata is not same as(0) %}
+												{{ form_widget(form.adresse2, { 'value' : locata.adresse2, 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{{ form_widget(form.adresse2, {'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Adresse 3</b></span>
+											{% if locata is not same as(0) %}
+												{{ form_widget(form.adresse3, { 'value' : locata.adresse1, 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{{ form_widget(form.adresse3, {'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>CP</b></span>
+											{% if locata is not same as(0) %}
+												{{ form_widget(form.cp, { 'value' : locata.cp, 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{{ form_widget(form.cp, {'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Ville</b></span>
+											{% if locata is not same as(0) %}
+												{{ form_widget(form.ville, { 'value' : locata.ville, 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{{ form_widget(form.ville, {'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Machine
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+{#								<div class="form-group">#}
+{#									<div class="col-md-12">#}
+{#										<div class="input-group">#}
+{#											<span class="input-group-addon"><b>Marque</b></span>#}
+{#											{{ form_widget(form.marque, { 'id' : 'marque_1', 'attr' : { 'class' : 'form-control marque' } })  }}#}
+{#										</div>#}
+{#									</div>#}
+{#									<div id="matchmarque"></div>#}
+{#								</div>#}
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Modèle</b></span>
+											{% if machine is not same as(0) %}
+												{{ form_widget(form.type, { 'value' : machine.description, 'attr' : { 'class' : 'form-control type' } })  }}
+											{% else %}
+												{{ form_widget(form.type, { 'id' : 'type_1', 'attr' : { 'class' : 'form-control type' } })  }}
+											{% endif %}
+										</div>
+									</div>
+									<div id="matchtype"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>N° de série</b></span>
+											{% if machine is not same as(0) %}
+												{{ form_widget(form.numserie, { 'value' : machine.numserie, 'attr' : { 'class' : 'form-control numserie' } })  }}
+											{% else %}
+												{{ form_widget(form.numserie, { 'id' : 'numserie_1', 'attr' : { 'class' : 'form-control numserie' } })  }}
+											{% endif %}
+										</div>
+									</div>
+									<div id="matchnumserie"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Horamètre</b></span>
+											{{ form_widget(form.horametre, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>N° de parc</b></span>
+											{% if machine is not same as(0) %}
+												{{ form_widget(form.numparc, { 'value' : machine.code, 'attr' : { 'class' : 'form-control numparc' } })  }}
+											{% else %}
+												{{ form_widget(form.numparc, { 'id' : 'numparc_1', 'attr' : { 'class' : 'form-control numparc' } })  }}
+											{% endif %}
+										</div>
+									</div>
+									<div id="matchnumparc"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Année</span>
+											{{ form_widget(form.annee, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Intervention
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Date</b></span>
+											{{ form_widget(form.dateinter, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+										</div>
+									</div>
+								</div>
+								<table style="width:100%;">
+									<tr>
+										<td style="text-align: center;">
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group clockpicker">
+														<span class="input-group-addon"><b>Heure d'arrivée</b></span>
+														{{ form_widget(form.hdebut, { 'name':'name', 'attr' : { 'class' : 'form-control' } })  }}
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: center;">
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group clockpicker">
+														<span class="input-group-addon"><b>Heure de départ</b></span>
+														{{ form_widget(form.hfin, { 'name':'name', 'attr' : { 'class' : 'form-control' } })  }}
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>Nature inter.</b></span>
+											{{ form_widget(form.natureinter, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</div>
+								<table style="width:100%;">
+									<tr>
+										<td colspan="2" style="text-align: center">
+											<span><b>Responsablité client</b></span>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: center;">
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span><b>Oui</b></span>
+														{{ form_widget(form.respoui, { 'attr' : { 'class' : 'form-control' } })  }}
+													</div>
+												</div>
+											</div>
+										</td>
+										<td style="text-align: center;">
+											<div class="form-group pull-right">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span><b>Non</b></span>
+														{{ form_widget(form.respnon, { 'attr' : { 'class' : 'form-control' } })  }}
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b>N° d'OR</b></span>
+											{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</div>
+								<div style="text-align:center;">
+									<span><b>Intervention Clôturé ?</b></span>
+									{{ form_widget(form.intercloturee, { 'attr' : { 'class' : 'form-control' } })  }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+{#				{% if afac == 'ok' %}#}
+{#					<div class="col-md-12"><center>#}
+{#						<a type="button" class="btn btn-success btn-lg" href="{{ path('bacloocrm_avoirventes', {'vendaid': vendaid}) }}">#}
+{#						Créer un avoir</a></center>#}
+{#					</div>#}
+{#				{% endif %}#}
+				</div>
+			</div>
+			{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+				<div class="col-md-3 column">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Etat de la vente
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row clearfix">
+								<div class="col-md-12 column">
+									<table style="width: 100%">
+										<tr>
+											{% if bdcrecu != 1 %}
+												<td class="moyen"><span>Bon d'intervention </span></td>
+												<td class="moyen"><span>{{ form_widget(form.offreencours) }} </span></td>
+												<td class="moyen">{% if vendaid > 0 %}<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'bi', 'erreur': 0 }) }}">Bon d'intervention</a>&nbsp;&nbsp;<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'offrevente', 'erreur': 0 }) }}">Devis</a>{% endif %}</td>
+											{% else %}
+												{% if form.vars.value.offreencours == 1 %}
+													<div class="hidden">{{ form_widget(form.offreencours) }}</div>
+													<td class="moyen">Offre :</td><td class="moyen">Oui</td>
+													<td class="moyen">{% if vendaid > 0 %}<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'bi', 'erreur': 0 }) }}">Bon d'intervention</a>&nbsp;&nbsp;<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'offrevente', 'erreur': 0 }) }}">Devis</a>{% endif %}</td>
+												{% else %}
+													<div class="hidden">{{ form_widget(form.offreencours) }}</div>
+													<td class="moyen">Offre :</td><td class="moyen">Non</td>
+												{% endif %}
+											{% endif %}
+										</tr>
+										<tr>
+											{% if bdcrecu != 1 %}
+												<td class="moyen"><span>Refus &nbsp;&nbsp;</span></td>
+												<td class="moyen">{{ form_widget(form.offrerefusee) }}</td>
+											{% elseif bdcrecu == 1 and userdetails.roleuser == 'admin' %}
+												<td class="moyen"><span>Refus &nbsp;&nbsp;</span></td>
+												<td class="moyen">{{ form_widget(form.offrerefusee) }}</td>
+											{% else %}
+												{% if form.vars.value.offrerefusee == 1 %}
+													<div class="hidden">{{ form_widget(form.offrerefusee) }}</div>
+													<td>Refus :</td><td class="moyen">Oui</td>
+												{% else %}
+													<div class="hidden">{{ form_widget(form.offrerefusee) }}</div>
+													<td class="moyen">Refus :</td><td class="moyen">Non</td>
+												{% endif %}
+											{% endif %}
+										</tr>
+										<tr>
+											{# {% if bdcrecu != 1 %} #}
+											<td class="moyen"><span>Accepté ? </span></td>
+											<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+											<td class="moyen"></td>
+											{# {% elseif bdcrecu == 1 and form.vars.value.bdcrecu == 0 %}
+												<td class="moyen"><span>Bdc </span></td>
+												<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+												<td class="moyen"></td>
+											{% else %}
+												{% if bdcrecu == 1 %}
+													<div class="hidden">{{ form_widget(form.bdcrecu) }}</div>
+													<td class="moyen">Bdc :</td>
+													<td class="moyen">Oui</td>
+													<td class="moyen"></td>
+												{% else %}
+													<div class="hidden">{{ form_widget(form.bdcrecu) }}</div>
+													<td class="moyen">Bdc :</td>
+													<td class="moyen">Non</td>
+												{% endif %}
+											{% endif %} #}
+										</tr>
+										<tr>
+											<td class="moyen">{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control-sm', 'placeholder' : 'n° de bon de commande' } })  }}</td>
+										</tr>
+										<tr>
+											{% if bdcrecu != 1 %}
+												<td class="moyen"><span>Remise</span></td>
+												<td style="width:40px">
+													<div style="width:40px">{{ form_widget(form.remise, { 'attr' : { style: 'height:18px; width:40px;' } })  }}</div>
+												</td>
+												<td class="moyen">%</td>
+											{% else %}
+												{# <div class="hidden">{{ form_widget(form.remise) }}</div>
+												<td class="moyen">Remise&nbsp;&nbsp;</td><td class="moyen">{{ form.vars.value.remise }}</td><td class="moyen">{% if form.vars.value.remise > 0 %}%{% endif %}</td> #}
+												<td class="moyen"><span>Remise</span></td>
+												<td style="width:40px">
+													<div style="width:40px">{{ form_widget(form.remise, { 'attr' : { style: 'height:18px; width:40px;' } })  }}</div>
+												</td>
+												<td class="moyen">%</td>
+											{% endif %}
+										</tr>
+										<tr>
+											<td class="moyen" colspan="3"><br></td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<div class="form-group">
+													<div class="col-md-12">
+														<div class="input-group">
+															<span class="input-group-addon"><b></b>N°Commande</span>
+															{{ form_widget(form.numcommande, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'n°bdc client' } })  }}
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<div class="form-group">
+													<div class="col-md-12">
+														<div class="input-group">
+															<span class="input-group-addon"><b></b>Acompte</span>
+															{{ form_widget(form.acompte, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Montant de l\'acompte' } })  }}
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Qui achète
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Acheteur</span>
+										{{ form_widget(form.acheteur, { 'attr' : { 'class' : 'form-control' } })  }}<br>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% if vendaid > 0 %}
+					<div class="col-md-3 column">
+						<table class="table table-hover">
+							<tbody>
+								<tr>
+									<td><h4>Total Vente</h4></td>
+									<td class="text-right"><h6><strong>{{ totalvente|number_format(2, ',', ' ') }}</strong></h6></td>
+								</tr>
+								{% if form.vars.value.remise > 0 %}
+									<tr>
+										<td>
+											<h5>Remise</h5>
+										</td>
+										<td class="text-right">
+											<h5><strong>- {{ totalvente * form.vars.value.remise/100 }}{% set totalventeok = totalvente - (totalvente * form.vars.value.remise/100) %}</strong></h5>
+										</td>
+									</tr>
+								{% else %}
+									{% set totalventeok = totalvente %}
+								{% endif %}
+								<tr>
+								<tr>
+									<td>
+										<h6>TVA (20%)</h6>
+									</td>
+									<td class="text-right">
+										{% if client.typeclient != 'export' %}
+											<h6><strong>{% set tauxtva = '0.20' %}{% set tva = tauxtva * totalventeok %}{{ tva|number_format(2, ',', ' ')  }}</strong></h6>
+										{% else %}
+											<h6><strong>{% set tauxtva = '0' %}{% set tva = tauxtva * totalventeok %}{{ tva|number_format(2, ',', ' ')  }}</strong></h6>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><h4>Total TTC</h4></td>
+									<td class="text-right"><h4><strong>{{ (totalventeok + tva)|number_format(2, ',', ' ') }} €</strong></h4></td>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+						{% if form.vars.value.bdcrecu ==  1 %}
+							<a type="button" class="btn btn-warning btn-lg" href="{{ path('bacloocrm_impressionfactures', {'codecontrat': vendaid, 'clientid': client.id, 'numlocatavente': 'V-' ~ vendaid, 'mode':'facture', 'numfacture':idfac} ) }}">Facture</a>
+						{% endif %}
+					</div>
+
+
+				{% else %}
+					<div class="col-md-3 column">
+					</div>
+				{% endif %}
+
+				<br><br>
+			{% else %}
+				<div class="hidden">
+					{{ form_widget(form.offreencours) }}
+					{{ form_widget(form.offrerefusee) }}
+					{{ form_widget(form.bdcrecu) }}
+					{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control-sm', 'placeholder' : 'n° de bon de commande' } })  }}
+					{{ form_widget(form.remise, { 'attr' : { style: 'height:18px; width:40px;' } })  }}
+					{{ form_widget(form.acompte, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Montant de l\'acompte' } })  }}
+					{{ form_widget(form.acheteur, { 'attr' : { 'class' : 'form-control' } })  }}
+					{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="col-md-3 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Dégats constatés
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-12">
+							{{ form_widget(form.description, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Travaux effectués
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-12">
+							{{ form_widget(form.travauxeffectues, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Observations
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-12">
+							{{ form_widget(form.observations, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if userdetails.roleuser == 'admin' or userdetails.roleuser == 'super user' %}
+			<div class="col-md-3 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Commentaire
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% elseif form.dateinter.vars.value is not empty %}
+			<div class="col-md-3 column" style="text-align: center">
+				<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'bi', 'erreur': 0 }) }}">Bon d'intervention</a>&nbsp;&nbsp;<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_ajouterventespdf', {'ficheid': client.id, 'vendaid': vendaid, 'mode':'offrevente', 'erreur': 0 }) }}">Devis</a>
+			</div>
+		{% endif %}
+			{# Partie Ventes #}
+		{% if userdetails.roleuser == 'technicien' %}
+			<div class="col-md-12 column">
+				{# Les erreurs générales du formulaire. #}
+				<div id="bacloo_crmbundle_venda_ventes" data-prototype="{{ _self.ventesCollectionItem(form.ventes.vars.prototype, user, date, bdcrecu)|e }}">
+					<table id="bacloo3">
+						<tr id="dibac3">
+{#							<td class="">Codif.</td>#}
+{#							<td style="width:100px">Ref.Article</td>#}
+{#							<td class="">Description</td>#}
+{#							<td style="width:100px">Quantité</td>#}
+{#							<td style="width:100px">Prix Unitaire</td>#}
+{#							<td style="width:100px">Prix Net</td>#}
+						</tr>
+						{% for vente in form.ventes|reverse(true) %}
+							{{ _self.ventesCollectionItem(vente, user, date, bdcrecu) }}
+						{% endfor %}						
+						{% macro ventesCollectionItem(ventes, user, date, bdcrecu) %}
+							<tr class="dibacloo3">
+								<td>
+									<table>
+										<tr>
+											<td colspan="3">
+												<div class="hidden">
+													{{ form_widget(ventes.date, { 'value' : date }) }}
+													{{ form_widget(ventes.user) }}
+												</div>
+												<div class="form-group">
+													<div class="col-md-12">
+														{{ form_widget(ventes.description, { 'attr' : { 'class' : 'form-control description', 'placeholder' : 'Désignation','rows' : '3' }} )  }}
+													</div>
+												</div>
+											</td>
+											<td rowspan="2" style="width:130px; background-color: #d2d1d1;">
+												<div class="form-group">
+													<div class="col-md-12">
+														<div class="hidden">{{ form_widget(ventes.montantvente) }}</div>
+														<span><center><h5><b>{{ ventes.montantvente.vars.value|number_format(2, ',', ' ')}} {% if ventes.montantvente.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<div class="col-md-12">
+														<div class="col-md-12">
+															{{ form_widget(ventes.refarticle, { 'id' : 'refarticle_1', 'attr' : {'class' : 'form-control refarticle', 'placeholder' : 'Ref.' }})  }}
+														</div>
+														<div id="match2"></div>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<div class="col-md-12">
+														{{ form_widget(ventes.quantite, { 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite', 'placeholder' : 'Quantité' } })  }}
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<div class="col-md-12">
+														{{ form_widget(ventes.pu, { 'id' : 'pu_1','attr' : { 'class' : 'form-control', 'placeholder' : 'Prix unitaire pu' } })  }}
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+									<br>
+								</td>
+							</tr>
+						{% endmacro %}
+					</table>
+				</div>
+				{% include "BaclooCrmBundle:Crm:ajout_ventes.html.twig" %}
+
+				<center>
+					<br>
+					<input type="submit" class="btn btn-primary" value="Enregistrer le formulaire"/>
+					<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>
+					{{ form_row(form._token) }}
+				</center>
+				<br><br>
+				{% if form.signed.vars.value is not empty %}
+					<div class="panel panel-default col-md-4">
+						<div class="panel-body">
+							<img style="width:300px" src="{{ form.signed.vars.value }}" />
+						</div>
+					</div>
+					<div class="hidden">{{ form_widget(form.signed, {'id':"sigdataid", 'attr' : { 'class' : 'form-control' } })  }}</div>
+{#					<div class="col-md-12">#}
+{#						<input data-action="save-jpg" type="submit" class="btn btn-primary" value="Enregistrer"/>#}
+{#						<a class="btn btn-info" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>#}
+{#					</div>#}
+				{% else %}
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="signature-pad" class="signature-pad">
+								<div class="signature-pad--body">
+									<canvas style="width:400px;height:200px;" ></canvas>
+								</div>
+								<div class="signature-pad--footer">
+									<div class="description">Signez au dessus</div>
+
+									<div class="signature-pad--actions">
+										<div>
+											<div class="hidden">
+												<button type="button" class="button" data-action="change-color">Change color</button>
+												<button type="button" class="button" data-action="undo">Undo</button>
+												<button type="button" class="button save" data-action="save-svg">Save as SVG</button>
+												<button type="button" class="button save" data-action="save-png">Save as PNG</button>
+											</div>
+
+										</div>
+										<div>
+											{#								<button type="button" class="button save" data-action="save-jpg">Save as JPG</button>#}
+											<button type="button" class="button clear btn btn-danger" data-action="clear">Clear</button>
+											<input data-action="save-jpg" type="submit" class="btn btn-primary" value="Enregistrer la signature"/>
+											<a class="btn btn-info" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="hidden">{{ form_widget(form.signed, {'id':"sigdataid", 'attr' : { 'class' : 'form-control' } })  }}</div>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		{% else %}
+			<div class="col-md-12 column">
+				{# Les erreurs générales du formulaire. #}
+				<div id="bacloo_crmbundle_venda_ventes" data-prototype="{{ _self.ventesCollectionItem2(form.ventes.vars.prototype, user, date, bdcrecu)|e }}">
+					<table id="bacloo3" class="table table-bordered">
+						<tr id="dibac3" style="background-color: #f1f1f1">
+							{#							<td class="">Codif.</td>#}
+							<td style="width:100px">Ref.Article</td>
+							<td class="">Description</td>
+							<td style="width:100px">Quantité</td>
+							<td style="width:100px">Prix Unitaire</td>
+							<td style="width:100px">Prix Net</td>
+							<td></td>
+						</tr>
+						{% for vente in form.ventes|reverse(true) %}
+							{{ _self.ventesCollectionItem2(vente, user, date, bdcrecu) }}
+						{% endfor %}
+						{% macro ventesCollectionItem2(ventes, user, date, bdcrecu) %}
+							<tr class="dibacloo3">
+								{#<td>
+									<div class="form-group">
+									  <div class="col-md-12">
+										{{ form_widget(ventes.codifvente, { 'attr' : { 'class' : 'form-control description' }} )  }}
+								#}{# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.codifvente, { 'attr' : { 'class' : 'form-control description' }} )  }}
+									  {% else %}
+									  <div class="hidden">{{ form_widget(ventes.codifvente) }}</div>
+									    {{ ventes.codifvente.vars.value }}
+									  {% endif %} #}{#
+								</div>
+                              </div>
+                          </td>#}
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(ventes.refarticle, { 'id' : 'refarticle_1', 'attr' : {'class' : 'form-control refarticle'}})  }}
+											{# {% if bdcrecu != 1 %}
+											{{ form_widget(ventes.refarticle, {'attr' : {'class' : 'form-control refarticle'}})  }}
+										{% else %}
+										<div class="hidden">{{ form_widget(ventes.refarticle) }}</div>
+											{{ ventes.refarticle.vars.value }}
+										{% endif %} #}
+										</div>
+										<div id="match2"></div>									</div>
+								</td>
+								<td>
+									<div class="hidden">
+										{{ form_widget(ventes.date, { 'value' : date }) }}
+										{{ form_widget(ventes.user) }}
+									</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(ventes.description, { 'id' : 'description_1', 'attr' : { 'class' : 'form-control description' }} )  }}
+											{# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.description, { 'attr' : { 'class' : 'form-control description' }} )  }}
+									  {% else %}
+									  <div class="hidden">{{ form_widget(ventes.description) }}</div>
+									    {{ ventes.description.vars.value }}
+									  {% endif %} #}
+										</div>
+										<div id="match"></div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(ventes.quantite, { 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite' } })  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(ventes.pu, { 'id' : 'pu_1', 'attr' : { 'class' : 'form-control pu' } })  }}
+											{# {% if bdcrecu != 1 %}
+										{{ form_widget(ventes.pu, { 'attr' : { 'class' : 'form-control' } })  }}
+									  {% else %}
+										<div class="hidden">{{ form_widget(ventes.pu) }}</div>
+									    {{ ventes.pu.vars.value|number_format(2, ',', ' ')}}
+									  {% endif %} #}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(ventes.montantvente) }}</div>
+											<span><center><h5><b>{{ ventes.montantvente.vars.value|number_format(2, ',', ' ')}} {% if ventes.montantvente.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endmacro %}
+					</table>
+				</div>
+				{% include "BaclooCrmBundle:Crm:ajout_ventes.html.twig" %}
+
+				<center>
+					<br>
+					<input type="submit" class="btn btn-primary" value="Enregistrer le formulaire"/>
+					<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>
+					{{ form_row(form._token) }}
+				</center>
+				<br><br>
+						{% if form.signed.vars.value is not empty %}
+							<div class="panel panel-default col-md-4">
+								<div class="panel-body">
+									<img src="{{ form.signed.vars.value }}" />
+									<div class="hidden">{{ form_widget(form.signed, {'id':"sigdataid", 'attr' : { 'class' : 'form-control' } })  }}</div>
+								</div>
+							</div>
+{#							<div class="col-md-12">#}
+{#								<input data-action="save-jpg" type="submit" class="btn btn-primary" value="Enregistrer"/>#}
+{#								<a class="btn btn-info" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>#}
+{#							</div>#}
+						{% else %}
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div id="signature-pad" class="signature-pad">
+										<div class="signature-pad--body">
+											<canvas style="width:600px;height:200px;" ></canvas>
+										</div>
+										<div class="signature-pad--footer">
+											<div class="description">Signez au dessus</div>
+
+											<div class="signature-pad--actions">
+												<div>
+													<div class="hidden">
+														<button type="button" class="button" data-action="change-color">Change color</button>
+														<button type="button" class="button" data-action="undo">Undo</button>
+														<button type="button" class="button save" data-action="save-svg">Save as SVG</button>
+														<button type="button" class="button save" data-action="save-png">Save as PNG</button>
+													</div>
+
+												</div>
+												<div>
+													{#								<button type="button" class="button save" data-action="save-jpg">Save as JPG</button>#}
+													<button type="button" class="button clear btn btn-danger" data-action="clear">Clear</button>
+													<input data-action="save-jpg" type="submit" class="btn btn-primary" value="Enregistrer la signature"/>
+													<a class="btn btn-info" href="{{ path('bacloocrm_voir', {'id': client.id}) }}"><span>Fermer</span></a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hidden">{{ form_widget(form.signed, {'id':"sigdataid", 'attr' : { 'class' : 'form-control' } })  }}</div>
+								</div>
+							</div>
+						{% endif %}
+				<center>
+					<br>
+					{{ form_row(form._token) }}
+				</center>
+			</div>
+		{% endif %}
+		</div>
+	</div>
+
+</form>
+{#	{% if userdetails.roleuser == 'admin' %}#}
+	<div class="col-md-6 column">
+		{# Dropzone #}
+		<form class="form-horizontal" action="{{ path('bacloocrm_envoyerdevis', {'vendaid':vendaid} ) }}" method="post" {{form_enctype(form2) }}>
+				<br>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Liste des fichiers liés à cette vente
+						</h3>
+					</div>
+					<div class="panel-body">
+                        <div class="tab-content">
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    {% if userdetails.roleuser == 'technicien' %}
+                                        {% set texte = 'Cliquez ici pour prendre une photo' %}
+                                    {% else %}
+                                        {% set texte = 'Glissez un fichier ici ou cliquez pour en ajouter un' %}
+                                    {% endif %}
+                                    <center><div class="dropzone col-md-12" id="my-awesome-dropzone" style="border-style: dashed solid; height:50px;"><div class="dz-message" data-dz-message><span>{{ texte }}</span></div></div></center>
+                                </div>
+                            </div>
+                        </div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon">Destinataire</span>
+									{{ form_widget(form2.destinataire, { 'id' : 'contactchantier_1', 'attr' : { 'class' : 'form-control contactchantier' } })  }}
+								</div>
+							</div>
+						</div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Envoyer Bi ?</span>
+                                    {{ form_widget(form2.envoidevis, { 'attr' : { 'class' : 'form-control' } })  }}
+                                    </div>
+                            </div>
+                        </div>
+                        <br>
+						<div class="col-md-12 column">
+							{# Les erreurs générales du formulaire. #}
+							<div id="bacloo_crmbundle_doca_document" data-prototype="{{ _self.documentCollectionItem(form2.document.vars.prototype, vendaid)|e }}">
+								<table id="bacloo3" class="table table-bordered">
+									<tr>
+                                        <th>
+
+										</th>
+										<th>
+											Nom du fichier
+										</th>
+										<th>
+
+										</th>
+										<th>
+
+										</th>
+									</tr>
+									{% for document in form2.document|reverse(true) %}
+										{{ _self.documentCollectionItem(document, vendaid) }}
+									{% endfor %}
+									{% macro documentCollectionItem(documents, vendaid) %}
+										<tr>
+                                            <td style="width:60px;">
+                                                {{ form_widget(documents.selection, { 'attr' : { 'class' : 'form-control etroit60' } })  }}
+												<div class="hidden">{{ form_widget(documents.base64, {'id':"base64" })  }}</div>
+                                            </td>
+											<td style="width:200px;">
+												<div class="hidden">
+													{{ form_widget(documents.nom) }}
+													{{ form_widget(documents.id) }}
+												</div>
+												{{ documents.nom.vars.value }}
+											</td>
+											<td style="width:60px;">
+												{% if documents.id.vars.value is not empty %}
+													{% if documents.base64.vars.value is not empty %}
+														<a type="button" target="_blank" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_voirbase64', {'id': documents.id.vars.value }) }}">Ouvrir</a>
+													{% else %}
+														<a type="button" class="btn btn-primary btn-xs" href="{{ asset('uploads/contrat/'~ vendaid ~'/' ~ documents.nom.vars.value ~ '') }}">Ouvrir</a>
+													{% endif %}
+												{% endif %}
+												{#												<img alt="Embedded Image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIA..." />#}
+											</td>
+											<td style="width:60px;">
+												{% if documents.id.vars.value is not empty %}{% set iddoc = documents.id.vars.value %}{% else %}{%  set iddoc = 0 %}{% endif %}
+												<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_removedocument', {'iddoc': iddoc, 'codecontrat': vendaid, 'type':'bi' }) }}">Supprimer</a>
+											</td>
+										</tr>
+									{% endmacro %}
+								</table>
+							</div>
+							<div class=" pull-right">
+								<br>
+								<input type="submit" class="btn btn-primary" value="Envoyer le mail"/>
+								{{ form_row(form2._token) }}
+							</div>
+						</div>
+					</div>
+				</div>
+		</form>
+		{# Fin dropzone #}
+	</div>
+{#	{% endif %}#}
+	<script type="text/javascript" src="{{ asset('js/signature_pad.umd.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>
+
+	<script type="text/javascript" src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
+	<script type="text/javascript">
+$('.clockpicker').clockpicker({
+    placement: 'bottom',
+    align: 'left',
+    autoclose: true,
+    'default': 'now'
+});
+</script>
+	<script type="text/javascript">
+$('.clockpicker').clockpicker()
+	.find('input').change(function(){
+		console.log(this.value);
+	});
+var input = $('#single-input').clockpicker({
+	placement: 'bottom',
+	align: 'left',
+	autoclose: true,
+	'default': 'now'
+});
+
+$('.clockpicker-with-callbacks').clockpicker({
+		donetext: 'Done',
+		init: function() {
+			console.log("colorpicker initiated");
+		},
+		beforeShow: function() {
+			console.log("before show");
+		},
+		afterShow: function() {
+			console.log("after show");
+		},
+		beforeHide: function() {
+			console.log("before hide");
+		},
+		afterHide: function() {
+			console.log("after hide");
+		},
+		beforeHourSelect: function() {
+			console.log("before hour selected");
+		},
+		afterHourSelect: function() {
+			console.log("after hour selected");
+		},
+		beforeDone: function() {
+			console.log("before done");
+		},
+		afterDone: function() {
+			console.log("after done");
+		}
+	})
+	.find('input').change(function(){
+		console.log(this.value);
+	});
+
+// Manually toggle to the minutes view
+$('#check-minutes').click(function(e){
+	// Have to stop propagation here
+	e.stopPropagation();
+	input.clockpicker('show')
+			.clockpicker('toggleView', 'minutes');
+});
+if (/mobile/i.test(navigator.userAgent)) {
+	$('input[name=name]').prop('readOnly', true);
+}
+</script>
+
+	<script>
+//Autocomptete description vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.description', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requete1vente') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		document.getElementById('pu_'+index).value = ui.item.value;
+		document.getElementById('description_'+index).value = ui.item.id;
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete description vente
+</script>
+	<script>
+//Autocomptete refarticle vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.refarticle', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requete2vente') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		document.getElementById('pu_'+index).value = ui.item.value;
+		document.getElementById('description_'+index).value = ui.item.id;
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete description vente
+</script>
+<script>
+//Autocomptete marque vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.marque', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#matchmarque').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requetemarque') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#matchmarque').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete marque vente
+</script>
+	<script>
+//Autocomptete type vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.type', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#matchtype').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requetetype') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#matchtype').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete type vente
+</script>
+	<script>
+//Autocomptete numserie vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.numserie', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#matchnumserie').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requetenumserie') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#matchnumserie').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete numserie vente
+</script>
+	<script>
+//Autocomptete numparc vente
+	$(document).ready(function(){
+	 $(document).on('keydown', '.numparc', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#matchnumparc').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_requetenumparc') }}",
+		 type: 'post',
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1,
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#matchnumparc').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+		return false;
+	   }
+	  });
+	 });
+	});
+//Fin autocomptete numparc vente
+</script>
+
+<script>
+    // init,configure dropzone
+    Dropzone.autoDiscover = false;
+{#    var base64 = '';#}
+{#    var dropzone_default = new Dropzone(".dropzone", {#}
+
+{#    url: "{{ path('bacloocrm_dropzonebase64', {'codecontrat':vendaid, 'type':'contrat'}) }}",#}
+{#    autoProcessQueue: false,#}
+{#    maxFiles: 5,#}
+{#	acceptedFiles: '.jpg, .jpeg, .png, .bmp',#}
+{#	maxFilesize: 8,  // in Mb#}
+{#	resizeWidth: 180,#}
+{#	resizeHeight: 128,#}
+
+{#        init: function () {#}
+{#            this.on("maxfilesexceeded", function(file) {#}
+{#                this.removeFile(file);#}
+{#            });#}
+{#            this.on("sending", function(file, xhr, formData) {#}
+{#                // send additional data with the file as POST data if needed.#}
+{#    var dataURL = signaturePad.toDataURL("image/jpeg");#}
+{#    //download(dataURL, "signature.jpg");#}
+{#                  formData.append("base64", base64);#}
+{#					document.getElementById("base64").value = base64;#}
+{#            });#}
+{#            this.on("addedfile", function(file) {#}
+{#				var _this=this,#}
+{#					reader = new FileReader();#}
+{#				reader.onload = function(event) {#}
+{#					base64 = event.target.result;#}
+{#					_this.processQueue()#}
+{#				};#}
+{#				reader.readAsDataURL(file);#}
+{#            });#}
+{#            this.on("success", function(file, response) {#}
+{#				console.log('success:', response);#}
+{#				location.reload();#}
+{#			});#}
+{#        }#}
+{#	});#}
+
+    var dropzone_default = new Dropzone(".dropzone", {
+        url: '{{ path('bacloocrm_dropzoneimage', {'codecontrat':vendaid, 'type':'bi'}) }}',
+        maxFiles: 4,
+        dictMaxFilesExceeded: 'Only 1 Image can be uploaded',
+
+        acceptedFiles: '.jpg,.jpeg,.png,.bmp',
+        maxFilesize: 8,  // in Mb
+		resizeWidth: 490,
+        addRemoveLinks: true,
+        renameFile: function (file) {
+		let newName = new Date().getTime() + '_' + file.name;
+		return newName;
+		},
+        init: function () {
+            this.on("maxfilesexceeded", function(file) {
+                this.removeFile(file);
+            });
+            this.on("sending", function(file, xhr, formData) {
+                // send additional data with the file as POST data if needed.
+                // formData.append("key", "value");
+            });
+            this.on("success", function() {
+                if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+                    location.reload();
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

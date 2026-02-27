@@ -1,0 +1,43 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>En rechargeant votre compte vous pourrez activer des modules et acheter des prospects</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row clearfix">
+			<div class="container"><br><br><br>
+							<div class="pricing-table pricing-three-column row">
+								<div class="plan col-sm-4 col-lg-4">
+								  <div class="plan-name-bronze">
+									<h2>10€</h2>
+								  </div>
+								  <ul>
+									<li class="plan-feature"><a href="{{ path('bacloocrm_paypal', {'prix': '10', 'description':'Pack à 10€'}) }}" class="btn btn-primary btn-plan-select"><i class="icon-white icon-ok"></i> Acheter</a></li>
+								  </ul>
+								</div>
+								<div style="z-index:55;" class="plan col-sm-4 col-lg-4">
+								  <div class="plan-name-silver">
+									<h2>30€</h2>
+								  </div>
+								  <ul>
+									<li class="plan-feature"><a href="{{ path('bacloocrm_paypal', {'prix': '30', 'description':'Pack à 30€'}) }}" class="btn btn-primary btn-plan-select"><i class="icon-white icon-ok"></i> Acheter</a></li>
+								  </ul>
+								</div>
+								<div class="plan col-sm-4 col-lg-4">
+								  <div class="plan-name-gold">
+									<h2>50€</h2>
+								  </div>
+								  <ul>
+									<li class="plan-feature"><a href="{{ path('bacloocrm_paypal', {'prix': '50', 'description':'Pack à 50€'}) }}" class="btn btn-primary btn-plan-select"><i class="icon-white icon-ok"></i> Acheter</a></li>
+								  </ul>
+								</div>
+							</div>
+			</div>	
+		</div>
+	</div>
+</div>			
+{% endblock %}
+						

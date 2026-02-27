@@ -1,0 +1,30 @@
+<div style="padding-top: 12px">
+    <form role="form" action="{{ path('bacloocrm_extraitcompteform', {'clientid': clientid, 'du':du, 'au':au }) }}" method="post" {{form_enctype(form4) }}>
+        <table>
+            <tr>
+                <td style="text-align:center;background-color:#5CB85C;padding:10px;font-weight:bold;">Extrait de compte</td>
+                <td>
+                    {{ form_widget(form4.du, {'value': du|date('d/m/Y'), 'attr' : { 'class' : 'datepicker etroit80', 'placeholder' : 'du'} })  }}<br>
+                </td>
+                <td>
+                    {{ form_widget(form4.au, {'value': au|date('d/m/Y'), 'attr' : { 'class' : 'datepicker etroit80', 'placeholder' : 'au'} })  }}<br>
+                </td>
+                <td>
+                    <button type="submit" class="btn-xs btn-warning">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    {{ form_row(form4._token) }}
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<br>
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		firstDay:1
+	});
+  } );
+</script>

@@ -1,0 +1,1359 @@
+{#{% set typeplanning = 'planning' %}#}
+{% if detail == "NON" %}
+{#	<form id="my-form" class="form-horizontal" action="{{ path('bacloocrm_locationsmodalecomok', {'locataid':locaid } ) }}" method="post" {{form_enctype(form) }}>#}
+		<form id="my-form" class="form-horizontal" action="{{ path('bacloocrm_ajouterlocation', {'ficheid':0, 'locid':locaid, 'erreur':typeplanning} ) }}" method="post" {{form_enctype(form) }}>
+{% elseif detail == "OUI" and clientid is not empty %}
+	<form id="my-form" class="form-horizontal" action="{{ path('bacloocrm_ajouterlocation', {'ficheid':clientid, 'locid':locaid, 'erreur':typeplanning} ) }}" method="post" {{form_enctype(form) }}>
+{% endif %}
+ <h3>{% if contrat == 1 %}Contrat {% else %}Devis {% endif %}{{ locid }}</h3>
+		<div class="hidden">
+			{{ form_widget(form.chantierid, {'id' : 'chantierid_1', 'attr' : { 'class' : 'chantierid' } })  }}
+			{{ form_widget(form.offreencours) }}
+			{{ form_widget(form.clientid) }}
+{#			{{ form_widget(form.facturersamedi) }}#}
+{#			{{ form_widget(form.facturationferies) }}#}
+			{{ form_widget(form.datemodif, { 'value' : date|date('Y-m-d') }) }}
+			{{ form_widget(form.clientid, { 'value' : clientid }) }}
+			{{ form_widget(form.user, { 'value' : user }) }}
+			{{ form_widget(form.montantloc) }}
+			{{ form_widget(form.idbdcaller) }}
+			{{ form_widget(form.idbdcretour) }}
+		</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{% if detail == "OUI" %}
+				<div class="col-md-12">
+				<div class="form-group">
+					<div class="col-md-12" >
+						{% if form.vars.value.montantloc >= 0 and contrat == 1  %}<a class="btn btn-warning btn pull-right" href="{{ path('bacloocrm_ajouterlocationpdf', {'ficheid': clientid, 'locid': locid, 'mode':'contrat', 'erreur': 0 }) }}">Contrat pdf</a>{% endif %}
+						{% if form.vars.value.montantloc >= 0 %}<a class="btn btn-success btn pull-right" href="{{ path('bacloocrm_ajouterlocationpdf', {'ficheid': clientid, 'locid': locid, 'mode':'offreloc', 'erreur': 0 }) }}">Devis pdf</a>{% endif %}
+						<a type="button" class="btn btn-info btn pull-right" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': clientid, 'locid': locid, 'erreur': 0 }) }}">Affichage étendu</a>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<div class="col-md-4">
+				<div class="form-group">
+                    <div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Client</b></span>
+							{% if codemachine is defined %}
+								{{ form_widget(form.client, {'id':'clienta', 'attr' : { 'class' : 'form-control clienta',  'data-codemachine': codemachine , 'placeholder' : 'Raison Sociale / Nom'} })  }}
+							{% else %}
+								{{ form_widget(form.client, {'id':'clienta', 'attr' : { 'class' : 'form-control clienta', 'placeholder' : 'Raison Sociale / Nom'} })  }}
+							{% endif %}
+				       </div>
+                    </div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Contact</b></span>
+							{{ form_widget(form.contactchantier, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Contact chantier' } })  }}
+						</div>
+					</div>
+				</div>
+                <div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<div class="col-md-12">
+								{#								<div class="input-group">#}
+								<span class="form-check-input large"><b>N° BDC</b></span>
+								{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'n° de bon de commande' } })  }}
+								{#								</div>#}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<div class="col-md-12">
+								{# <div class="input-group"> #}
+	{#							<div class="form-check checkbox-xl" >#}
+									<span class="form-check-input large"><b>Contrat</b></span>
+									{{ form_widget(form.contrat, { 'attr' : {'class' : 'form-contol ', 'style' :"width: 50px;" }}) }}
+								{# </div> #}
+	{#							</div>#}
+							</div>
+						</div>
+					</div>
+{#					<div class="col-md-2">#}
+{#						<div class="form-group">#}
+{#							<div class="col-md-12">#}
+{#								#}{# <div class="input-group"> #}
+{#	#}{#							<div class="form-check checkbox-xl" >#}
+{#									<span class="form-check-input large"><b>Samedi</b></span>#}
+{#									{{ form_widget(form.facturersamedi, { 'attr' : {'class' : 'form-contol ', 'style' :"width: 50px;" }}) }}#}
+{#								#}{# </div> #}
+{#	#}{#							</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="col-md-2">#}
+{#						<div class="form-group">#}
+{#							<div class="col-md-12">#}
+{#								#}{# <div class="input-group"> #}
+{#	#}{#							<div class="form-check checkbox-xl" >#}
+{#									<span class="form-check-input large"><b>Dimanche</b></span>#}
+{#									{{ form_widget(form.facturerdimanche, { 'attr' : {'class' : 'form-contol ', 'style' :"width: 50px;" }}) }}#}
+{#								#}{# </div> #}
+{#	#}{#							</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="col-md-2">#}
+{#						<div class="form-group">#}
+{#							<div class="col-md-12">#}
+{#								#}{# <div class="input-group"> #}
+{#	#}{#							<div class="form-check checkbox-xl" >#}
+{#									<span class="form-check-input large"><b>Fériés</b></span>#}
+{#									{{ form_widget(form.facturationferies, { 'attr' : {'class' : 'form-contol ', 'style' :"width: 50px;" }}) }}#}
+{#								#}{# </div> #}
+{#	#}{#							</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Commentaire caché
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								{{ form_widget(form.commentairecache, { 'attr' : { 'class' : 'form-control' ,'rows' : '4'} })  }}
+							</div>
+						</div>
+					</div>
+				</div>
+		    </div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+						<span class="input-group-addon large"><b>Chantier</b></span>
+						{{ form_widget(form.nomchantier, { 'id' : 'chantier_1', 'attr' : { 'class' : 'form-control chantier' } })  }}
+						</div>
+						<div id="match2"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Adresse1</b></span>
+							{{ form_widget(form.adresse1, { 'id' : 'adresse1_1', 'attr' : { 'class' : 'form-control adresse1' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Adresse2</b></span>
+							{{ form_widget(form.adresse2, { 'id' : 'adresse2_1', 'attr' : { 'class' : 'form-control adresse2' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Commentaire visible par le client
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'} })  }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-4">
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Adresse3</b></span>
+							{{ form_widget(form.adresse3, { 'id' : 'adresse3_1', 'attr' : { 'class' : 'form-control adresse3' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Cp</b></span>
+							{{ form_widget(form.cp, { 'id' : 'cp_1', 'attr' : { 'class' : 'form-control cp' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon large"><b>Ville</b></span>
+							{{ form_widget(form.ville, { 'id' : 'ville_1', 'attr' : { 'class' : 'form-control ville' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default" id="modivc">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Liste des fichiers liés à ce contrat
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="tab-content">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<center><div class="dropzone col-md-12" id="my-awesome-dropzone" style="border-style: dashed solid; min-height:15px;"><div class="dz-message" data-dz-message><span>Glissez un fichier ici ou cliquez</span></div></div></center>
+								</div>
+							</div>
+						</div>
+						<table class="table table-striped col-md-12">
+							<thead>
+							<th>
+								Nom du fichier
+							</th>
+							<th>
+
+							</th>
+							<th>
+
+							</th>
+							</thead>
+							{% for document in documents %}
+								<tr>
+									<td class="col-md-10">
+										{{ document.nom }}
+									</td>
+									<td>
+										<a type="button" class="btn btn-primary btn-xs" href="{{ asset('uploads/contrat/'~ locid ~'/' ~ document.nom ~ '') }}">Ouvrir</a>
+									</td>
+									<td class="col-md-10">
+										<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_removedocument', {'iddoc': document.id, 'codecontrat': document.codecontrat, 'machineid':locid, 'type':'contrat' }) }}">Supprimer</a>
+									</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-12">
+				<h3>Machines de parc</h3>
+				{# Partie Locations #}
+					{# Les erreurs générales du formulaire. #}
+					<div id="bacloo_crmbundle_locata_locations" data-prototype="{{ _self.locationsCollectionItem(form.locations.vars.prototype, user, id, entreprise, contrat, grille, clientassurance, locid, date, typeplanning)|e }}" >
+						<table id="bacloo3" class="table table-bordered">
+							<tr id="dibac3" style="background-color:#eaecef; font-weight:bold; font-size:14px;">
+{#								<td style="background-color: #eeac4e" ><i class="fa fa-bolt"></i></td>#}
+								<td class="">Code Machine</td>
+								<td class="">Code Machine réservée</td>
+								{# <td class="">Type machine</td> #}
+								<td class="">Début</td>
+								<td class="">Fin</td>
+								<td class="">Aller</td>
+								<td class="">Retour</td>
+								<td class="">RC</td>
+{#								<td class="">ECO</td>#}
+								<td class="">nb j</td>
+								{#					<td class="">1j</td>#}
+								{#					<td class="">2 à 5j</td>#}
+								<td class="">1 à 19j</td>
+								{#					<td class="">>15j</td>#}
+								<td class="">Mois</td>
+								 <td style="width:80px"><center><b>Loyer total</b></center></td>
+								<td style="width:100px"><center><b>Remise</b></center></td>
+								{# <td style="width:100px"><center><b>Repris le</b></center></td> #}
+							</tr>
+							{% if codemachine is not defined %}{% set codemachine = 0 %}{% endif %}
+					 		{% for location in form.locations|reverse(true) %}
+					            {{ _self.locationsCollectionItem(location, user, id, entreprise, contrat, grille, clientassurance, locid, date, typeplanning) }}
+				            {% endfor %}
+							{% macro locationsCollectionItem(locations, user, id, entreprise, contrat, grille, clientassurance, locid, date, typeplanning) %}
+								<tr {% if contrat != 1 %}class="dibacloo3"{% endif %}>
+{#									<td style="background-color: #eeac4e" >#}
+{#										{% if contrat != 1 %}#}
+{#										<div class="form-group">#}
+{#											<div class="col-md-12">#}
+{#												{{ form_widget(locations.locdirect, { 'attr' : {'class' : 'form-control', 'checked': 'checked' }}) }}#}
+{#											</div>#}
+{#										</div>#}
+{#										{% endif %}#}
+{#									</td>#}
+								<td>
+                                <div class="hidden">
+								    {{ form_widget(locations.id) }}
+									{{ form_widget(locations.locdirect, { 'attr' : {'class' : 'form-control', 'checked': 'checked' }}) }}
+									{{ form_widget(locations.codeclient, { 'value' : id }) }}
+                                    {{ form_widget(locations.entid) }}
+									{{ form_widget(locations.entreprise, { 'value' : entreprise }) }}
+{#								    {{ form_widget(locations.machineid) }}#}
+								    {{ form_widget(locations.etatloc) }}
+								    {{ form_widget(locations.etatlog) }}
+								    {{ form_widget(locations.energie) }}
+								    {{ form_widget(locations.typemachineinit) }}
+									{{ form_widget(locations.typemachine, { 'id' : 'typemachine_1', 'attr' : { 'class' : 'form-control typemachine' } })  }}
+								    {{ form_widget(locations.nbjloc) }}
+								    {{ form_widget(locations.datereprise) }}
+								    {{ form_widget(locations.montantloc) }}
+								    {{ form_widget(locations.nbjlocass) }}
+								    {{ form_widget(locations.bdok) }}
+								    {{ form_widget(locations.brok) }}
+									{{ form_widget(locations.typemachine, { 'id' : 'typemachine_1', 'attr' : { 'class' : 'form-control typemachine' } })  }}
+								</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locations.codemachine, { 'id' : 'codemachine_1', 'attr' : {'class' : 'form-control codemachine'}})  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locations.codemachine) }}</div>
+												{{ locations.codemachine.vars.value }}
+											{% endif %}
+										</div>
+										<div id="match"></div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(locations.codemachineinterne, { 'id' : 'machine_1', 'attr' : {'class' : 'form-control machine'}}) }}
+											<div class="hidden">{{ form_widget(locations.machineid, { 'id' : 'machineid_1', 'attr' : { 'class' : 'machineid' } })  }}</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  		 <div class="col-md-12">
+											{{ form_widget(locations.debutloc,{ 'attr' : { 'class' : 'form-control date' } })  }}
+									 </div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.finloc, { 'attr' : { 'class' : 'form-control date' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}
+							  			</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+							  			<div class="col-md-12">
+											{{ form_widget(locations.assurance) }}
+							  			</div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#							  			<div class="col-md-12">#}
+{#											{{ form_widget(locations.contributionverte)  }}#}
+{#							  			</div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									{% if locations.nbjloc.vars.value matches  '/^\\d+$/' %}
+										{{ locations.nbjloc.vars.value|number_format(0, ',', '')  }}
+									{% else %}
+										{{ locations.nbjloc.vars.value|number_format(1, ',', ' ')  }}
+									{% endif %}
+								</td>
+{#									<td>#}
+{#										<div class="form-group">#}
+{#											<div class="col-md-12">#}
+{#												{% if contrat != 1 %}#}
+{#													{% if locations.loyerp1b.vars.value > 0 %}#}
+{#														<span class="badge badge-pill badge-success text-white">{{ locations.loyerp1b.vars.value }}</span>#}
+{#													{% else %}#}
+{#														{% if grille|length > 0 %}#}
+{#															{% for grill in grille %}#}
+{#																{% if grill.codemachineinterne == locations.codemachine.vars.value %}#}
+{#																	<span id="loyerp1_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp1 }}</span>#}
+{#																{% endif %}#}
+{#															{% endfor %}#}
+{#														{% else %}#}
+{#															<span id="loyerp1_1" class="badge badge-pill badge-success text-white"></span>#}
+{#														{% endif %}#}
+{#													{% endif %}#}
+{#													<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp1, {'attr' : { 'class' : 'form-control loyerp1' } })  }}</span>#}
+{#												{% else %}#}
+{#													#}{# <div class="hidden">{{ form_widget(locations.loyerp1) }}</div>#}
+{#								{{ locations.loyerp1.vars.value }} #}
+{#													{{ form_widget(locations.loyerp1, {'attr' : { 'class' : 'form-control loyerp1' } })  }}#}
+{#												{% endif %}#}
+{#											</div>#}
+{#										</div>#}
+{#									</td>#}
+									<td>
+										<div class="form-group">
+											<div class="col-md-12">
+												{% if contrat != 1 %}
+													{% if locations.loyerp2b.vars.value > 0 %}
+														<span class="badge badge-pill badge-success text-white">{{ locations.loyerp2b.vars.value }}</span>
+													{% else %}
+														{% if grille|length > 0 %}
+															{% for grill in grille %}
+																{% if grill.codemachineinterne == locations.codemachine.vars.value %}
+																	<span id="loyerp2_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp2 }}</span>
+																{% endif %}
+															{% endfor %}
+														{% else %}
+															<span id="loyerp2_1" class="badge badge-pill badge-success text-white"></span>
+														{% endif %}
+													{% endif %}
+													<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp2, {'attr' : { 'class' : 'form-control loyerp2' } })  }}</span>
+												{% else %}
+													{# <div class="hidden">{{ form_widget(locations.loyerp2) }}</div>
+								{{ locations.loyerp2.vars.value }} #}
+													{{ form_widget(locations.loyerp2, {'attr' : { 'class' : 'form-control loyerp2' } })  }}
+												{% endif %}
+											</div>
+										</div>
+									</td>
+{#									<td>#}
+{#										<div class="form-group">#}
+{#											<div class="col-md-12">#}
+{#												{% if contrat != 1 %}#}
+{#													{% if locations.loyerp3b.vars.value > 0 %}#}
+{#														<span class="badge badge-pill badge-success text-white">{{ locations.loyerp3b.vars.value }}</span>#}
+{#													{% else %}#}
+{#														{% if grille|length > 0 %}#}
+{#															{% for grill in grille %}#}
+{#																{% if grill.codemachineinterne == locations.codemachine.vars.value %}#}
+{#																	<span id="loyerp3_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp3 }}</span>#}
+{#																{% endif %}#}
+{#															{% endfor %}#}
+{#														{% else %}#}
+{#															<span id="loyerp3_1" class="badge badge-pill badge-success text-white"></span>#}
+{#														{% endif %}#}
+{#													{% endif %}#}
+{#													<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp3, {'attr' : { 'class' : 'form-control loyerp3' } })  }}</span>#}
+{#												{% else %}#}
+{#													#}{# <div class="hidden">{{ form_widget(locations.loyerp3) }}</div>#}
+{#								{{ locations.loyerp3.vars.value }} #}
+{#													{{ form_widget(locations.loyerp3, {'attr' : { 'class' : 'form-control loyerp3' } })  }}#}
+{#												{% endif %}#}
+{#											</div>#}
+{#										</div>#}
+{#									</td>#}
+{#									<td>#}
+{#										<div class="form-group">#}
+{#											<div class="col-md-12">#}
+{#												{% if contrat != 1 %}#}
+{#													{% if locations.loyerp4b.vars.value > 0 %}#}
+{#														<span class="badge badge-pill badge-success text-white">{{ locations.loyerp4b.vars.value }}</span><br>#}
+{#													{% else %}#}
+{#														{% if grille|length > 0 %}#}
+{#															{% for grill in grille %}#}
+{#																{% if grill.codemachineinterne == locations.codemachine.vars.value %}#}
+{#																	<span id="loyerp4_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp4 }}</span>#}
+{#																{% endif %}#}
+{#															{% endfor %}#}
+{#														{% else %}#}
+{#															<span id="loyerp4_1" class="badge badge-pill badge-success text-white"></span>#}
+{#														{% endif %}#}
+{#													{% endif %}#}
+{#													<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyerp4, {'attr' : { 'class' : 'form-control loyerp4' } })  }}</span>#}
+{#												{% else %}#}
+{#													#}{# <div class="hidden">{{ form_widget(locations.loyerp4) }}</div>#}
+{#								{{ locations.loyerp4.vars.value }} #}
+{#													{{ form_widget(locations.loyerp4, {'attr' : { 'class' : 'form-control loyerp4' } })  }}#}
+{#												{% endif %}#}
+{#											</div>#}
+{#										</div>#}
+{#									</td>#}
+									<td>
+										<div class="form-group">
+											<div class="col-md-12">
+												{% if contrat != 1 %}
+													{% if locations.loyermensuel.vars.value > 0 %}
+														<span class="badge badge-pill badge-success text-white">{{ locations.loyermensuel.vars.value }}</span>
+													{% else %}
+														{% if grille|length > 0 %}
+															{% for grill in grille %}
+																{% if grill.codemachineinterne == locations.codemachine.vars.value %}
+																	<span id="loyermensuel_1" class="badge badge-pill badge-success text-white">{{ grill.loyermensuel }}</span>
+																{% endif %}
+															{% endfor %}
+														{% else %}
+															<span id="loyermensuel_1" class="badge badge-pill badge-success text-white"></span>
+														{% endif %}
+													{% endif %}
+													<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locations.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuel' } })  }}</span>
+												{% else %}
+													{# <div class="hidden">{{ form_widget(locations.loyermensuel) }}</div>
+								{{ locations.loyermensuel.vars.value }} #}
+													{{ form_widget(locations.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuel' } })  }}
+												{% endif %}
+											</div>
+										</div>
+									</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(locations.montantloc) }}</div>
+											<div class="hidden">{{ form_widget(locations.nbjlocass) }}</div>
+											<span><center><h5><b>{{ locations.montantloc.vars.value  }} {% if locations.montantloc.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+										</div>
+									</div>
+								</td>
+									<td>
+										{{ form_widget(locations.remise, {'attr' : { 'class' : 'form-control' } })  }}
+									</td>
+									<td>
+										{% if contrat == 1 %}
+											{% if (locations.debutloc.vars.value <= date|date_modify('+5 days') and locations.etatloc.vars.value == 'Réservé') or locations.etatloc.vars.value == 'Prêt au départ' %}
+												<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': locid, 'codelocations': locations.id.vars.value|number_format(0, ',', ''), 'ecode': locations.codemachineinterne.vars.value|e, 'mode':'livraisons', 'datereprise':date, 'vue':typeplanning }) }}">Valider cette livraison</a>
+											{% endif %}
+
+											{% if (locations.etatlog.vars.value == 'Prêt pour le chargement' or locations.etatlog.vars.value == 'En cours de livraison') and locations.etatloc.vars.value == 'En location' %}
+												<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': locations.codemachineinterne.vars.value|e, 'etatlog': 'Livré', 'latitude':'xxx', 'longitude':'xxx', 'mode':'qr0', 'codelocation':locations.id.vars.value|number_format(0, ',', '') , 'vue':typeplanning }) }}">Materiel Livré ?</a>
+											{% endif %}
+											{% if locations.etatloc.vars.value == 'En location' and locations.locdirect.vars.value is not same as(1) and locations.finloc.vars.value <= date|date('d/m/Y') %}
+												<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': locations.id.vars.value , 'ecode': locations.codemachineinterne.vars.value|e , 'mode':'Disponible', 'vue':'contrat' }) }}">Terminer la loc</a>
+											{% endif %}
+
+											{% if locations.etatloc.vars.value == 'Location terminée' %}
+{#												<span style="font-weight:bold">Déjà facturé</span>#}
+											{% elseif locations.etatlog.vars.value == 'Retour planifié' %}
+												<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_speedfac', {'codelocations': locations.id.vars.value|number_format(0, ',', ''), 'ecode': locations.codemachineinterne.vars.value|e, 'vue':typeplanning}) }}">Facturer ?</a>
+											{% endif %}
+
+											{% if locations.etatloc.vars.value == 'Location terminée' or locations.etatloc.vars.value == 'Retour planifié' %}
+												<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_remettreenloc', {'locataid': locid, 'ecode': locations.codemachineinterne.vars.value|e }) }}">Remettre en location</a>
+											{% endif %}
+											{% if (locations.datereprise.vars.value <= date|date('d/m/Y')  or locations.finloc.vars.value <= date|date('d/m/Y') ) and contrat == 1 and (locations.etatloc.vars.value == 'Retour planifié' or (locations.etatloc.vars.value == 'En location' and locations.locdirect.vars.value is same as(1))) %}
+												<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': locations.id.vars.value , 'ecode': locations.codemachineinterne.vars.value|e , 'mode':'Disponible', 'vue':typeplanning }) }}">Rendre disponible</a>
+											{% elseif (locations.datereprise.vars.value <= date|date('d/m/Y')  or locations.finloc.vars.value <= date|date('d/m/Y') ) and contrat == 1 and (locations.etatloc.vars.value == 'Retour planifié' or locations.etatloc.vars.value == 'Location terminée') %}
+											<b>Location terminée</b>
+											{% endif %}
+												{% if locations.bdok.vars.value == 1 %}<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_bondepartpdf', {'ficheid': locations.codeclient.vars.value, 'bdid': locations.bdid.vars.value, 'codecontrat': locid, 'codelocation': locations.id.vars.value }) }}">BD</a>{% endif %}
+												{% if locations.brok.vars.value == 1 %}<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_bonretourpdf', {'ficheid': locations.codeclient.vars.value, 'brid': locations.brid.vars.value, 'codecontrat': locid, 'codelocation': locations.id.vars.value }) }}">BR</a>{% endif %}
+										{% endif %}
+									</td>
+									{% if locations.etatloc.vars.value == 'En location' %}
+{#										<td>#}
+{#											<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_echanges', {'ecode': locations.codemachineinterne.vars.value|e, 'locid': locid, 'typeloc':'parc' }) }}">Echange</a>#}
+{#										</td>#}
+{#										<td>#}
+{#											<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_transferts', {'ecode': locations.codemachineinterne.vars.value|e, 'typeloc':'parc', 'codecontrat':locid  }) }}">Transfert</a>#}
+{#										</td>#}
+										<td>
+											<a style="color:red; font-size:20px;" href="{{ path('bacloocrm_removemachine', {'ecode': locations.codemachineinterne.vars.value|e, 'typeloc':'parc', 'codecontrat':locid} ) }}"><i class="fa fa-trash-o danger"></i></a>
+										</td>
+									{% elseif locations.etatloc.vars.value != 'Location terminée' and locations.codemachineinterne.vars.value is not empty and contrat == 1 %}
+										<td>
+											<a style="color:red; font-size:20px;" href="{{ path('bacloocrm_removemachine', {'ecode': locations.codemachineinterne.vars.value|e, 'typeloc':'parc', 'codecontrat':locid} ) }}"><i class="fa fa-trash-o danger"></i></a>
+										</td>
+									{% endif %}
+							</tr>
+							{% endmacro %}
+						</table>
+					</div>
+			</div>
+
+			<div class="col-md-12">
+				{# Fin Partie Locations #}
+				<h3>Machines en sous-location</h3>
+				{# Partie Sous-Locations #}
+				{# Les erreurs générales du formulaire. #}
+				<div id="bacloo_crmbundle_locatasl_locationssl" data-prototype="{{ _self.locationsslCollectionItem(form.locationssl.vars.prototype, user, id, entreprise, contrat, clientassurance, locid, date, typeplanning)|e }}">
+					<table id="bacloo3" class="table table-bordered">
+						<tr id="dibac4" style="background-color:#eaecef; font-weight:bold; font-size:14px;">
+							<td class="">Loueur</td>
+							<td class="">Famille Machine</td>
+							<td style="width:120px;">Code Machine réservée</td>
+							<td class="">Description</td>
+							<td class="">Energie</td>
+							<td class="">Dates</td>
+							<td class="">Transport</td>
+							<td class=""><i class="fa fa-truck"></i></td>
+							<td class="">RC</td>
+{#							<td class="">ECO</td>#}
+							<td class="">nb j</td>
+							{#					<td class="">1j</td>#}
+							{#					<td class="">2 à 5j</td>#}
+							<td class="">1 à 19j</td>
+							{#					<td class="">>15j</td>#}
+							<td class="">Mois</td>
+							<td style="width:80px"><center><b>Loyer total</b></center></td>
+{#							<td style="width:80px"><center><b>Prix Loueur</b></center></td>#}
+{#							<td style="width:80px"><center><b>Marge</b></center></td>#}
+							<td style="width:80px"><center><b>Remise</b></center></td>
+{#							<td style="width:90px"><center><b>Repris le</b></center></td>#}
+						</tr>
+						{% for locationsl in form.locationssl|reverse(true) %}
+							{{ _self.locationsslCollectionItem(locationsl, user, id, entreprise, contrat, clientassurance, locid, montantcarb, locatafrs, date, typeplanning) }}
+						{% endfor %}
+						{% macro locationsslCollectionItem(locationssl, user, id, entreprise, contrat, clientassurance, locid, montantcarb, locatafrs, date, typeplanning) %}
+							{% if locationssl.loyerp1.vars.errors is not empty and locationssl.loyerp2.vars.errors is not empty and locationssl.loyerp3.vars.errors is not empty and locationssl.loyerp4.vars.errors is not empty and locationssl.loyermensuel.vars.errors is not empty %}
+								<center><span class="text-danger"><b><i class="glyphicon glyphicon-warning-sign"></i> Vous devez renseigner un loyer pour continuer</b></span></center>
+							{% endif %}
+							<tr {% if contrat != 1 %}class="dibacloo4"{% endif %}>
+								<td>
+									<div class="hidden">
+										{{ form_widget(locationssl.codeclient, { 'value' : id }) }}
+										{{ form_widget(locationssl.entid) }}
+										{{ form_widget(locationssl.entreprise, { 'value' : entreprise }) }}
+										{{ form_widget(locationssl.machineid) }}
+										{{ form_widget(locationssl.etatloc) }}
+										{{ form_widget(locationssl.etatlog) }}
+										{{ form_widget(locationssl.typemachineinit) }}
+										{{ form_widget(locationssl.cloture) }}
+
+									</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.loueur, {  'id' : 'loueur_1', 'attr' : { 'class' : 'form-control loueur' } })  }}
+												<div class="hidden">{{ form_widget(locationssl.loueurid, { 'id' : 'loueurid_1', 'attr' : { 'class' : 'loueurid' } })  }}</div>
+											{% else %}
+												<div class="hidden">
+													{{ form_widget(locationssl.loueur) }}
+													{{ form_widget(locationssl.loueurid)  }}
+												</div>
+												{% set locatafrsid = 0 %}
+												{% for locfrs in locatafrs %}{% if types is not defined and locfrs.fournisseur == locationssl.loueur.vars.value %}{% set locatafrsid = locfrs.id %}{% endif %}{% endfor %}
+												{% if locationssl.loueurid.vars.value > 0 and locatafrs is not same as(0) %}<a href="{{ path('bacloocrm_ajouterlocationfrs', {'ficheid': locationssl.loueurid.vars.value|number_format(0, '', ''), 'locid':locatafrsid, 'mode':'recurrent'} ) }}">{{ locationssl.loueur.vars.value }}</a>{% else %}{{ locationssl.loueur.vars.value }}{% endif %}
+											{% endif %}
+										</div>
+										<div id="match3"></div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.codemachine, { 'id' : 'codemachinesl_1', 'attr' : {'class' : 'form-control codemachinesl'}})  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locationssl.codemachine) }}</div>
+												{{ locationssl.codemachine.vars.value }}
+											{% endif %}
+										</div>
+										<div id="match4"></div>
+									</div>
+								</td>
+								<td bgcolor="#D75A5A">
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.codemachineinterne, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locationssl.codemachineinterne) }}</div>
+												{{ locationssl.codemachineinterne.vars.value }}
+											{% endif %}
+										</div>
+										<div class="col-md-12">
+											{{ form_widget(locationssl.materielok, { 'attr' : {'class' : 'form-control etroit120'}})  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.typemachine, { 'id' : 'typemachinesl_1', 'attr' : { 'class' : 'form-control typemachinesl', 'rows':5 } })  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locationssl.typemachine) }}</div>
+												{{ locationssl.typemachine.vars.value }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{{ form_widget(locationssl.energie, { 'attr' : {'class' : 'form-control etroit100'}})  }}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12"><b>Début :</b>
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.debutloc, { 'attr' : { 'class' : 'form-control date' } })  }}
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.debutloc) }}</div>
+										{{ locationssl.debutloc.vars.value }} #}
+												{{ form_widget(locationssl.debutloc, { 'attr' : { 'class' : 'form-control date' } })  }}
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-12"><b>Fin :</b>
+											{{ form_widget(locationssl.finloc, { 'attr' : { 'class' : 'form-control date' } })  }}
+										</div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12"><b>Fin :</b>#}
+{#											{{ form_widget(locationssl.finloc, { 'attr' : { 'class' : 'form-control date' } })  }}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									<div class="form-group">
+										<div class="col-md-12"><b>Aller :</b>
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.transportaller) }}</div>
+										{{ locationssl.transportaller.vars.value }} #}
+												{{ form_widget(locationssl.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-12"><b>Retour :</b>
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.transportretour) }}</div>
+										{{ locationssl.transportretour.vars.value }} #}
+												{{ form_widget(locationssl.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if contrat != 1 %}#}
+{#												{{ form_widget(locationssl.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}#}
+{#											{% else %}#}
+{#												#}{# <div class="hidden">{{ form_widget(locationssl.transportretour) }}</div>#}
+{#										{{ locationssl.transportretour.vars.value }} #}
+{#												{{ form_widget(locationssl.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+												{{ form_widget(locationssl.transport)  }}
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.transport) }}</div>
+									 {% if locationssl.transport.vars.value == 1 %} Oui{% else %} Non{% endif %} #}
+												{{ form_widget(locationssl.transport)  }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if clientassurance == 0 and locationssl.codemachine.vars.value is not empty %}
+												{{ form_widget(locationssl.assurance)  }}
+											{% elseif clientassurance == 0 and locationssl.codemachine.vars.value is empty %}
+												{{ form_widget(locationssl.assurance) }}
+											{% else %}
+												X
+											{% endif %}
+										</div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if id == 97 %}#}
+{#											{% else %}#}
+{#												{{ form_widget(locationssl.contributionverte)  }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+{#								</td>#}
+								<td>
+									<div class="hidden">{{ form_widget(locationssl.nbjloc) }}</div>
+									{% if locationssl.nbjloc.vars.value matches  '/^\\d+$/' %}
+										{{ locationssl.nbjloc.vars.value|number_format(0, ',', '')  }}
+									{% else %}
+										{{ locationssl.nbjloc.vars.value|number_format(1, ',', ' ')  }}
+									{% endif %}
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+{#												{% if grille|length > 0 %}#}
+{#													{% for grill in grille %}#}
+{#														{% if grill.codemachineinterne == locationssl.codemachine.vars.value %}#}
+{#															<span id="loyerp1sl_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp1 }}</span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% else %}#}
+{#													<span id="loyerp1sl_1" class="badge badge-pill badge-success text-white"></span>#}
+{#												{% endif %}#}
+												<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locationssl.loyerp1, {'attr' : { 'class' : 'form-control loyerp1sl' } })  }}</span>
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.loyerp1) }}</div>
+								{{ locationssl.loyerp1.vars.value }} #}
+												{{ form_widget(locationssl.loyerp1, {'attr' : { 'class' : 'form-control loyerp1sl' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if contrat != 1 %}#}
+{#												{% if grille|length > 0 %}#}
+{#													{% for grill in grille %}#}
+{#														{% if grill.codemachineinterne == locationssl.codemachine.vars.value %}#}
+{#															<span id="loyerp2sl_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp2 }}</span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% else %}#}
+{#													<span id="loyerp2sl_1" class="badge badge-pill badge-success text-white"></span>#}
+{#												{% endif %}#}
+{#												<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locationssl.loyerp2, {'attr' : { 'class' : 'form-control loyerp2sl' } })  }}</span>#}
+{#											{% else %}#}
+{#												#}{# <div class="hidden">{{ form_widget(locationssl.loyerp2) }}</div>#}
+{#								{{ locationssl.loyerp2.vars.value }} #}
+{#												{{ form_widget(locationssl.loyerp2, {'attr' : { 'class' : 'form-control loyerp2sl' } })  }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if contrat != 1 %}#}
+{#												{% if grille|length > 0 %}#}
+{#													{% for grill in grille %}#}
+{#														{% if grill.codemachineinterne == locationssl.codemachine.vars.value %}#}
+{#															<span id="loyerp3sl_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp3 }}</span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% else %}#}
+{#													<span id="loyerp3sl_1" class="badge badge-pill badge-success text-white"></span>#}
+{#												{% endif %}#}
+{#												<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locationssl.loyerp3, {'attr' : { 'class' : 'form-control loyerp3sl' } })  }}</span>#}
+{#											{% else %}#}
+{#												#}{# <div class="hidden">{{ form_widget(locationssl.loyerp3) }}</div>#}
+{#								{{ locationssl.loyerp3.vars.value }} #}
+{#												{{ form_widget(locationssl.loyerp3, {'attr' : { 'class' : 'form-control loyerp3sl' } })  }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if contrat != 1 %}#}
+{#												{% if grille|length > 0 %}#}
+{#													{% for grill in grille %}#}
+{#														{% if grill.codemachineinterne == locationssl.codemachine.vars.value %}#}
+{#															<span id="loyerp4sl_1" class="badge badge-pill badge-success text-white">{{ grill.loyerp4 }}</span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% else %}#}
+{#													<span id="loyerp4sl_1" class="badge badge-pill badge-success text-white"></span>#}
+{#												{% endif %}#}
+{#												<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locationssl.loyerp4, {'attr' : { 'class' : 'form-control loyerp4sl' } })  }}</span>#}
+{#											{% else %}#}
+{#												#}{# <div class="hidden">{{ form_widget(locationssl.loyerp4) }}</div>#}
+{#								{{ locationssl.loyerp4.vars.value }}#}
+{#												{{ form_widget(locationssl.loyerp4, {'attr' : { 'class' : 'form-control loyerp4sl' } })  }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if contrat != 1 %}
+{#												{% if grille|length > 0 %}#}
+{#													{% for grill in grille %}#}
+{#														{% if grill.codemachineinterne == locationssl.codemachine.vars.value %}#}
+{#															<span id="loyermensuelsl_1" class="badge badge-pill badge-success text-white">{{ grill.loyermensuel }}</span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% else %}#}
+{#													<span id="loyermensuelsl_1" class="badge badge-pill badge-success text-white"></span>#}
+{#												{% endif %}#}
+												<span class="col-md-9 column pull-left" style="padding-left:0px; padding-right:0px;">{{ form_widget(locationssl.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuelsl' } })  }}</span>
+											{% else %}
+												{# <div class="hidden">{{ form_widget(locationssl.loyermensuel) }}</div>
+								{{ locationssl.loyermensuel.vars.value }}#}
+												{{ form_widget(locationssl.loyermensuel, {'attr' : { 'class' : 'form-control loyermensuelsl' } })  }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(locationssl.montantloc) }}</div>
+											<div class="hidden">{{ form_widget(locationssl.nbjlocass) }}</div>
+											<span><center><h5><b>{{ locationssl.montantloc.vars.value }} {% if locationssl.montantloc.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+										</div>
+									</div>
+								</td>
+								<td>
+									{{ form_widget(locationssl.remise, {'attr' : { 'class' : 'form-control' } })  }}
+								</td>
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+											<div class="hidden">{{ form_widget(locationssl.id) }}</div>
+{#											{% set montantloueurht = 0 %}#}
+{#											{%  if locatafrs is not same as(0) %}#}
+{#												{% for locatafr in locatafrs %}#}
+{#													{% for location in locatafr.locationsfrs %}#}
+{#														{% if location.codelocationsl == locationssl.id.vars.value and location.reference == 'location' %}#}
+{#															{% set montantloueurht = location.montantht %}#}
+{#															<span><center><h5><b>{{ montantloueurht }} {% if location.montantht is not empty %}€{% endif %}</b></h5></center></span>#}
+{#														{% endif %}#}
+{#													{% endfor %}#}
+{#												{% endfor %}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+{#								<td>#}
+{#									{% set marge1 =  locationssl.montantloc.vars.value|number_format(2, '.', '') %}#}
+{#									{% set marge =  marge1 - montantloueurht %}#}
+{#									<span><center><h5><b>{{ marge }} {% if montantloueurht is not empty %}€{% endif %}</b></h5></center></span>#}
+{#								</td>#}
+{#								<td>#}
+									<div class="hidden">{{ form_widget(locationssl.datereprise, {'attr' : { 'class' : 'form-control' } })  }}</div>
+{#								</td>#}
+								{% if locationssl.codemachineinterne.vars.value is not empty %}
+									<td>
+{#										{% if locationssl.codemachineinterne.vars.value is not empty %}#}
+{#											<a type="button" class="btn btn-warning pull-right" style="margin-left:5px" href="{{ path('bacloocrm_ventes', {'ficheid': id, 'typevente': 'bi', 'codemachine':locationssl.codemachineinterne.vars.value, 'locid':locid}) }}">Bi</a>#}
+{#										{% endif %}#}
+										{% if contrat == 1 %}
+											{% if (locationssl.debutloc.vars.value <= date|date_modify('+5 days') and locationssl.etatloc.vars.value == 'Réservé') or locationssl.etatloc.vars.value == 'Prêt au départ' %}
+												<br><a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_reprise', {'codelocata': locid, 'codelocations': locationssl.id.vars.value|number_format(0, ',', ''), 'ecode': locationssl.codemachineinterne.vars.value|e, 'mode':'livraisons', 'datereprise':date, 'vue':typeplanning }) }}">Valider cette livraison</a>
+											{% endif %}
+
+											{% if locationssl.etatlog.vars.value == 'Prêt pour le chargement' or locationssl.etatlog.vars.value == 'En cours de livraison' %}
+												<br><a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': locationssl.codemachineinterne.vars.value|e, 'etatlog': 'Livré', 'mode':'qr0', 'codelocation':locationssl.id.vars.value|number_format(0, ',', ''), 'vue':typeplanning  }) }}">Materiel Livré ?</a>
+											{% endif %}
+											{% if locationssl.finloc.vars.value <= date|date('d/m/Y')  and contrat == 1 and (locationssl.etatlog.vars.value == 'En attente de récup.' or locationssl.etatloc.vars.value == 'En location') and locationssl.etatloc.vars.value != 'Annulée'%}
+												<br><a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': locationssl.codemachineinterne.vars.value|e, 'etatlog': 'Déposé_en_agence', 'mode':'qr0', 'codelocation':locationssl.id.vars.value|number_format(0, ',', '') }) }}">Terminer la loc</a>
+											{% endif %}
+
+											{% if locationssl.etatloc.vars.value == 'Location terminée' %}
+{#												<br><span style="font-weight:bold">Déjà facturé</span>#}
+											{% elseif locationssl.etatlog.vars.value == 'Retour planifié' %}
+												<br><a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_speedfac', {'codelocations': locationssl.id.vars.value|number_format(0, ',', ''), 'ecode': locationssl.codemachineinterne.vars.value|e, 'vue':typeplanning }) }}">Facturer ?</a>
+											{% endif %}
+
+											{% if locationssl.etatlog.vars.value == 'Retour planifié' %}
+												<br><a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_transporteur', {'codemachine': locationssl.codemachineinterne.vars.value|e, 'etatlog': 'Déposé_en_agence', 'mode':'qr0', 'codelocation':locationssl.id.vars.value, 'vue':typeplanning }) }}">Materiel Récupéré ?</a>
+											{% endif %}
+										{% endif %}
+									</td>
+								{% endif %}
+								{% if locationssl.etatloc.vars.value == 'En location' and locationssl.debutloc.vars.value <= 'now'|date('d/m/Y') %}
+									{#							<td>#}
+									{#								<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_echanges', {'ecode': locationssl.codemachineinterne.vars.value|e, 'locid': locid, 'typeloc':'sl' }) }}">Echange</a>#}
+									{#							</td>#}
+									<td>
+										<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_transferts', {'ecode': locationssl.codemachineinterne.vars.value|e, 'typeloc':'sl', 'codecontrat':locid }) }}">Transfert</a>
+									</td>
+									<td>
+										<a style="color:red; font-size:20px;" href="{{ path('bacloocrm_removemachine', {'ecode': locationssl.machineid.vars.value, 'typeloc':'sl', 'codecontrat':locid} ) }}"><i class="fa fa-trash-o danger"></i></a>
+									</td>
+								{% elseif locationssl.debutloc.vars.value <= 'now'|date('d/m/Y')  and locationssl.machineid.vars.value is not empty %}
+									<td>
+										<a style="color:red; font-size:20px;" href="{{ path('bacloocrm_removemachine', {'ecode': locationssl.machineid.vars.value, 'typeloc':'sl', 'codecontrat':locid} ) }}"><i class="fa fa-trash-o danger"></i></a>
+									</td>
+								{% elseif locationssl.etatloc.vars.value != 'Location terminée' and locationssl.codemachineinterne.vars.value is not empty and contrat == 1 %}
+									<td>
+										<a style="color:red; font-size:20px;" href="{{ path('bacloocrm_removemachine', {'ecode': locationssl.machineid.vars.value, 'typeloc':'sl', 'codecontrat':locid} ) }}"><i class="fa fa-trash-o danger"></i></a>
+									</td>
+								{% endif %}
+								{% if locationssl.etatloc.vars.value == 'Location terminée' %}
+									<td>
+										<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_remettreenloc', {'locataid': locid, 'ecode': locationssl.codemachineinterne.vars.value|e }) }}">Remettre en location</a>
+									</td>
+								{% endif %}
+								{% if locationssl.etatloc.vars.value != 'Location terminée' and locationssl.etatlog.vars.value != 'Livré chez le client' and contrat == 1 and locationssl.codemachineinterne.vars.value is not empty %}
+									<td>
+										<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_dispatchsl', {'codecontrat': locid, 'machinedor': locationssl.codemachineinterne.vars.value|e }) }}">Modif / Suppr</a>
+									</td>
+								{% endif %}
+							</tr>
+						{% endmacro %}
+					</table>
+				</div>
+				{#			{% include "BaclooCrmBundle:Crm:ajout_locationssl.html.twig" %}#}
+				{# Fin Partie Sous-Locations #}
+			</div>
+
+			<br><br>
+			<h3>Articles en vente</h3>
+			{# Partie Ventes #}
+			<div class="col-md-12 column">
+				{# Les erreurs générales du formulaire. #}
+				<div id="bacloo_crmbundle_locata_locataventes" data-prototype="{{ _self.locataventesCollectionItem(form.locataventes.vars.prototype, user, date, locid)|e }}">
+					<table id="bacloo5" class="table table-bordered">
+						<tr id="dibac5">
+							{#                    <td class="col-md-1">Codif.</td>#}
+{#							<td class="col-md-1">Ref.Article</td>#}
+							<td class="col-md-9">Description</td>
+							<td class="">Quantité</td>
+							<td class="col-md-1">Prix Unitaire</td>
+							<td class="col-md-1">Prix Net</td>
+						</tr>
+						{% for vente in form.locataventes|reverse(true) %}
+							{{ _self.locataventesCollectionItem(vente, user, date, locid) }}
+						{% endfor %}
+						{% macro locataventesCollectionItem(locataventes, user, date, locid) %}
+							<tr {% if locid != 1 %}class="dibacloo5"{% endif %}>
+								{#                        <td>#}
+								{#                            <div class="form-group">#}
+								{#                                <div class="col-md-12">#}
+								{#                                    {{ form_widget(locataventes.codifvente, {'attr' : {'class' : 'form-control'}})  }}#}
+								{#                                </div>#}
+								{#                            </div>#}
+								{#                        </td>#}
+{#								<td>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											{% if locid != 1 %}#}
+{#												{{ form_widget(locataventes.refarticle, {'attr' : {'class' : 'form-control'}})  }}#}
+{#											{% else %}#}
+{#												<div class="hidden">{{ form_widget(locataventes.refarticle) }}</div>#}
+{#												{{ locataventes.refarticle.vars.value }}#}
+{#											{% endif %}#}
+{#										</div>#}
+{#									</div>#}
+{#								</td>#}
+								<td>
+									<div class="hidden">
+										{{ form_widget(locataventes.date, { 'value' : date }) }}
+										{{ form_widget(locataventes.user, { 'value' : user }) }}
+										{{ form_widget(locataventes.codifvente, { 'value' : 'vente' }) }}
+									</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if locid != 1 %}
+												{{ form_widget(locataventes.description, { 'attr' : { 'class' : 'form-control description' }} )  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locataventes.description) }}</div>
+												{{ locataventes.description.vars.value }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if locid != 1 %}
+												{{ form_widget(locataventes.quantite, { 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite' } })  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locataventes.quantite) }}</div>
+												{{ locataventes.quantite.vars.value }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											{% if locid != 1 %}
+												{{ form_widget(locataventes.pu, { 'attr' : { 'class' : 'form-control' } })  }}
+											{% else %}
+												<div class="hidden">{{ form_widget(locataventes.pu) }}</div>
+												{{ locataventes.pu.vars.value }}
+											{% endif %}
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="hidden">{{ form_widget(locataventes.montantvente) }}</div>
+											<span><center><h5><b>{{ locataventes.montantvente.vars.value }} {% if locataventes.montantvente.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endmacro %}
+					</table>
+				</div>
+{#				{% include "BaclooCrmBundle:Crm:ajout_locataventes.html.twig" %}#}
+				{# Fin partie ventes #}
+
+			</div>
+				<center>
+					<br>
+					{{ form_row(form._token) }}
+				</center>
+		</div>
+	</div>
+</form>
+
+<script>
+	//Autocomplete client
+	$(document).on('keydown', '#modal .clienta', function() {
+
+		var id = this.id;
+		var splitid = id.split('_');
+		var index = splitid[1];
+		var codemachine = $('#clienta').data('codemachine');
+
+		// Initialize jQuery UI autocomplete
+		$( '#'+id ).autocomplete({
+			source: function( request, response ) {
+				$('#match9').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+				$.ajax({
+					url: "{{ path('bacloocrm_requete2entreprise2') }}",
+					type: 'post',
+					minLength: 2,
+					dataType: "json",
+					data: {
+						search: request.term,request:1,
+						codemachine : codemachine
+					},
+					success: function( data ) {
+						response( data );
+						$('#match9').text('');
+					}
+				});
+			},
+
+			select: function (event, ui) {
+				$(this).val(ui.item.label); // display the selected text
+				// var span = document.getElementById('loyerp1_1'); span.textContent = ui.item.p1;
+				var span = document.getElementById('loyerp2_1'); span.textContent = ui.item.p2;
+				// var span = document.getElementById('loyerp3_1'); span.textContent = ui.item.p3;
+				// var span = document.getElementById('loyerp4_1'); span.textContent = ui.item.p4;
+				var span = document.getElementById('loyermensuel_1'); span.textContent = ui.item.p5;
+
+				// console.log("loyerp1_ =" + span.textContent);
+				return false;
+			}
+		});
+	});
+
+	//Fin autocomplete client
+</script>
+<script>
+//Autocomplete chantier
+
+	 $(document).on('keydown', '#modal .chantier', function() {
+
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  // Initialize jQuery UI autocomplete
+	 $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_updatechantier') }}",
+		 type: 'post',
+		 minLength: 2,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text('');
+		 }
+		});
+	   },
+
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+		   document.getElementById('chantierid_'+index).value = ui.item.value;
+		   document.getElementById('adresse1_'+index).value = ui.item.adresse1;
+		   document.getElementById('adresse2_'+index).value = ui.item.adresse2;
+		   document.getElementById('adresse3_'+index).value = ui.item.adresse3;
+		   document.getElementById('cp_'+index).value = ui.item.cp;
+		   document.getElementById('ville_'+index).value = ui.item.ville;
+		return false;
+	   }
+	  });
+	 });
+//Fin autocomplete chantier
+</script>
+			<script>
+				//Autocomptete code machine
+				$(document).ready(function(){
+					$(document).on('keydown', '.codemachine', function() {
+
+						var id = this.id;
+						var splitid = id.split('_');
+						var index = splitid[1];
+
+						// Initialize jQuery UI autocomplete
+						$( '#'+id ).autocomplete({
+							source: function( request, response ) {
+								$('#match').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+								$.ajax({
+									url: "{{ path('bacloocrm_requete1grille') }}",
+									type: 'post',
+									dataType: "json",
+									data: {
+										search: request.term,request:1,
+										codeclient: {{ id }}
+									},
+									success: function( data ) {
+										response( data );
+										$('#match').text('');
+									}
+								});
+							},
+
+							select: function (event, ui) {
+								$(this).val(ui.item.label); // display the selected text
+								document.getElementById('typemachine_'+index).value = ui.item.value;
+								// var span = document.getElementById('loyerp1_'+index); span.textContent = ui.item.id;
+								var span = document.getElementById('loyerp2_'+index); span.textContent = ui.item.desc;
+								// var span = document.getElementById('loyerp3_'+index); span.textContent = ui.item.icon;
+								// var span = document.getElementById('loyerp4_'+index); span.textContent = ui.item.p4;
+								var span = document.getElementById('loyermensuel_'+index); span.textContent = ui.item.p5;
+
+								return false;
+							}
+						});
+					});
+
+					// Add more
+					$('#addmore').click(function(){
+
+						// Get last id
+						var lastname_id = $('.tr_input input[type=text]:nth-child(1)').last().attr('id');
+						var split_id = lastname_id.split('_');
+
+						// New index
+						var index = Number(split_id[1]) + 1;
+
+						// Create row with input elements
+						var html = "<tr class='tr_input'><td><input type='text' class='raisonSociale' id='raisonSociale_"+index+"' placeholder='Enter raisonSociale'></td><td><input type='text' class='cp' id='cp_"+index+"' ></td></tr>";
+
+						// Append data
+						$('tbody').append(html);
+					});
+				});
+				//Fin autocompete code machine
+			</script>
+<script>
+	//Autocomplete loueur
+	$(document).ready(function(){
+		$(document).on('keydown', '.loueur', function() {
+
+			var id = this.id;
+			var splitid = id.split('_');
+			var index = splitid[1];
+
+			// Initialize jQuery UI autocomplete
+			$( '#'+id ).autocomplete({
+				source: function( request, response ) {
+					$('#match3').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+					$.ajax({
+						url: "{{ path('bacloocrm_requeteloueur') }}",
+						type: 'post',
+						minLength: 2,
+						dataType: "json",
+						data: {
+							search: request.term,request:1
+						},
+						success: function( data ) {
+							response( data );
+							$('#match3').text('');
+						}
+					});
+				},
+
+				select: function (event, ui) {
+					$(this).val(ui.item.label); // display the selected text
+					document.getElementById('loueurid_'+index).value = ui.item.value;
+
+					return false;
+				}
+			});
+		});
+	} );
+	//Fin autocomplete loueur
+</script>
+<script>
+	//Autocomplete MACHINE
+	$(document).ready(function(){
+		$(document).on('keydown', '.machine', function() {
+
+			var id = this.id;
+			var splitid = id.split('_');
+			var index = splitid[1];
+
+			// Initialize jQuery UI autocomplete
+			$( '#'+id ).autocomplete({
+				source: function( request, response ) {
+					$('#match3').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+					$.ajax({
+						url: "{{ path('bacloocrm_requetemachine') }}",
+						type: 'post',
+						minLength: 2,
+						dataType: "json",
+						data: {
+							search: request.term,request:1
+						},
+						success: function( data ) {
+							response( data );
+							$('#match3').text('');
+						}
+					});
+				},
+
+				select: function (event, ui) {
+					$(this).val(ui.item.label); // display the selected text
+					document.getElementById('machineid_'+index).value = ui.item.value;
+
+					return false;
+				}
+			});
+		});
+	} );
+	//Fin autocomplete loueur
+</script>
+			<script>
+				// init,configure dropzone
+				Dropzone.autoDiscover = true;
+				var dropzone_default = new Dropzone(".dropzone", {
+					url: '{{ path('bacloocrm_dropzone', {'codecontrat':locid, 'type':'contrat', 'vue':typeplanning}) }}',
+					maxFiles: 1,
+					dictMaxFilesExceeded: 'Only 1 Image can be uploaded',
+
+					acceptedFiles: '.jpg, .jpeg, .png, .bmp, .pdf',
+					maxFilesize: 8,  // in Mb
+					addRemoveLinks: true,
+					init: function () {
+						this.on("maxfilesexceeded", function(file) {
+							this.removeFile(file);
+						});
+						this.on("sending", function(file, xhr, formData) {
+							// send additional data with the file as POST data if needed.
+							// formData.append("key", "value");
+						});
+						this.on("success", function() {
+							if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+								window.location.href = '{{ path('bacloocrm_planning', {'openModal':'true', 'event_id':locid}) }}';
+							}
+						});
+					}
+				});
+			</script>
+

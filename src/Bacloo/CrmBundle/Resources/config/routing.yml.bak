@@ -1,0 +1,931 @@
+bacloocrm_accueil:
+  path:   /
+  defaults: { _controller: FOSUserBundle:Security:login}
+
+bacloocrm_home:
+  path:   /accueil
+  defaults: { _controller: BaclooCrmBundle:Crm:accueil, dstart:0, dend:0 }
+
+bacloocrm_statfi:
+  path:   /accueilfi/
+  defaults: { _controller: BaclooCrmBundle:Crm:statfi, dStart:0, dEnd:0 }
+
+bacloocrm_statexpl:
+  path:   /accueilcom
+  defaults: { _controller: BaclooCrmBundle:Crm:statcom }
+
+bacloocrm_ajouter:
+  path:   /ajouter
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouter }
+
+bacloocrm_voir:
+  path:	  /voir/fiche/{id}/{raison}
+  defaults: { _controller: BaclooCrmBundle:Crm:voir, id:0, raison:0 }
+  requirements:
+    id:   \d+
+
+bacloocrm_search:
+  path:	  /search/{page}/{view}/{init}/{vue}/{speed}
+  defaults: { _controller: BaclooCrmBundle:Crm:search, page: 1, view: 'def', init: 2, vue: 'def', speed: '0' }
+
+bacloocrm_search2:
+  path:	  /search2/{vue}/{speed}
+  defaults: { _controller: BaclooCrmBundle:Crm:search, 'vue': 'def', 'speed': '0' }
+
+bacloocrm_searchbacloo:
+  path:	  /recherche/prospects/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:searchbacloo, mode:'init' }
+
+bacloocrm_searchuser:
+  path:	  /recherche/utilisateur/mode/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:searchuser}
+
+bacloocrm_find:
+  path:	  /find/fiche/{id}/{page}/{view}/{speed}
+  defaults: { _controller: BaclooCrmBundle:Crm:find, page: 1, view:'client', speed: '0' }
+
+bacloocrm_findbacloo:
+  path:	  /trouver/prospects/{id}/{mode}/{toc}/{page}/{insert}
+  defaults: { _controller: BaclooCrmBundle:Crm:findbacloo, page: 1, toc:'null', insert: 'ok' }
+
+bacloocrm_finduser:
+  path:	  /trouver/utilisateur/{id}/{page}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:finduser, page: 1 }
+
+bacloocrm_searchrappels:
+  path:	  /searchrappels/{idsearchrap}/{page}/{vue}/{speed}
+  defaults: { _controller: BaclooCrmBundle:Crm:searchrappels, page: 1, idsearchrap : 0, vue:'rappels', speed: '0' }
+
+bacloocrm_showrappels:
+  path:	  /voir_les_rappels/{page}/{pagesr}/{id}/{vue}
+  defaults: { _controller: BaclooCrmBundle:Crm:showrappels, page: 1, pagesr: 1 }
+
+bacloocrm_showprospotlist:
+  path:	  /liste_prospects_potentiels/{page}/{nbresult}/{insert}
+  defaults: { _controller: BaclooCrmBundle:Crm:showrappels, page: 1, pagesr: 1 }
+
+bacloocrm_showfavoris:
+  path:	  /liste_des_collegues
+  defaults: { _controller: BaclooCrmBundle:Crm:showfavoris}
+
+bacloocrm_ajouterfavoris:
+  path:	  /ajouter_collegue/{favuserid}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterfavoris, mode:'collegue'}
+
+bacloocrm_showbacloolist:
+  path:	  /liste_des_prospects_a_acheter/{id}/{mode}/{page}/{toc}/{insert}
+  defaults: { _controller: BaclooCrmBundle:Crm:showbacloolist, toc: 'null', find: 'nok', insert: 'ok'}
+
+bacloocrm_showlistficheint:
+  path:	  /liste_utilistateurs_interesses_par_la_fiche/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:showlistficheint}
+
+bacloocrm_listficheint:
+  path:	  /liste_fiches_vendables
+  defaults: { _controller: BaclooCrmBundle:Crm:listficheint}
+
+bacloocrm_sendmessage:
+  path:	  /envoyer_message/{vemail}/{type}/{rais}
+  defaults: { _controller: BaclooCrmBundle:Crm:sendmessage}
+
+bacloocrm_sendmessagefav:
+  path:	  /message/{vemail}/{type}/{rais}
+  defaults: { _controller: BaclooCrmBundle:Crm:sendmessagefav}
+
+bacloocrm_buyfiche:
+  path:	  /acheter/{ficheid}/{vendeur}/{typev}
+  defaults: { _controller: BaclooCrmBundle:Crm:buyfiche}
+
+bacloocrm_donnerfiche:
+  path:	  /donner/fiche/{ficheid}/{username}
+  defaults: { _controller: BaclooCrmBundle:Crm:donnerfiche}
+
+bacloocrm_donemail:
+  path:	  /par_email/fiche/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:donemail}
+
+bacloocrm_senddetmessage:
+  path:	  /repondre_au_message/{id}/{destid}
+  defaults: { _controller: BaclooCrmBundle:Crm:senddetmessage}
+
+bacloocrm_showachats:
+  path:	  /mes_achats/{dix}
+  defaults: { _controller: BaclooCrmBundle:Crm:showachats, dix: 1 }
+
+bacloocrm_publicprofile:
+  path:	  /profile_utilisateur/{user}
+  defaults: { _controller: BaclooCrmBundle:Crm:publicprofile}
+
+bacloocrm_acheter_credits:
+  path:	  /acheter_des_credits
+  defaults: { _controller: PaymentBundle:Payment:preparePaypalExpressCheckoutPayment}
+
+bacloocrm_contact:
+  path:	  /contact
+  defaults: { _controller: BaclooCrmBundle:Crm:contact}
+
+bacloocrm_contact2:
+  path:	  /nous_contacter
+  defaults: { _controller: BaclooCrmBundle:Crm:contact2}
+
+bacloocrm_conditions_generales:
+  path:	  /conditions_generales
+  defaults: { _controller: BaclooCrmBundle:Crm:conditions}
+
+bacloocrm_conditions_generales_public:
+  path:	  /conditions_generales_utilisation
+  defaults: { _controller: BaclooCrmBundle:Crm:conditionspub}
+
+bacloocrm_store:
+  path:	  /boutique_credits/
+  defaults: { _controller: BaclooCrmBundle:Crm:store}
+
+bacloocrm_paypal:
+  path:	  /boutique_credits/{prix}/{description}
+  defaults: { _controller: PaymentBundle:Payment:preparePaypalExpressCheckoutPayment}
+
+bacloocrm_mesmessages:
+  path:	  /mon_compte/mes_messages
+  defaults: { _controller: BaclooCrmBundle:Crm:showmessages }
+
+bacloocrm_showventes:
+  path:	  /mes_ventes
+  defaults: { _controller: BaclooCrmBundle:Crm:showventes }
+
+bacloocrm_showachatscredits:
+  path:	  /mes_achats_de_credits
+  defaults: { _controller: BaclooCrmBundle:Crm:showachatscredits }
+
+bacloocrm_import:
+  path:	  /importer_des_donnees
+  defaults: { _controller: BaclooCrmBundle:Crm:import }
+
+bacloocrm_export:
+  path:	  /exporter_des_donnees
+  defaults: { _controller: BaclooCrmBundle:Crm:export }
+
+bacloocrm_showpartpotlist:
+  path:	  /liste_des_partenaires_potentiels/{modepart}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:partenaires, page: 1 }
+
+bacloocrm_showpartlist:
+  path:	  /liste_des_partenaires/{modepart}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:partenaires, page: 1 }
+
+bacloocrm_removepart:
+  path:	  /suppression_partenaire/{id}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:removepart, page: 1 }
+
+bacloocrm_nofollowpart:
+  path:	  /ne_pas_suivre_partenaire/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:nofollowpart }
+
+bacloocrm_followpart:
+  path:	  /suivre_partenaire/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:followpart }
+
+bacloocrm_askpart:
+  path:	  /demande_partenariat/{id}/{partpotid}/{modepart}
+  defaults: { _controller: BaclooCrmBundle:Crm:askpart }
+
+bacloocrm_publish:
+  path:	  /articles/{artvue}
+  defaults: { _controller: BaclooCrmBundle:Crm:publisharticle }
+
+bacloocrm_editarticle:
+  path:	  /articles/modification/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:editarticle }
+
+bacloocrm_sharearticle:
+  path:	  /articles/partage/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:share }
+
+bacloocrm_removearticle:
+  path:	  /articles/suppression/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:removeart }
+
+bacloocrm_replyarticle:
+  path:	  /articles/reply/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:replyart }
+
+bacloocrm_removefiche:
+  path:	  /supprimer/fiche/{id}/{check}
+  defaults: { _controller: BaclooCrmBundle:Crm:removefiche, check: 0 }
+
+bacloocrm_showlistinvitations:
+  path:	  /liste_de_mes_invitaions/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:showlistinvitations, page: 1 }
+
+bacloocrm_speedpartage:
+  path:	  /speedpartage/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:speedpartage }
+
+bacloocrm_showlistfilleuls:
+  path:	  /liste_de_mes_filleuls/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:showlistfilleuls, page: 1 }
+
+bacloocrm_modules:
+  path:	  /mes_modules
+  defaults: { _controller: BaclooCrmBundle:Crm:modules }
+
+bacloocrm_user_restreint:
+  path:	  /utilisation_restreinte
+  defaults: { _controller: BaclooCrmBundle:Crm:Controlesbb }
+
+bacloocrm_utilisateurs:
+  path:	  /gerer_les_utilisateurs/{dix}
+  defaults: { _controller: BaclooCrmBundle:Crm:gerer_utilisateurs, dix: 1 }
+
+bacloocrm_societe:
+  path:	  /societe
+  defaults: { _controller: BaclooCrmBundle:Crm:societe }
+
+bacloocrm_colleguetemp:
+  path:	  /societe
+  defaults: { _controller: BaclooCrmBundle:Crm:colleguetemp }
+
+bacloocrm_gdrive:
+  path:	  /google_drive/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:gdrive }
+
+bacloocrm_showpipeline:
+  path:	  /mon_tunnel_de_vente
+  defaults: { _controller: BaclooCrmBundle:Crm:showpipeline}
+
+bacloocrm_communication:
+  path:	  /communication
+  defaults: { _controller: BaclooCrmBundle:Crm:communication}
+
+bacloocrm_listuser:
+  path:	  /listuser/{useracc}
+  defaults: { _controller: BaclooCrmBundle:Crm:listuser, useracc: 'societe' }
+
+bacloocrm_listusercr:
+  path:	  /listusercr/{useracc}
+  defaults: { _controller: BaclooCrmBundle:Crm:listusercr, useracc: 'societe' }
+
+bacloocrm_cr:
+  path:	  /compte_rendu/{page}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:showcr, page: 1, mode: 'cr' }
+
+bacloocrm_planning:
+  path:	  /planning/{mode}/{codemachine}/{openModal}/{event_id}
+  defaults: { _controller: BaclooCrmBundle:Crm:createplanning, mode: 'location', codemachine: 'tout', openModal: 'false', event_id: '0' }
+
+bacloocrm_planningsl:
+  path:	  /planningsl/{mode}/{codemachine}/{openModal}/{event_id}
+  defaults: { _controller: BaclooCrmBundle:Crm:createplanningsl, mode: 'location', codemachine: 'tout', openModal: 'false', event_id: '0' }
+
+bacloocrm_planningtest:
+  path:	  /planningtest
+  defaults: { _controller: BaclooCrmBundle:Crm:createplanningtest }
+
+bacloocrm_planningslold:
+  path:	  /planningsl/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:createplanningsl, mode: 'location'  }
+  
+bacloocrm_recherche:
+  path:    /recherche
+  defaults: { _controller: BaclooCrmBundle:Crm:recherche } 
+
+bacloocrm_laroute:
+  path:    /laroute
+  defaults: { _controller: BaclooCrmBundle:Crm:laroute }
+
+bacloocrm_updatechantier:
+  path:  /ajax/autocomplete/update/chantier
+  defaults: { _controller: BaclooCrmBundle:Crm:updatechantier }
+
+bacloocrm_updateloueur:
+  path:  /ajax/autocomplete/update/loueur2
+  defaults: { _controller: BaclooCrmBundle:Crm:updateloueur }
+
+bacloocrm_updatecodemachineinterne:
+  path:  /ajax/autocomplete/update/codemachineinterne
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecodemachineinterne }
+
+bacloocrm_updatecodemachineinternetout:
+  path:  /ajax/autocomplete/update/codemachineinternetout
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecodemachineinternetout }
+
+bacloocrm_updatecodemachineinternesl:
+  path:  /ajax/autocomplete/update/codemachineinternesl
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecodemachineinternesl }
+
+bacloocrm_updatecodemachineinternemixte:
+  path:  /ajax/autocomplete/update/codemachineinternemixte
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecodemachineinternemixte }
+
+bacloocrm_ajouterlocation:
+  path:  /ajouter/location/{ficheid}/{locid}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocation, locid: 0, erreur: 0 , ficheid: 0 }
+
+bacloocrm_ajouterlocationpdf:
+  path:  /ajouter/locationpdf/{ficheid}/{mode}/{locid}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationpdf, locid: 0, erreur: 0  }
+
+bacloocrm_ajouterventespdf:
+  path:  /ajouter/ventespdf/{ficheid}/{mode}/{vendaid}
+  defaults: { _controller: BaclooCrmBundle:Crm:ventespdf, vendaid: 0, erreur: 0  }
+
+bacloocrm_ajouterlocationsl:
+  path:  /ajouter/locationsl/{ficheid}/{locid}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationsl, locid: 0, erreur: 0 }
+
+bacloocrm_ventes:
+  path:  /ventes/{ficheid}/{vendaid}/{typevente}/{codemachine}/{locid}
+  defaults: { _controller: BaclooCrmBundle:Crm:ventes, vendaid: 0, mode: 0, typevente: 'vente', codemachine: 0, locid: 0}
+
+bacloocrm_ventespdf:
+  path:  /ventespdf/{ficheid}/{vendaid}
+  defaults: { _controller: BaclooCrmBundle:Crm:ventespdf, vendaid: 0 }
+
+bacloocrm_ajouterlocationslpdf:
+  path:  /ajouter/locationslpdf/{ficheid}/{locid}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationslpdf, locid: 0, erreur: 0 }
+
+bacloocrm_ajouterlocationfrs:
+  path:  /ajouter/locationfrs/{ficheid}/{locid}/{type}/{bdctransport}/{mode}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationfrs, locid: 0, type:0, bdctransport: 0, erreur: 0, mode: 0 }
+
+bacloocrm_ajouterlocationfrsspeed:
+  path:  /ajouter/locationfrs_speed/{message}/{bdcid}/{locid}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationfrsspeed, message: 0, bdcid: 0, locid: 0 }
+
+bacloocrm_ajouterlocationfrspdf:
+  path:  /ajouter/locationfrspdf/{ficheid}/{locid}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:ajouterlocationfrspdf, locid: 0, erreur: 0 }
+ 
+bacloocrm_voirlocation:
+  path:  /voir/location
+  defaults: { _controller: BaclooCrmBundle:Crm:voirlocation }
+  
+bacloocrm_requete1:
+  path:  /requete1
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1 }
+  
+bacloocrm_requete2:
+  path:  /requete2
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2 }
+  
+bacloocrm_requete1grille:
+  path:  /requete1grille
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1grille }
+  
+bacloocrm_requete1grille2:
+  path:  /requete1grille2
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1grille2 }
+  
+bacloocrm_requete1grillesl:
+  path:  /requete1grillesl
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1grillesl }
+  
+bacloocrm_requete2grille:
+  path:  /requete2grille
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2grille }
+  
+bacloocrm_adispatcher:
+  path:  /adispatcher
+  defaults: { _controller: BaclooCrmBundle:Crm:adispatcher}
+ 
+bacloocrm_dispatch:
+  path:  /dispatch/{code}/{codecont}/{machinedor}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:dispatch, locid: 0, machinedor: 0, erreur: 0 }
+ 
+bacloocrm_dispatchsl:
+  path:  /dispatchsl/{codecontrat}/{machinedor}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:dispatchsl, locid: 0, machinedor: 0, erreur: 0 }
+  
+bacloocrm_retours:
+  path:  /retours/{erreur}/{date}
+  defaults: { _controller: BaclooCrmBundle:Crm:retours, erreur: 0, date: 0 }
+  
+bacloocrm_reprise:
+  path:  /reprise/{codelocata}/{codelocations}/{ecode}/{mode}/{datereprise}/{vue}
+  defaults: { _controller: BaclooCrmBundle:Crm:reprise, vue: '0' }
+
+bacloocrm_preparation:
+  path:  /preparation/{codelocations}/{ecode}/{mode}/{vue}
+  defaults: { _controller: BaclooCrmBundle:Crm:preparation, vue: '0' }
+
+bacloocrm_modiflivraisons:
+  path:  /modiflivraisons/{codecont}/{codelocations}/{ecode}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:modiflivraisons }
+
+bacloocrm_reportlivraisons:
+  path:  /reportlivraisons/{codecont}/{codelocations}/{ecode}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:reportlivraisons, erreur: 0 }
+
+bacloocrm_qrcode:
+  path:  /qrcode/{codemachine}
+  defaults: { _controller: BaclooCrmBundle:Crm:qrcode }
+
+bacloocrm_tcard:
+  path:  /tcard/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:tcard, mode: 'all'  }
+
+bacloocrm_machines:
+  path:  /machines/{machineid}
+  defaults: { _controller: BaclooCrmBundle:Crm:machines, machineid: 0 }
+
+bacloocrm_machinessl:
+  path:  /machinessl/{machineid}
+  defaults: { _controller: BaclooCrmBundle:Crm:machinessl, machineid: 0 }
+ 
+bacloocrm_transporteur:
+  path:  /transporteur/{codemachine}/{etatlog}/{latitude}/{longitude}/{mode}/{codelocation}/{vue}
+  defaults: { _controller: BaclooCrmBundle:Crm:transporteur, etatlog : 'xxx' , latitude : 0 , longitude : 0, mode: 'transporteur', codelocation: 0, vue: 0 }
+
+bacloocrm_maps:
+  path:  /maps/{latitude}/{longitude}
+  defaults: { _controller: BaclooCrmBundle:Crm:maps }
+
+bacloocrm_dispatchtransport:
+  path:  /dispatch_transport/{chauffeur}
+  defaults: { _controller: BaclooCrmBundle:Crm:dispatchtransport, chauffeur: 0 }
+
+bacloocrm_dispatchtransporttableau:
+  path:  /dispatch_transporttableau/{id}/{mode}/{chauffeur}
+  defaults: { _controller: BaclooCrmBundle:Crm:dispatchtransporttableau }
+
+bacloocrm_dispatchtransportpdf:
+  path:  /dispatch_transportpdf/{chauffeur}
+  defaults: { _controller: BaclooCrmBundle:Crm:dispatchtransportpdf, chauffeur: 'xxx'}
+
+bacloocrm_requeteloueur:
+  path:  /requeteloueur
+  defaults: { _controller: BaclooCrmBundle:Crm:requeteloueur }
+
+bacloocrm_requetemachine:
+  path:  /requetemachine
+  defaults: { _controller: BaclooCrmBundle:Crm:requetemachine }
+
+bacloocrm_requeteentreprise:
+  path:  /requeteentreprise
+  defaults: { _controller: BaclooCrmBundle:Crm:requeteentreprise }
+
+bacloocrm_requete2loueur:
+  path:  /requete2loueur
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2loueur }
+
+bacloocrm_testpdf:
+  path:  /testpdf
+  defaults: { _controller: BaclooCrmBundle:Crm:testpdf }
+
+bacloocrm_compta:
+  path:  /compta/{nbresult}/{mode}/{page}/{message}/{date}/{vue}/{style}/{client}
+  defaults: { _controller: BaclooCrmBundle:Crm:compta, page: 1, mode: 'all', message: 0, date: 'null', vue: 'locations', nbresult: 0, style: 0, client: 0}
+
+bacloocrm_comptaachats:
+  path:  /compta_achats/{mode}/{page}/{message}/{date}/{vue}
+  defaults: { _controller: BaclooCrmBundle:Crm:compta, page: 1, mode: 'all', message: 0, date: 'null'}
+
+bacloocrm_equation:
+  path:  /equation
+  defaults: { _controller: BaclooCrmBundle:Crm:equation }
+
+bacloocrm_facturation:
+  path:  /facturation/{codecontrat}/{vue}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:facturation, codecontrat: 0, vue: 'locations', mode: 'moisder' }
+
+# bacloocrm_facturationdef:
+  # path:  /facturationdef/{codecontrat}/{vue}
+  # defaults: { _controller: BaclooCrmBundle:Crm:facturationdef, codecontrat: 0, vue: 'locations' }
+
+bacloocrm_echanges:
+  path:  /echanges/{ecode}/{locid}/{typeloc}/{message}
+  defaults: { _controller: BaclooCrmBundle:Crm:echanges, message:0 }
+
+bacloocrm_echangespdf:
+  path:  /echangespdf/{ecode}/{locid}/{typeloc}
+  defaults: { _controller: BaclooCrmBundle:Crm:echangespdf }
+
+bacloocrm_transferts:
+  path:  /transferts/{ecode}/{typeloc}/{codelocations}/{codecontrat}/{message}
+  defaults: { _controller: BaclooCrmBundle:Crm:transferts, codelocations:0, codecontrat:0, message: 0 }
+
+bacloocrm_transfertspdf:
+  path:  /transfertspdf/{ecode}/{typeloc}/{codelocations}/{codecontrat}/{message}
+  defaults: { _controller: BaclooCrmBundle:Crm:transfertspdf, codelocations:0, codecontrat:0, message: 0 }
+
+bacloocrm_avoirloc:
+  path:  /avoirsloc/{locid}/{message}/{numavoir}/{numfacture}
+  defaults: { _controller: BaclooCrmBundle:Crm:avoirloc, message:0, numavoir:0, numfacture:0 }
+
+bacloocrm_avoirventes:
+  path:  /avoirsventes/{vendaid}/{message}/{numavoir}/{numfacture}
+  defaults: { _controller: BaclooCrmBundle:Crm:avoirventes, message:0, numavoir:0, numfacture:0 }
+
+bacloocrm_avoirachatnormal:
+  path:  /avoirachatnormal/{vendaid}/{message}/{numavoir}/{numfacture}
+  defaults: { _controller: BaclooCrmBundle:Crm:avoirachatnormal, message:0, numavoir:0, numfacture:0 }
+
+bacloocrm_proforma:
+  path:  /proforma/{codecontrat}/{mode}/{message}
+  defaults: { _controller: BaclooCrmBundle:Crm:proforma, message:0 }
+  
+bacloocrm_impressionfactures:
+  path:  /impressionfactures/{codecontrat}/{clientid}/{numlocatavente}/{mode}/{numfacture}
+  defaults: { _controller: BaclooCrmBundle:Crm:impressionfactures, numlocatavente:0 }
+  
+bacloocrm_impressionbdc:
+  path:  /impressionbdc/{codecontrat}/{clientid}/{numbdc}/{mode}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:impressionbdc, numbdc:0, type:0, codecontrat:0 }
+
+bacloocrm_importergrille:
+  path:  /importer_une_grille/{ficheid}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:importergrille, ficheid:0, mode:0 }
+  
+bacloocrm_impressiongrille:
+  path:  /imprimer_la_grille/{ficheid}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:impressiongrille, ficheid:0, mode:0 }
+
+bacloocrm_siteweb:
+  path:  /siteweb
+  defaults: { _controller: BaclooCrmBundle:Crm:siteweb }
+
+bacloocrm_modifierfacture:
+  path:  /modifier/facture/{ficheid}/{locid}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:modifierfacture, locid: 0, erreur: 0  }
+
+bacloocrm_modifierfacfrs:
+  path:  /modifier/facturefrs/{ficheid}/{locid}/{type}/{bdctransport}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:modifierfacfrs, locid: 0, type:0, bdctransport: 0, erreur: 0 }
+
+bacloocrm_removefacture:
+  path:  /supprimer/facture/{numfacture}/{locatacloneid}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:removefacture, typedoc: 0, type: 0 }
+
+bacloocrm_removefacturedef:
+  path:  /supprimerdef/facture/{numfacture}/{locatacloneid}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:removefacturedef, typedoc: 0, type: 0 }
+
+bacloocrm_removebdc:
+  path:  /supprimer/bdc/{numfacture}/{locatacloneid}
+  defaults: { _controller: BaclooCrmBundle:Crm:removebdc }
+
+bacloocrm_removebdcfiche:
+  path:  /supprimer/bdcfiche/{locid}
+  defaults: { _controller: BaclooCrmBundle:Crm:removebdcfiche, locid:0 }
+
+bacloocrm_requete1vente:
+  path:  /requete1vente
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1vente }
+
+bacloocrm_requete2vente:
+  path:  /requete2vente
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2vente }
+
+bacloocrm_requetemarque:
+  path:  /requetemarque
+  defaults: { _controller: BaclooCrmBundle:Crm:requetemarque }
+
+bacloocrm_requetetype:
+  path:  /requetetype
+  defaults: { _controller: BaclooCrmBundle:Crm:requetetype }
+
+bacloocrm_requetenumserie:
+  path:  /requetenumserie
+  defaults: { _controller: BaclooCrmBundle:Crm:requetenumserie }
+
+bacloocrm_requetenumparc:
+  path:  /requetenumparc
+  defaults: { _controller: BaclooCrmBundle:Crm:requetenumparc }
+
+bacloocrm_requete1achat:
+  path:  /requete1achat
+  defaults: { _controller: BaclooCrmBundle:Crm:requete1achat }
+
+bacloocrm_requete2achat:
+  path:  /requete2achat
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2achat }
+
+bacloocrm_recupfacture:
+  path:  /recuperer/facture/{numfacture}/{locatacloneid}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:recupfacture, typedoc: 0 }
+
+bacloocrm_recupfacturefrs:
+  path:  /recupererfrs/facture/{numfacture}/{locatacloneid}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:recupfacturefrs, typedoc: 0 }
+
+bacloocrm_remettreenloc:
+  path:  /remettre/en_location/{locataid}/{ecode}
+  defaults: { _controller: BaclooCrmBundle:Crm:remettreenloc}
+
+bacloocrm_envoyerfacture:
+  path:  /envoyerfacture/{numfacture}/{mode}/{page}/{relance}
+  defaults: { _controller: BaclooCrmBundle:Crm:envoyerfacture, relance:0}
+
+bacloocrm_facturestableau:
+  path:  /facturestableau/{factureid}/{page}/{mode}/{numfacture}/{totalttc}/{vue}/{style}
+  defaults: { _controller: BaclooCrmBundle:Crm:facturestableau, page: 1, mode: 'all', facture: 0, numfacture: 0, modepaiement: 0, totalttc: 0, client: 0, vue:'locations', stye: 0}
+
+bacloocrm_comptadef:
+  path:  /comptadef/{numfacture}/{page}/{mode}/{doc}
+  defaults: { _controller: BaclooCrmBundle:Crm:comptadef}
+
+bacloocrm_comptadefrattrapage:
+  path:  /comptadefrattrapage
+  defaults: { _controller: BaclooCrmBundle:Crm:comptadefrattrapage}
+
+bacloocrm_removemachine:
+  path:  /removemachine/{ecode}/{typeloc}/{codecontrat}
+  defaults: { _controller: BaclooCrmBundle:Crm:removemachine}
+
+bacloocrm_erreur:
+  path:  /erreur/{id}/{erreur}
+  defaults: { _controller: BaclooCrmBundle:Crm:erreur}
+
+bacloocrm_removecontrat:
+  path:  /supprimer_contrat/{id}/{codecontrat}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:removecontrat}
+
+bacloocrm_listerelance:
+  path:  /liste_des_relances
+  defaults: { _controller: BaclooCrmBundle:Crm:listerelance }
+
+bacloocrm_caCsv:
+  path:  /exportca/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:caCsv }
+
+bacloocrm_clonagecontrat:
+  path:  /clonagecontrat/{vendaid}
+  defaults: { _controller: BaclooCrmBundle:Crm:clonagecontrat }
+
+bacloocrm_clonagecontratautre:
+  path:  /clonagecontratautre/{vendaid}
+  defaults: { _controller: BaclooCrmBundle:Crm:clonagecontratautre }
+
+
+bacloocrm_camensuelclients:
+  path:  /camensuelclient/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensuelclients, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0, client: 0 }
+
+bacloocrm_camensuelfrs:
+  path:  /camensuelfrs/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensuelfrs, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0, client: 0 }
+
+bacloocrm_camensuelfrsdetaille:
+  path:  /camensuelfrsdetaille/{mois}/{fournisseur}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensuelfrsdetaille, mois: 0, fournisseur: 0 }
+
+bacloocrm_camensuelclientsdetaille:
+  path:  /camensuelclientdetaille/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensuelclientsdetaille, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0, client: 0 }
+
+bacloocrm_camensuelmachines:
+  path:  /camensuelmachines/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensuelmachines, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0 }
+
+bacloocrm_camensueltypemachines:
+  path:  /camensueltypemachines/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensueltypemachines, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0 }
+
+bacloocrm_camensueltypemachinessl:
+  path:  /camensueltypemachinessl/{mode}/{page}/{search}/{dStart}/{dEnd}
+  defaults: { _controller: BaclooCrmBundle:Crm:camensueltypemachinessl, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0 }
+
+bacloocrm_speedfac:
+  path:  /speedfac/{codelocations}/{ecode}
+  defaults: { _controller: BaclooCrmBundle:Crm:speedfac, page: 1, mode: 'all', search: 0, dStart: 0, dEnd: 0 }
+
+bacloocrm_envoyerdevis:
+  path: /envoyerdevis/{vendaid}
+  defaults: { _controller: BaclooCrmBundle:Crm:envoyerdevis }
+
+bacloocrm_dropzone:
+  path:  /dropzone/{codecontrat}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:dropzone, codecontrat:0, type:0 }
+
+bacloocrm_dropzoneimage:
+  path:  /dropzoneimage/{codecontrat}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:dropzoneimage, codecontrat:0, type:0 }
+
+bacloocrm_dropzonebase64:
+  path:  /dropzone64/{codecontrat}/{type}/{typevente}
+  defaults: { _controller: BaclooCrmBundle:Crm:dropzonebase64, codecontrat:0, type:0 }
+
+bacloocrm_testdrop:
+  path:  /testdrop/{codecontrat}
+  defaults: { _controller: BaclooCrmBundle:Crm:testdrop, codecontrat:0 }
+
+bacloocrm_removedocument:
+  path:  /removedocument/{iddoc}/{codecontrat}/{type}
+  defaults: { _controller: BaclooCrmBundle:Crm:removedocument, codecontrat:0 }
+
+bacloocrm_foldersize:
+  path:  /foldersize
+  defaults: { _controller: BaclooCrmBundle:Crm:foldersize }
+
+bacloocrm_validation1:
+  path:	  /validation1/{numfacture}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:validation1}
+
+bacloocrm_devalidation1:
+  path:	  /devalidation1/{numfacture}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:devalidation1}
+
+bacloocrm_validation2:
+  path:	  /validation2/{numfacture}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:validation2}
+
+bacloocrm_devalidation2:
+  path:	  /devalidation2/{numfacture}/{vue}/{mode}/{page}
+  defaults: { _controller: BaclooCrmBundle:Crm:devalidation2}
+
+bacloocrm_contratsafac:
+  path: /contratsafac
+  defaults: { _controller: BaclooCrmBundle:Crm:contratsafac }
+
+bacloocrm_speedclient:
+  path:  /speedcleint
+  defaults: { _controller: BaclooCrmBundle:Crm:speedclient }
+
+bacloocrm_speedcontrat:
+  path:  /speedcontrat
+  defaults: { _controller: BaclooCrmBundle:Crm:speedcontrat }
+
+bacloocrm_copiefacture:
+  path:  /copiefacture/{factureid}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:copiefacture }
+
+bacloocrm_requete2entreprise:
+  path: /requete2entreprise
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2entreprise }
+
+bacloocrm_litrescarb:
+  path: /litrescarb/{codelocation}/{litrescarb}
+  defaults: { _controller: BaclooCrmBundle:Crm:litrescarb, litrescarb: 0}
+
+bacloocrm_admin2:
+  path: /administration2
+  defaults: { _controller: BaclooCrmBundle:Crm:admin2 }
+
+bacloocrm_extraitcompteform:
+  path: /extraitcompteform/{clientid}/{du}/{au}
+  defaults: { _controller: BaclooCrmBundle:Crm:extraitcompteform, du: 0, au: 0}
+
+bacloocrm_extraitcompte:
+  path: /extraitcompte/{clientid}/{du}/{au}
+  defaults: { _controller: BaclooCrmBundle:Crm:extraitcompte, du: 0, au: 0}
+
+bacloocrm_extraitcomptem1:
+  path:  /extraitcomptem1
+  defaults: { _controller: BaclooCrmBundle:Crm:extraitcomptem1 }
+
+bacloocrm_listedevis:
+  path:  /listedevis/{nbresult}/{mode}/{page}/{message}/{date}/{vue}/{style}/{compteclient}
+  defaults: { _controller: BaclooCrmBundle:Crm:listedevis, page: 1, mode: 'all', message: 0, date: 'null', vue: 'locations', nbresult: 0, style: 'all', compteclient: 0}
+
+bacloocrm_affecterreglement:
+  path:  /affecterreglement/{clientid}/{mode}/{style}/{reset}
+  defaults: { _controller: BaclooCrmBundle:Crm:affecterreglement, reset: 0 }
+
+bacloocrm_utilisertroppercu:
+  path: /utilisertroppercu/{factureid}/{vue}/{mode}/{page}/{style}
+  defaults: { _controller: BaclooCrmBundle:Crm:utilisertroppercu}
+
+bacloocrm_hafsa:
+  path: /hafsa
+  defaults: { _controller: BaclooCrmBundle:Crm:hafsa}
+
+bacloocrm_relancereprise:
+  path: /relancereprise/{codelocata}/{codelocation}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:relancereprise}
+
+bacloocrm_requete2contact:
+  path:  /requete2contact
+  defaults: { _controller: BaclooCrmBundle:Crm:requete2contact }
+
+bacloocrm_impressionbdccompta:
+  path:  /impressionbdccompta/{codecontrat}/{clientid}/{numbdc}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:impressionbdccompta, numbdc:0, codecontrat:0 }
+
+bacloocrm_impressionbdcfac:
+  path:  /impressionbdcfac/{codecontrat}/{clientid}/{numbdc}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:impressionbdcfac, numbdc:0 }
+
+bacloocrm_avoirachatnormal:
+  path:  /avoirachatnormal/{vendaid}/{message}/{numavoir}/{numfacture}
+  defaults: { _controller: BaclooCrmBundle:Crm:avoirachatnormal, message:0, numavoir:0, numfacture:0 }
+
+bacloocrm_removemachineparc:
+  path:	  /supprimer/machineparc/{id}/{check}
+  defaults: { _controller: BaclooCrmBundle:Crm:removemachineparc, check: 0 }
+
+bacloocrm_removemachinelog:
+  path:  /removemachinelog/{id}/{mode}/{chauffeur}
+  defaults: { _controller: BaclooCrmBundle:Crm:removemachinelog, id: 0, chauffeur: 0}
+
+bacloocrm_lettrerelance:
+  path:  /lettrerelance/{numfacture}/{relance}/{bcontactid}
+  defaults: { _controller: BaclooCrmBundle:Crm:lettrerelance, relance: 0, style: 0}
+
+bacloocrm_liberermachineparc:
+  path:	  /liberer/machineparc/{id}/{check}
+  defaults: { _controller: BaclooCrmBundle:Crm:liberermachineparc, check: 0 }
+
+bacloocrm_voirbase64:
+  path: /voirbase64/{id}
+  defaults: { _controller: BaclooCrmBundle:Crm:voirbase64}
+
+bacloocrm_listebi:
+  path:  /listebi/{nbresult}/{mode}/{page}/{message}/{date}/{vue}/{style}/{compteclient}
+  defaults: { _controller: BaclooCrmBundle:Crm:listebi, page: 1, mode: 'all', message: 0, date: 'null', vue: 'locations', nbresult: 0, style: 0, compteclient: 0}
+
+bacloocrm_bondepart:
+  path:  /bondepart/{bondepartid}/{codelocation}
+  defaults: { _controller: BaclooCrmBundle:Crm:bondepart, bondepartid: 0, codelocation: 0}
+
+bacloocrm_bondepartpdf:
+  path:  /bondepartpdf/{ficheid}/{bdid}/{codecontrat}/{codelocation}
+  defaults: { _controller: BaclooCrmBundle:Crm:bondepartpdf}
+
+bacloocrm_bonretour:
+  path:  /bonretour/{bonretourid}/{codelocation}
+  defaults: { _controller: BaclooCrmBundle:Crm:bonretour, bonretourid: 0, codelocation: 0}
+
+bacloocrm_bonretourpdf:
+  path:  /bonretourpdf/{ficheid}/{brid}/{codecontrat}/{codelocation}
+  defaults: { _controller: BaclooCrmBundle:Crm:bonretourpdf}
+
+bacloocrm_tracker:
+  path:  /tracker/{page}/{ecode}/{du}/{au}
+  defaults: { _controller: BaclooCrmBundle:Crm:tracker, page: 1, ecode: 0, du: 0, au: 0}
+
+bacloocrm_trackerpdf:
+  path:  /trackerpdf/{ecode}/{du}/{au}/{mode}
+  defaults: { _controller: BaclooCrmBundle:Crm:trackerpdf, ecode: 0, du: 0, au: 0, mode: 'normal'}
+
+bacloocrm_reequilibragefac:
+  path:  /reequilibragefac
+  defaults: { _controller: BaclooCrmBundle:Crm:reequilibragefac}
+
+bacloocrm_oklog:
+  path:  /oklog/{codelocations}/{ecode}
+  defaults: { _controller: BaclooCrmBundle:Crm:oklog }
+
+bacloocrm_majevent:
+  path:  /event
+  defaults: { _controller: BaclooCrmBundle:Crm:majevent }
+
+bacloocrm_sendevent:
+  path:  /sendevent
+  defaults: { _controller: BaclooCrmBundle:Crm:sendevent }
+
+#route permetant l'affichage du modale a l'initiale
+bacloocrm_locationsmodalecom:
+  path:  /locationsmodalecom/
+  defaults: { _controller: BaclooCrmBundle:Crm:locationsmodalecom }
+
+#route permettant d'enregistrer la location
+bacloocrm_locationsmodalecomok:
+  path:  /locationsmodalecomok/{locataid}
+  defaults: { _controller: BaclooCrmBundle:Crm:locationsmodalecomok, locataid: 0 }
+
+#route permetant l'affichage du modale a l'initiale
+bacloocrm_locationsmodalecomsl:
+  path:  /locationsmodalecomsl/
+  defaults: { _controller: BaclooCrmBundle:Crm:locationsmodalecomsl }
+
+#route permettant d'enregistrer la location
+bacloocrm_locationsmodalecomoksl:
+  path:  /locationsmodalecomoksl/{locataid}
+  defaults: { _controller: BaclooCrmBundle:Crm:locationsmodalecomoksl, locataid: 0 }
+
+#route permettant de charger les resource dans le fullcalendar
+bacloocrm_sendressources:
+  path:  /sendressources/{codemachine}
+  defaults: { _controller: BaclooCrmBundle:Crm:sendressources, codemachine: 'tout' }
+
+#route permetant de charger les 鶨nements de location
+bacloocrm_sendeventssl:
+  path:  /sendeventssl
+  defaults: { _controller: BaclooCrmBundle:Crm:sendeventssl }
+
+#route permettant de charger les resource dans le fullcalendar
+bacloocrm_sendressourcessl:
+  path:  /sendressourcessl/{codemachine}
+  defaults: { _controller: BaclooCrmBundle:Crm:sendressourcessl, codemachine: 'tout' }
+
+#route permetant de charger les 鶨nements de location
+bacloocrm_sendevents:
+  path:  /sendevents
+  defaults: { _controller: BaclooCrmBundle:Crm:sendevents }
+
+#route permettant l'affichage du modale avec les information lorsqu'on clique sur un 鶨nement
+bacloocrm_detatillocationsmodalecom:
+  path:  /detatillocationsmodalecom/{locid}
+  defaults: { _controller: BaclooCrmBundle:Crm:detatillocationsmodalecom, locid:0 }
+
+#rooute permettant de modifier avec la dur頤e location oubien la resource
+bacloocrm_updatecom :
+  path:  /updatecom/
+  methods: [POST]
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecom }
+
+#rooute permettant de modifier avec la dur頤e location oubien la resource
+bacloocrm_updatecomsl :
+  path:  /updatecomsl/
+  methods: [POST]
+  defaults: { _controller: BaclooCrmBundle:Crm:updatecomsl }

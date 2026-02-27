@@ -1,0 +1,48 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<table>
+							<tr>
+								<td class="col-md-12">
+									<h3>
+										Importer une grille tarifaire au format csv
+									</h3>
+										{% for flashMessage in app.session.flashbag.get('BRAVO') %}
+											<div class="alert alert-success">
+											{% if flashMessage > 1 %}
+												{{ flashMessage }} lignes ont été importées.
+											{% else %}
+												{{ flashMessage }} ligne a été importé.
+											{% endif %}	
+											</div>											
+										{% endfor %}
+										{% for flashMessage in app.session.flashbag.get('Erreur') %}
+											<div class="alert alert-success">
+												<strong>{{ flashMessage }}</strong>
+											</div>
+										{% endfor %}								
+								</td>
+								<td class="col-md-6">
+									 
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				{% if mode == 'parc' %}
+					{{ render(controller("AvroCsvBundle:Import:upload", {'alias': 'grille', 'id': id})) }}
+				{% else %}
+					{{ render(controller("AvroCsvBundle:Import:upload", {'alias': 'grillesl', 'id': id})) }}
+				{% endif %}
+				</div>
+				
+				<center><a type="button" class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': id }) }}">Revenir à la fiche</span></a><br></center>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

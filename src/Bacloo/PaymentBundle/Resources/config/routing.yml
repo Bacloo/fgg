@@ -1,0 +1,7 @@
+bacloopayment_buy_credits:
+    path:	  /acheter_des_credits
+    defaults: { _controller: PaymentBundle:Payment:preparePaypalExpressCheckoutPayment}
+
+bacloocrm_paiement:
+    path:	  /paiement_ok
+    defaults: { _controller: PaymentBundle:Payment:done}

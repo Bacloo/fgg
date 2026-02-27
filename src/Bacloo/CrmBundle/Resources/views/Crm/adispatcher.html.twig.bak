@@ -1,0 +1,466 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+		<div class="panel panel-default">
+			<div class="panel-body">		
+				<div class="row clearfix">
+
+				{# PARTIE RECEPTION #}
+					<div class="col-md-6 column">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<h3>Retours</h3>
+								</h3>
+							</div>
+							<div class="panel-body">			
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											 {{ j }} {% if j > 1 %}machines{% else %}machine{% endif %} à réceptionner pour aujourd'hui
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if j == 0 %}
+											Aucune machine à réceptionner
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Client
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Etat
+													</th>
+													<th>								
+													</th>
+													<th>								
+													</th>
+													<th>								
+													</th>
+												</thead>
+											{% for adisp in apreprarer %}
+												{% for adi in adisp.locations %}
+														<tr>
+															<td>
+																{{ adisp.client }}
+															</td>
+															<td>
+																{{ adi.typemachine }}
+															</td>
+															<td>
+																{{ adi.codemachineinterne}}
+															</td>
+															<td>
+																{{ adi.etatloc }}
+															</td>
+															<td>
+																{% if adi.energie == 'diesel' or adi.energie == 'hybride'  or adi.energie == 'GNR' or adi.energie == 'Essence' %}
+																	{{ render(controller("BaclooCrmBundle:Crm:litrescarb",{'codelocation':adi.id,'litrescarb':adi.litrescarb})) }}
+																{% endif %}
+															</td>
+															<td>
+																<a type="button" class="btn btn-warning btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': adi.id, 'ecode': adi.codemachineinterne, 'mode':'Inspection' }) }}">A préparer</a>
+															</td>
+															<td>
+																<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': adi.id, 'ecode': adi.codemachineinterne, 'mode':'Disponible' }) }}">Rendre disponible</a>
+															</td>
+															<td>
+																<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': adi.id, 'ecode': adi.codemachineinterne, 'mode':'Enpanne' }) }}">Déclarer en panne</a>
+															</td>
+														</tr>
+												{% endfor %}
+											{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											 {{ e }} {% if e > 1 %}machines{% else %}machine{% endif %} en préparation
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if e == 0 %}
+											Aucune machine en préparation
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Prochaine vgp
+													</th>
+													<th>
+														Prochaine révision
+													</th>
+													<th>
+														Statut
+													</th>
+													<th>								
+													</th>
+												</thead>
+											{% for adisp in inspection %}
+													<tr>
+														<td>
+															{{ adisp.code}}
+														</td>
+														<td>
+															{{ adisp.description }}
+														</td>
+														<td>
+															{{ adisp.prochaineVgp }}
+														</td>
+														<td>
+															{{ adisp.prochaineRevision }}
+														</td>
+														<td>
+															{{ adisp.etat }}
+														</td>
+														<td>
+															<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': '0', 'ecode': adisp.code, 'mode':'Disponible' }) }}">Disponible</a>
+														</td>
+														<td>
+															<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': '0', 'ecode': adisp.code, 'mode':'Enpanne' }) }}">En panne</a>
+														</td>
+													</tr>
+											{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											 {{ c }} {% if c > 1 %}machines{% else %}machine{% endif %} en panne à ce jour
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if c == 0 %}
+											Aucune machine en panne
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Prochaine vgp
+													</th>
+													<th>
+														Prochaine révision
+													</th>
+													<th>
+														Statut
+													</th>
+													<th>								
+													</th>
+												</thead>
+											{% for adisp in enpanne %}
+													<tr>
+														<td>
+															{{ adisp.code}}
+														</td>
+														<td>
+															{{ adisp.description }}
+														</td>
+														<td>
+															{{ adisp.prochaineVgp }}
+														</td>
+														<td>
+															{{ adisp.prochaineRevision }}
+														</td>
+														<td>
+															{{ adisp.etat }}
+														</td>
+														<td>
+															<a type="button" class="btn btn-success btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': '0', 'ecode': adisp.code, 'mode':'Disponible' }) }}">Rendre disponible</a>
+														</td>
+													</tr>
+											{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											{{ b }} {% if b > 1 %}machines disponibles{% else %}machine disponible{% endif %}
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if b == 0 %}
+											Aucnue machine réceptionnée
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Prochaine vgp
+													</th>
+													<th>
+														Prochaine révision
+													</th>
+													<th>
+														Statut
+													</th>
+													<th>								
+													</th>
+												</thead>
+												{% for deja in machinespretes %}
+													<tr>
+														<td>
+															{{ deja.code }}
+														</td>
+														<td>
+															{{ deja.description }}
+														</td>
+														<td>
+															{{ deja.prochaineVgp }}
+														</td>
+														<td>
+															{{ deja.prochaineRevision }}
+														</td>
+														<td>
+															{{ deja.etat }}
+														</td>
+														<td>
+															<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_preparation', {'codelocations': 0, 'ecode': deja.code, 'mode':'Enpanne' }) }}">Déclarer en panne</a>
+														</td>
+													</tr>
+												{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{# FIN PARTIE RECEPTION #}
+				{# PARTIE DISPATCH #}
+					<div class="col-md-6 column">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<h3>Départs</h3>
+								</h3>
+							</div>
+							<div class="panel-body">				
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											 {{ i }} {% if i > 1 %}machines{% else %}machine{% endif %} à dispatcher pour le {{ date|date('d/m/Y') }}
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if i == 0 %}
+											Aucune machine à dispatcher
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Début loc
+													</th>
+													<th>
+														Client
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Code machine
+													</th>
+													<th>								
+													</th>
+												</thead>
+											{% for adisp in adispatcher %}
+												{% for adi in adisp.locations %}
+														<tr>
+															<td>
+																{{ adi.debutloc|date('d/m/Y') }}
+															</td>
+															<td>
+																{{ adisp.client }}
+															</td>
+															<td>
+																{{ adi.codemachine }}
+															</td>
+															<td>
+																{% if adi.codemachineinterne is empty %}A dispatcher{% else %}<a href="{{ path('bacloocrm_machines', {'machineid': adi.machineid})  }}">{{ adi.codemachineinterne }}</a>{% endif %}
+															</td>
+															<td>
+																<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_dispatch', {'code': adi.id, 'codecont': adisp.id, 'machinedor':adi.codemachineinterne, 'erreur': 0 }) }}">Dispatcher</a>
+															</td>
+														</tr>
+												{% endfor %}
+											{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>				
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											 {{ d }} {% if d > 1 %}machines réservées{% else %}machine réservée{% endif %} pour le {{ date|date('d/m/Y') }}
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if d == 0 %}
+											Aucune machine à dispatcher
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														Début loc
+													</th>
+													<th>
+														Client
+													</th>
+													<th>
+														Contrat
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Statut
+													</th>
+													<th>								
+													</th>
+												</thead>
+											{% for adisp in resa %}
+												{% for adi in adisp.locations %}
+														<tr>
+															<td>
+																{{ adi.debutloc|date('d/m/Y') }}
+															</td>
+															<td>
+																{{ adisp.client }}
+															</td>
+															<td>
+																<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': adisp.clientid|number_format(0, ',', ''), 'locid':  adisp.id, 'erreur': 0 }) }}">{{ adisp.id }}</a>
+															</td>
+															<td>
+																<a href="{{ path('bacloocrm_machines', {'machineid': adi.machineid})  }}">{{ adi.codemachineinterne }}</a>
+															</td>
+															<td>
+																{{ adi.codemachineinterne }}
+															</td>
+															<td>
+																{{ adi.etatloc }}
+															</td>
+															<td>
+																<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_dispatch', {'code': adi.id, 'codecont': adisp.id, 'machinedor': adi.codemachineinterne, 'erreur': 0 }) }}">Confirmer cette machine</a>
+															</td>
+														</tr>
+												{% endfor %}
+											{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											Vous avez dispatché {{ a }} {% if a > 1 %}machines{% else %}machine{% endif %} avec un debut de loc entre le {{ date1|date('d/m/Y') }} et le {{ date|date('d/m/Y') }}
+										</h3>
+									</div>
+									<div class="panel-body">
+										{% if a == 0 %}
+											Aucnue machine dispatchée
+										{% else %}
+											<table class="table table-striped col-md-12">
+												<thead>
+													<th>
+														N° de contrat
+													</th>
+													<th>
+														Client
+													</th>
+													<th>
+														Type de machine
+													</th>
+													<th>
+														Code machine
+													</th>
+													<th>
+														Statut
+													</th>
+													<th>								
+													</th>
+												</thead>
+												{% for dejadisp in dejadispatch %}
+													{% for deja in dejadisp.locations %}
+														<tr>
+															<td>
+																{{ dejadisp.id }}
+															</td>
+															<td>
+																{{ dejadisp.client }}
+															</td>
+															<td>
+																{{ deja.codemachine }}
+															</td>
+															<td>
+																<a href="{{ path('bacloocrm_machines', {'machineid': deja.machineid})  }}">{{ deja.codemachineinterne }}</a>
+															</td>
+															<td>
+																{{ deja.etatloc }}
+															</td>
+															{% if (userdetails.roleuser == 'technicien' and ((deja.bduser is defined and deja.bduser == userdetails.username) or deja.bdid == 0)) or userdetails.username == 'jmr' %}
+																<td>
+																	<a type="button" class="btn btn-warning btn-xs" style="margin-left:5px" href="{{ path('bacloocrm_bondepart', {'bondepartid': deja.bdid, 'codelocation': deja.id, 'codelocation': deja.id}) }}">BD</a>
+																</td>
+															{% else %}
+																<td></td>
+															{% endif %}
+															<td>
+																{% if deja.bdid > 0 %}
+																	<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_bondepartpdf', {'ficheid': dejadisp.clientid, 'bdid': deja.bdid, 'codecontrat': dejadisp.id, 'codelocation': deja.id }) }}">BD PDF</a>
+																{% endif %}
+															</td>
+															<td>
+																<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_dispatch', {'code': deja.id, 'codecont': dejadisp.id, 'machinedor':deja.codemachineinterne, 'erreur': 0 }) }}">Modifier</span></a>
+															</td>
+														</tr>
+													{% endfor %}
+												{% endfor %}
+											</table>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{# FIN PARTIE DISPATCH #}
+				</div>		
+			</div>
+
+</div>
+
+
+
+{% endblock %}

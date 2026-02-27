@@ -1,0 +1,34 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/searchfiche.html.twig #}
+
+	<ul class="nav nav-pills nav-stacked">
+
+		<form class="form-horizontal" action="{{ path('bacloocrm_search') }}" method="post" {{form_enctype(form) }}>
+		<fieldset>
+			{# Les erreurs générales du formulaire. #}
+			{{ form_errors(form) }}				
+						
+			<center>
+			
+				{{ form_row(form._token) }}
+				<input type="submit" class="btn btn-primary" />
+
+				
+			</center>
+		</fieldset>			
+		</form>
+
+	{% if id is not defined %}
+		<form class="form-horizontal" action="{{ path('bacloocrm_search') }}" method="post" {{form_enctype(form) }}>
+		<fieldset>
+			{# Les erreurs générales du formulaire. #}
+			{{ form_errors(form) }}				
+						
+			<center>
+			
+				{{ form_row(form._token) }}
+				<input type="submit" class="btn btn-primary" />
+			</center>
+		</fieldset>			
+		</form>
+	{% endif %}
+	</ul>

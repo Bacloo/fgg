@@ -1,0 +1,665 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+{#{% set codemachine = 0 %}#}
+{#***{{ codemachine }}#}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>{%  if mode ==  'operateurs' %}Planning des opérateurs{% else %}Planning des machines de parc{% endif %}</h3>
+		</h3>
+	</div>
+	<div class="panel-body">	
+					<div class="col-md-3 column">
+						<form class="form-horizontal" action="{{ path('bacloocrm_planning', {'codemachine':codemachine} ) }}" method="post" {{form_enctype(form) }}>
+							<div class="row clearfix">
+								<div class="col-md-10 pull-left">
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-addon">Famille de machine</span>
+												{{ form_widget(form.codemachine, {'attr' : { 'class' : 'form-control' } })  }}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2 column pull-left">
+									<input type="submit" name="submit" id="submit" value="Valider" class="btn btn-info pull-left">
+								</div>
+							</div>
+							{{ form_row(form._token) }}
+						</form>
+{#						<form class="form-horizontal" action="{{ path('bacloocrm_planning', {'codemachine':codemachine} ) }}" method="post" {{form_enctype(form) }}>#}
+{#						<div class="form-group">#}
+{#							<div class="col-md-12">#}
+{#								<div class="input-group">#}
+{#									<span class="input-group-addon"><b></b>Code machine</span>#}
+{#									{{ form_widget(form.codemachine, { 'attr' : { 'class' : 'form-control codemachineinterne' }} )  }}#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#							<input type="submit" class="btn btn-primary" value="Enregistrer"/>#}
+{#							{{ form_rest(form) }}#}
+{#						</form>#}
+					</div>
+					<div class="col-md-9 column">
+						<table class="table table-bordered">
+							<tr>
+								<td style="border:1;width: 60px" bgcolor="#75627D" class="col-md-1"></td>
+								<td style="width: 150px" borderless>Location terminée</td>
+								<td style="border:1;width: 60px" bgcolor="#E4B4FF" class="col-md-1"></td>
+								<td style="width: 150px" borderless>Retour planifié</td>
+								<td style="border:1;width: 60px" bgcolor="#f0ad4e" class="col-md-1"></td>
+								<td style="width: 150px" borderless>En location</td>
+								<td style="border:1;width: 60px" bgcolor="#FFCC91" class="col-md-1"></td>
+								<td style="width: 150px" >Prêt au départ</td>
+								<td style="border:1;width: 60px" bgcolor="#f5b0b0" class="col-md-1"></td>
+								<td style="width: 150px">Réservé</td>
+								<td style="border:1;width: 60px" bgcolor="#5cb85c" class="col-md-1"></td>
+								<td style="width: 150px">Devis</td>
+								<td style="border:1;width: 60px" bgcolor="#ef5d4d" class="col-md-1"></td>
+								<td style="width: 150px">En panne</td>
+							</tr>
+						</table>
+					</div>
+					
+					<div id='calendar'  style= " display: flex; width: 100%;"> </div>
+		
+	</div>
+</div>
+<div class="modal draggable-modal" tabindex="-1" role="dialog" id="modal" style="z-index: 10;">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title"><center><b>Location</b></center></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body modalbh" id="modal-body"></div>
+				<div class="modal-footer">
+					<input id="save-changes-btn" type="button" class="btn btn-primary" value="Enregistrer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+			   </div>
+		   </div>
+ 	   </div>
+</div>
+{#	{% set codemachine = 'tout' %}#}
+{#	&&&&&{{ codemachine }}#}
+<script>
+
+{# var myLocationArray = {{ json|json_encode|raw }}; #}
+{# var myEvent = {{ evenements|json_encode|raw }} #}
+//console.log(myLocationArray);
+{# console.log(myEvent); #}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var codemachine = '{{ codemachine|e('js') }}';
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+		eventResizableFromStart: false,
+		forceEventDuration: true,
+		locale: 'fr',
+		timeZone: 'UTC',
+		initialView: 'resourceTimelineMonth',
+		nowIndicator: true,
+		aspectRatio: 1.5,
+		headerToolbar: {
+			left: 'prev',
+			center: 'title',
+			right: 'next'
+		},
+		navLinks: false,
+		editable: true,
+		selectable: true,
+		selectMirror: true,
+		dayMaxEvents: true,
+		allDaySlot: true,
+		eventStartEditable: true,
+		eventDurationEditable: true,
+		contentHeight: 'auto',
+		resourceAreaWidth: '10%',
+		resourceAreaColumns: [
+			{
+				field: 'title',
+				headerContent: 'Code Machines',
+			}
+		],
+		events: "{{ path('bacloocrm_sendevents') }}",
+		eventContent: (info) => {
+			const startDay = moment(info.event.start).subtract(1, 'day').format('DD/MM/Y');
+			const endDay = moment(info.event.end).subtract(1, 'day').format('DD/MM/Y');
+			const hasEnd = startDay !== '00:00' && endDay !== '00:00';
+
+			return {
+				html: `<div class="fc-content">
+                  <span class="fc-title">${info.event.title}</span>
+                  ${hasEnd ? `<br><span class="fc-time">${startDay} - ${endDay}</span>` : ''}
+                  <br><span class="fc-description">${info.event.extendedProps.description}</span>
+               </div>`,
+			};
+		},
+		resources: "{{ path('bacloocrm_sendressources', {'codemachine': codemachine}) }}",
+		resourceRowContent: function (arg) {
+			var resourceId = arg.resource.id;
+			var url = "{{ path('bacloocrm_sendressources', {'codemachine': '__MACHINEID__'}) }}".replace('__MACHINEID__', resourceId);
+			return {
+				html: '<a href="' + url + '" target="_blank">' + arg.resource.title + '</a>'
+			};
+		},
+	});
+{#	resourceLabelDidMount: function(arg) {#}
+{#		var resourceEl = arg.el;#}
+{#		var resourceId = arg.resource.id;#}
+{#		var url = "{{ path('bacloocrm_sendressources', {'machineid': '__MACHINEID__'}) }}".replace('__MACHINEID__', resourceId);#}
+{#		// resourceEl.innerHTML = '<a href="' + url + '" target="_blank">' + arg.resource.title + '</a>';#}
+{#	},#}
+{#});#}
+
+	console.log("depotx =" + codemachine);
+  calendar.render();
+
+  calendar.on('select', function(info){
+
+	//debut
+	var startYear = moment(info.start).year();
+	var startMonth = (moment(info.start).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var startDay = moment(info.start).date().toString().padStart(2, '0');
+	var eventStart = startYear + '-' + startMonth + '-' + startDay;
+	//fin
+	var startYear = moment(info.end).year();
+	var startMonth = (moment(info.end).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var startDay = moment(info.end).date().toString().padStart(2, '0');
+	var eventEnd = startYear + '-' + startMonth + '-' + startDay;
+
+	$("#modal-body").load("{{ path('bacloocrm_locationsmodalecom') }}"+"?eventStart="+ eventStart +"&eventEnd="+ eventEnd +"&eventResourceId="+ info.resource.title +"&eventResourceTitle="+ info.resource.title);
+	$("#modal").modal();
+  });
+
+  calendar.on('eventClick', function(info){
+	var resource = calendar.getResourceById(info.event._def.resourceIds[0]);
+	var resourceId = resource.id;
+	var locataid = info.event.id ;
+	var client = info.event.title;
+	var debutloc = info.event.start;
+	var finloc = info.event.end;
+	var idlocation = info.event.locationid;
+	var finl;
+	if(finloc == null){
+			finl = debutloc;
+	}
+	else{
+		finl = finloc;
+	}
+	console.log(locataid);
+	$("#modal-body").load("{{ path('bacloocrm_locationsmodalecomok')}}" + "?eventResourceId=" + locataid);
+	$("#modal").modal();
+  });
+
+//fonction pour gérer les event drop
+calendar.on('eventDrop', function(info, delta, revertFunc, jsEvent, ui, view){
+
+	var oldResourceId = " ";
+	
+	
+	//ansienne resource
+	//var oldResourceId = info.oldResource.id;
+	
+	var resource = calendar.getResourceById(info.event._def.resourceIds[0]);
+	var locataid = info.event.id ;
+	var resourceId = resource.id;
+	var eventStart = info.event.start;
+	var eventEnd = info.event.end
+
+	var startYear = moment(eventStart).year();
+	var startMonth = (moment(eventStart).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var startDay = moment(eventStart).date().toString().padStart(2, '0');
+	var debutloc = startYear + '-' + startMonth + '-' + startDay;
+
+	var endYear = moment(eventEnd).year();
+	var endMonth = (moment(eventEnd).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var endDay = moment(eventEnd).date().toString().padStart(2, '0');
+	var finloc = endYear + '-' + endMonth + '-' + endDay;
+	
+	//vérifier si on est sur la meme resource
+	if(info.oldResource == null){
+		oldResourceId = resourceId;
+	}else{
+		oldResourceId = info.oldResource.id;
+	}
+	var finl;
+	if(eventEnd == null){
+			finl = debutloc;
+	}
+	else{
+		finl = finloc;
+	}
+	if (confirm("Êtes-vous sûr de vouloir effectuer cette action?")){
+	fetch("{{ path('bacloocrm_updatecom')}}", {
+        method: 'POST',
+		body: JSON.stringify({ locataid: locataid, codeinterne: resourceId, debutloc: debutloc, finloc: finl, newId: oldResourceId })
+      })
+	  .then(response => response.json())
+	  .then(data  => {
+        console.log(data.etatloc);
+		if(data.etatloc == "Location terminée"){
+			alert ("cette location est terminée !!");
+			location.reload();
+		}
+		else if(data.etatloc == "En location"){
+			alert ("cette machine est déjà en location !!");
+			location.reload();
+		}
+		else{
+			location.reload();
+		}
+      })
+	  .catch(error => {
+       // console.error('Erreur lors de l\'envoi de la requête : ', error);
+      });
+	}
+
+	// console.log(locataid, resourceId,debutloc, finl, 'odlResource:',oldResourceId );
+});
+
+
+//fonction qui écoute le redimentionnement d'un évènement 
+calendar.on('eventResize', function(info, delta, revertFunc){
+	var resource = calendar.getResourceById(info.event._def.resourceIds[0]);
+	var locataid = info.event.id ;
+	var resourceId = resource.id;
+	var eventStart = info.event.start;
+	var eventEnd = info.event.end
+
+	var startYear = moment(eventStart).year();
+	var startMonth = (moment(eventStart).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var startDay = moment(eventStart).date().toString().padStart(2, '0');
+	var debutloc = startYear + '-' + startMonth + '-' + startDay;
+
+	var endYear = moment(eventEnd).year();
+	var endMonth = (moment(eventEnd).month() + 1).toString().padStart(2, '0'); // Ajouter 1 car les mois commencent à 0
+	var endDay = moment(eventEnd).date().toString().padStart(2, '0');
+	var finloc = endYear + '-' + endMonth + '-' + endDay;
+
+	var finl;
+	if(eventEnd == null){
+			finl = debutloc;
+	}
+	else{
+		// finl = finloc;
+		// finl = moment(eventEnd).add(1, 'day').format('YYYY-MM-DD');
+		finl = moment(finloc).subtract(1, 'day').format('YYYY-MM-DD');
+	}
+      fetch("{{ path('bacloocrm_updatecom')}}", {
+        method: 'POST',
+		body: JSON.stringify({locataid: locataid, codeinterne: resourceId, debutloc: debutloc, finloc: finl, newId: 'NON' })
+      })
+	  .then(response => response.json())
+      .then(data  => {
+        console.log(data.etatloc);
+		if(data.etatloc == "Location terminée"){
+			alert ("cette location est terminée !!");
+			location.reload();
+		}
+		else{
+			location.reload();
+		}
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'envoi de la requête : ', error);
+		console.log(finl);
+      });
+	  console.log(debutloc, finl);
+});
+});
+
+
+
+document.getElementById('save-changes-btn').addEventListener('click', function() {
+			  document.getElementById('my-form').submit();
+});
+</script>
+<script>
+//fonction qui parmet draggable
+		$(function() {
+			$(".draggable-modal").draggable({
+				handle: ".modal-header"
+			});
+		});
+//function qui marque un temp d'arret du modalae pour chargé les résouses
+	setTimeout(function() {
+		var modalContent = $("#modal .modal-body").html();
+		console.log(modalContent);
+	}, 1000);
+
+</script>
+
+
+<script>
+	//BLOC LOCATION
+	$(document).ajaxComplete(function()
+	{
+
+		var modalContent = $("#modal .modal-body").html();
+		// On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+		var $container = $('div#bacloo_crmbundle_locata_locations');
+		var $container4 = $('tr#dibac3');
+
+		// On ajoute un lien pour ajouter une nouvelle catégorie
+		var $addLink = $('<a href="#" id="add_category" class="btn btn-custom_gris_fonce btn-xs"><i class="fa fa-plus"></i></a>');
+
+
+		if ($('.clienta').is(":focus") && $('.clienta').val() != '')
+		{
+
+			console.log("poka")
+		}
+		else if ($('.chantier').is(":focus") && $('.chantier').val() != '')
+		{
+
+			console.log("okok")
+		}
+		else if ($('.codemachine').is(":focus") && $('.codemachine').val() != '')
+		{
+
+			console.log("okokcodemachine")
+		}
+		else if ($('.machine').is(":focus") && $('.machine').val() != '')
+		{
+
+			console.log("okokmachine")
+		}
+		else
+		{
+			console.log("pokloc");
+			//console.log(document.getElementById('field2').value);
+			$container.prepend($addLink);
+			// On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+			$addLink.click(function(e) {
+				addCategory($container);
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+
+			// On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+			var index = $container.find(':input').length;
+
+			// On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+			if (index == 0) {
+				addCategory($container);
+			} else {
+				// Pour chaque catégorie déjà existante, on ajoute un lien de suppression
+				$("tbody").children( ".dibacloo3" ).each(function() {
+					addDeleteLink($(this));
+				});
+			}
+
+			// La fonction qui ajoute un formulaire Categorie
+			function addCategory($container) {
+				// Dans le contenu de l'attribut « data-prototype », on remplace :
+				// - le texte "__name__label__" qu'il contient par le label du champ
+				// - le texte "__name__" qu'il contient par le numéro du champ
+				var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, '2' + (index+1))
+						.replace(/__name__/g, index));
+
+				// On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+				addDeleteLink($prototype);
+				//
+				// On ajoute le prototype modifié à la fin de la balise <div>
+				$container4.after($prototype);
+
+				// Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+				index++;
+				$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+			}
+		}
+
+		// La fonction qui ajoute un lien de suppression d'une catégorie
+		function addDeleteLink($prototype) {
+			// Création du lien
+			$deleteLink = $('<td><br><a href="#" style="color:black; font-size:20px;"><i class="glyphicon glyphicon-trash"></i></a></td>');
+
+			// Ajout du lien
+			$prototype.append($deleteLink);
+
+			// Ajout du listener sur le clic du lien
+			$deleteLink.click(function(e) {
+				$prototype.remove();
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+		}
+		$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+	});
+	//FIN BLOC LOCATION
+
+	//BLOC SOUS LOCATION
+	//FIN SOUS LOCATION
+
+	//BLOC LOCATAVENTES
+	//FIN LOCATAVENTES
+</script>
+<script>
+	//BLOC SOUS LOCATION
+	$(document).ajaxComplete(function()
+	{
+
+		var modalContent = $("#modal .modal-body").html();
+		// On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+		var $container = $('div#bacloo_crmbundle_locatasl_locationssl');
+		var $container4 = $('tr#dibac4');
+
+		// On ajoute un lien pour ajouter une nouvelle catégorie
+		var $addLink = $('<a href="#" id="add_category" class="btn btn-custom_gris_fonce btn-xs"><i class="fa fa-plus"></i></a>');
+
+
+		if ($('.clienta').is(":focus") && $('.clienta').val() != '')
+		{
+
+			console.log("poka")
+		}
+		else if ($('.chantier').is(":focus") && $('.chantier').val() != '')
+		{
+
+			console.log("okok")
+		}
+		else if ($('.codemachine').is(":focus") && $('.codemachine').val() != '')
+		{
+
+			console.log("okokcodemachine")
+		}
+		else if ($('.machine').is(":focus") && $('.machine').val() != '')
+		{
+
+			console.log("okokmachine")
+		}
+		else
+		{
+			//console.log("pok");
+			//console.log(document.getElementById('field2').value);
+			$container.prepend($addLink);
+			// On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+			$addLink.click(function(e) {
+				addCategory($container);
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+
+			// On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+			var index = $container.find(':input').length;
+
+			// On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+			if (index == 0) {
+				// addCategory($container);
+			} else {
+				// Pour chaque catégorie déjà existante, on ajoute un lien de suppression
+				$("tbody").children( ".dibacloo4" ).each(function() {
+					addDeleteLink($(this));
+				});
+			}
+		}
+
+		// La fonction qui ajoute un formulaire Categorie
+		function addCategory($container) {
+			// Dans le contenu de l'attribut « data-prototype », on remplace :
+			// - le texte "__name__label__" qu'il contient par le label du champ
+			// - le texte "__name__" qu'il contient par le numéro du champ
+			var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, '2' + (index+1))
+					.replace(/__name__/g, index));
+
+			// On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+			addDeleteLink($prototype);
+
+			// On ajoute le prototype modifié à la fin de la balise <div>
+			$container4.after($prototype);
+
+			// Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+			index++;
+			$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+		}
+
+		// La fonction qui ajoute un lien de suppression d'une catégorie
+		function addDeleteLink($prototype) {
+			// Création du lien
+			$deleteLink = $('<td><br><a href="#" style="color:black; font-size:20px;"><i class="glyphicon glyphicon-trash"></i></a></td>');
+
+			// Ajout du lien
+			$prototype.append($deleteLink);
+
+			// Ajout du listener sur le clic du lien
+			$deleteLink.click(function(e) {
+				$prototype.remove();
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+		}
+		$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+	});
+	//FIN SOUS LOCATION
+</script>
+<script>
+	//BLOC LOCATAVENTES
+	$(document).ajaxComplete(function()
+	{
+
+		var modalContent = $("#modal .modal-body").html();
+		// On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+		var $container = $('div#bacloo_crmbundle_locata_locataventes');
+		var $container4 = $('tr#dibac5');
+
+		// On ajoute un lien pour ajouter une nouvelle catégorie
+		var $addLink = $('<a href="#" id="add_category" class="btn btn-custom_gris_fonce btn-xs"><i class="fa fa-plus"></i></a>');
+
+
+		if ($('.clienta').is(":focus") && $('.clienta').val() != '')
+		{
+
+			console.log("poka")
+		}
+		else if ($('.chantier').is(":focus") && $('.chantier').val() != '')
+		{
+
+			console.log("okok")
+		}
+		else if ($('.codemachine').is(":focus") && $('.codemachine').val() != '')
+		{
+
+			console.log("okokcodemachine")
+		}
+		else if ($('.machine').is(":focus") && $('.machine').val() != '')
+		{
+
+			console.log("okokmachine")
+		}
+		else
+		{
+			//console.log("pok");
+			//console.log(document.getElementById('field2').value);
+			$container.prepend($addLink);
+			// On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+			$addLink.click(function(e) {
+				addCategory($container);
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+
+			// On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+			var index = $container.find(':input').length;
+
+			// On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+			if (index == 0) {
+				// addCategory($container);
+			} else {
+				// Pour chaque catégorie déjà existante, on ajoute un lien de suppression
+				$("tbody").children( ".dibacloo5" ).each(function() {
+					addDeleteLink($(this));
+				});
+			}
+		}
+
+		// La fonction qui ajoute un formulaire Categorie
+		function addCategory($container) {
+			// Dans le contenu de l'attribut « data-prototype », on remplace :
+			// - le texte "__name__label__" qu'il contient par le label du champ
+			// - le texte "__name__" qu'il contient par le numéro du champ
+			var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, '2' + (index+1))
+					.replace(/__name__/g, index));
+
+			// On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+			addDeleteLink($prototype);
+
+			// On ajoute le prototype modifié à la fin de la balise <div>
+			$container4.after($prototype);
+
+			// Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+			index++;
+			$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+		}
+
+		// La fonction qui ajoute un lien de suppression d'une catégorie
+		function addDeleteLink($prototype) {
+			// Création du lien
+			$deleteLink = $('<td><br><a href="#" style="color:black; font-size:20px;"><i class="glyphicon glyphicon-trash"></i></a></td>');
+
+			// Ajout du lien
+			$prototype.append($deleteLink);
+
+			// Ajout du listener sur le clic du lien
+			$deleteLink.click(function(e) {
+				$prototype.remove();
+				e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+				return false;
+			});
+		}
+		$('.date').datepicker({ dateFormat:'dd/mm/yy'});
+	});
+	//FIN LOCATAVENTES
+</script>
+	<script>
+		$(document).ready(function() {
+			// Récupération des variables openModal et eventId depuis le backend
+			var openModal = '{{ openModal }}';
+			var eventId = '{{ event_id }}';
+
+			// Affichage des variables pour faciliter le débogage
+			console.log('openModal:', openModal);
+			console.log('eventId:', eventId);
+
+			// Si openModal est 'true' et eventId n'est pas égal à '0', alors on charge les données de l'événement
+			if (openModal === 'true' && eventId !== '0') {
+				loadEventData(eventId);
+			}
+		});
+
+		// Fonction pour charger les données de l'événement et afficher la modale
+		function loadEventData(eventId) {
+			// Chargement du contenu de la modale en utilisant AJAX
+			$("#modal-body").load("{{ path('bacloocrm_locationsmodalecomok')}}" + "?eventResourceId=" + eventId);
+
+			// Affichage de la modale
+			$('#modal').modal('show');
+		}
+	</script>
+{% endblock %}

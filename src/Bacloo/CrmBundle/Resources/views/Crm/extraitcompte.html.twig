@@ -1,0 +1,141 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Bacloo{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+        <!-- Custom CSS -->
+        <link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+        <link href="{{ asset('css/morris.css') }}"type="text/css" />
+        <link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+        <!-- Side menu -->
+        <link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+    {% endblock %}
+
+
+</head>
+<body>
+<br><br><br><br><br>
+<div align="center"><h2>Extrait de compte client</h2></div>
+<span style="text-align:left;"><h4>
+        Client : {{ client }}<br>
+        Du : {{ du|date('d/m/Y') }}<br>
+        Au : {{ au|date('d/m/Y') }}
+    </h4></span>
+<table border="1" lass="table table-striped col-md-12">
+    <tr style="text-align:center;">
+        <td height="40">
+            <b>Date</b>
+        </td>
+        <td width="70">
+            <b>Journal</b>
+        </td>
+        <td width="70">
+            <b>N° de facture</b>
+        </td>
+        <td width="50">
+            <b>Echéance</b>
+        </td>
+        <td>
+            <b>Mode de règlement</b>
+        </td>
+        <td width="70">
+            <b>Débit</b>
+        </td>
+        <td>
+            <b>Crédit</b>
+        </td>
+        <td>
+            <b>Date paiement</b>
+        </td>
+    </tr>
+    {% set totaldebit = 0 %}
+    {% set totalcredit = 0 %}
+    {% for facture in listerelance %}
+        <tr>
+            <td height="15">
+                {{ facture.datecrea|date('d/m/Y') }}
+            </td>
+            <td>
+                VENTE
+            </td>
+            <td>
+                {{ facture.numfacture }}
+            </td>
+            <td>{{ facture.echeance|date('d/m/Y') }}
+            </td>
+            <td>
+                {{ facture.modepaiement }}
+            </td>
+            <td>
+                {% if facture.typedoc == 'facture' %}
+                    {%  if facture.reglement == 1 %}
+                        {{ facture.totalttc|number_format(2, ',', ' ') }}
+                        {% set totaldebit = totaldebit+facture.totalttc %}
+                    {% elseif facture.montantdejareg is not empty and facture.montantdejareg is defined and facture.totalttc-facture.montantdejareg > 0 and facture.totalttc-facture.montantdejareg < facture.totalttc %}
+                        {%  set debit = facture.totalttc %}{{ debit|number_format(2, ',', ' ') }}
+                        {% set totaldebit = totaldebit+debit %}
+                    {% elseif facture.montantdejareg is empty and facture.montantdejareg is not defined or facture.montantdejareg == 0 and facture.reglement is not same as(1) %}
+                        {{ facture.totalttc|number_format(2, ',', ' ') }}
+                        {% set totaldebit = totaldebit+facture.totalttc %}
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                {%  if facture.reglement == 1 %}
+                    {% if facture.typedoc == 'facture' %}
+                        {{ facture.montantdejareg|number_format(2, ',', ' ') }}
+                        {% set totalcredit = totalcredit+facture.montantdejareg %}
+                    {% elseif facture.typedoc == 'avoir' %}
+                        {{ facture.totalttc|number_format(2, ',', ' ') }}
+                        {% set totalcredit = totalcredit+facture.totalttc %}
+                    {% else %}
+                    {% endif %}
+                {% elseif facture.montantdejareg is not empty and facture.montantdejareg is defined and facture.totalttc-facture.montantdejareg > 0 and facture.totalttc-facture.montantdejareg < facture.totalttc %}
+                    {{ facture.montantdejareg|number_format(2, ',', ' ') }}
+                    {% set totalcredit = totalcredit+facture.montantdejareg %}
+                {% elseif facture.montantdejareg is empty and facture.montantdejareg is not defined and facture.reglement is not same as(1) %}
+                {% elseif facture.reglement == 0 and facture.typedoc == 'avoir' %}
+                    {{ facture.totalttc|number_format(2, ',', ' ') }}
+                    {% set totalcredit = totalcredit+facture.totalttc %}
+                {% endif %}
+            </td>
+            <td>
+                {% if facture.reglement == 1 %}{{ facture.datepaiement|date('d/m/Y') }}{% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    <tr style="line-height: 20px; font-weight: bold;">
+        <td colspan="5">
+            Total des mouvements
+        </td>
+        <td>
+            {{ totaldebit|number_format(2, ',', ' ') }}
+        </td>
+        <td>
+            {{ totalcredit|number_format(2, ',', ' ') }}
+        </td>
+    </tr>
+    <tr style="line-height: 20px; font-weight: bold;">
+        <td colspan="5">
+            Solde
+        </td>
+        <td>
+            {% if totalcredit-totaldebit < 0 %}{% set solde = totaldebit-totalcredit %}{{ solde|number_format(2, ',', ' ') }}{% endif %}
+        </td>
+        <td>
+            {% if totalcredit-totaldebit > 0 %}{% set solde = totalcredit-totaldebit %}{{ solde|number_format(2, ',', ' ') }}{% endif %}
+        </td>
+    </tr>
+</table>
+</body>
+</html>

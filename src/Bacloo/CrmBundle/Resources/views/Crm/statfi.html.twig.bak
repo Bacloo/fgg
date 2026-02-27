@@ -1,0 +1,1985 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Tableau de bord</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-2">	
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<a style="color:black" href="{{ path('bacloocrm_planning', {'mode' : 'machines'}) }}">
+						<div class="huge"><center>Taux d'occupation</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{{ txocupp|number_format(2, ',', ' ') }}%</b></center></h2>
+					</a>
+				</div>
+			</div>	
+		</div>
+		{% set loyer = 0 %}
+		{% set samedi = 0 %}
+		{% set dimanche = 0 %}
+		{% for anneea, moissa in datesa2 %}
+			{% if anneea == today|date('Y') %}
+				{% for mois, datea in moissa %}
+					{% if mois == today|date('m') %}
+						{% set loyer = 0 %}
+						{% for dat in datea %}
+							{% for loca in calocmois %}
+							{% set samedi = 0 %}
+							{% set dimanche = 0 %}
+							{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+							{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}
+						{% for loc in loca.locationsclone %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationsslclone %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}						
+						{% endfor %}			
+							{% endfor %}			
+						{% endfor %}		
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		{% endfor %}
+		{% set quantite = 0 %}		
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set quantite = 0 %}
+					{% for loca in calocjour %}
+						{% set samedi = 0 %}
+						{% set dimanche = 0 %}
+						{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+						{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}	
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		{% set loyer3 = 0 %}
+		{% set samedi = 0 %}
+		{% set dimanche = 0 %}		
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if today|date('U') >= loc.debutloc|date('U') and today|date('U') <= loc.finloc|date('U')  and today|date('U') >= dstarta|date('U') and today|date('U') <= denda|date('U') %}
+								{% if (today|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (today|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if today|date('D') != 'Sat' and today|date('D') != 'Sun' %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}	
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if today|date('U') >= loc.debutloc|date('U') and today|date('U') <= loc.finloc|date('U')  and today|date('U') >= dstarta|date('U') and today|date('U') <= denda|date('U') %}
+								{% if (today|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (today|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if today|date('D') != 'Sat' and today|date('D') != 'Sun' %}
+									{% set loyer3 = loyer3 + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+					{% endfor %}		
+		<div class="col-md-2">
+			<div class="panel panel-default">
+				<div class="panel-body">
+						<div class="huge"><center>Prix moyen</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{% if quantite > 0 %}{{ (loyer3/quantite)|number_format(2, ',', ' ') }}{% else %}0{% endif %}€</b></center></h2>
+					</a>
+				</div>
+			</div>	
+		</div>				
+		<div class="col-md-2">	
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<a style="color:black" href="{{ path('bacloocrm_planning', {'mode' : 'machines'}) }}">
+						<div class="huge"><center>Locations vs Parc</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{{ nblocparc }} / {{totalparc}}</b></center></h2>
+					</a>
+				</div>
+			</div>
+		</div>		
+		<div class="col-md-2">	
+			<div class="panel panel-default">
+				<div class="panel-body">
+					
+						<div class="huge"><center>CA locations du jour</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{{ loyer3|number_format(0, ',', ' ') }}€</b></center></h2>
+					
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">	
+			<div class="panel panel-default">
+				<div class="panel-body">								
+						<div class="huge"><center>Ca locations du mois</center></div>
+						<center>(Uniquement les locations facturées)</center>
+						<hr>
+						<h2><center><b>{{ loyer|number_format(0, ',', ' ') }}€</b></center></h2>										
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="panel panel-default">
+				<div class="panel-body">
+				<div class="col-md-6">
+						<div class="huge"><center>Retours</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{{ retours }}</b></center></h2>
+					</a>
+				</div>
+				<div class="col-md-6">
+						<div class="huge"><center>Départs</center></div>
+						<center><br></center>
+						<hr>
+						<h2><center><b>{{ departs }}</b></center></h2>
+					</a>
+				</div>
+				</div>
+			</div>	
+		</div>		
+	
+		<div class="col-md-12 column">
+			<hr>
+		</div>	
+		
+		<div class="col-md-2">
+			<a type="button" class="btn btn-info btn-block pull-right" href="{{ path('bacloocrm_camensuelclients') }}"><h3><i class="ionicons ion-arrow-graph-up-right"></i>CA mesuel par clients</h3><br></a>
+		</div>		
+		<div class="col-md-2">
+			<a type="button" class="btn btn-info btn-block pull-right" href="{{ path('bacloocrm_camensuelclientsdetaille') }}"><h3><i class="ionicons ion-arrow-graph-up-right"></i> CA total clients</h3><br></a>
+		</div>
+		<div class="col-md-3">
+			<a type="button" class="btn btn-success btn-block pull-right" href="{{ path('bacloocrm_camensueltypemachines') }}"><h3><i class="ionicons ion-arrow-graph-up-right"></i> CA par type de machine de parc</h3><br></a>
+		</div>
+		<div class="col-md-2">
+			<a type="button" class="btn btn-success btn-block pull-right" href="{{ path('bacloocrm_camensuelmachines') }}"><h3><i class="ionicons ion-arrow-graph-up-right"></i> CA par machines</h3><br></a>
+		</div>
+		<div class="col-md-3">
+			<a type="button" class="btn btn-warning btn-block pull-right" href="{{ path('bacloocrm_camensueltypemachinessl') }}"><h3><i class="ionicons ion-arrow-graph-up-right"></i> CA par type de machine SL</h3><br></a>
+		</div>		
+	
+		<div class="col-md-12 column">
+			<hr>
+		</div>
+		
+		<div class="col-md-12 column">
+			<br><center><h2><b>Votre Chiffre d'Affaires mensuel</b></h2></center>
+		</div>		
+		<div class="col-md-4 column col-md-offset-4">
+			<form role="form" action="{{ path('bacloocrm_home', {'dstart' : dstart, 'dend' : dend}) }}" method="post" {{form_enctype(form) }}>					
+				<div class="row clearfix">
+					<table class="col-md-12">
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Du</span>
+											{{ form_widget(form.du, {'value' : dstart|date('Y-m-d'), 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>				
+							</td>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Au</span>
+											{{ form_widget(form.au, {'value' : dend|date('Y-m-d'), 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div class="form-group">
+								  <br><center><input type="submit" class="btn btn-info align-center" value="Rechercher"  name="recherche" /></center>
+								</div>	
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				<br>			 
+				{{ form_row(form._token) }}				
+			</form>			
+		</div>	
+		<div class="col-md-12 column">
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'ca', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px"><i class="fa fa-file-excel-o"></i></span></a><br><br><br>			
+		</div>
+		{# Lecture de chaque ligne du tableau annee=>valeurs #}
+		{% set a = 0 %}
+		{% set m = 0 %}
+		{% set j = 0 %}
+		{% for annee, moiss in dates %}
+			{# a Donne le nombre d'années #}
+				{% set a = a+1 %}
+			{% for mois, date in moiss %}
+				{# a Donne le nombre de mois #}
+				{% set m = m+1 %}
+				{% for dat in date %}
+					{# a Donne le nombre de jours #}
+					{% set j = j+1 %}
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		<table class="table table-bordered"><thead><tr style="background-color:#eaecef;">
+			<td rowspan="4">
+				
+			</td>
+			{% set momo = 888 %}
+			{% set an = 1 %}
+			{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+			{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+			{% set coli = j%}
+			{% set colm = 0 %}
+			{% for annee, moiss in dates %}
+			{% set nban = 1 %}
+				{% for nba in nbjannee %}{# xx{{ nba }}xxaaa{{a}}ans{{ ans }}nban{{ nban }} #}
+					{% if an == 1 and nban == 1%}
+						<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;"><td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+					{% set nban = nban+1 %}
+					{% elseif an == a and nban == ans %}
+						<td colspan="{{ nba }}" style="background-color:#eaecef;"><center>{{ annee }}</center></td></tr>
+					{% set nban = nban+1 %}
+					{% elseif an != 1 and an != a %}
+						{% if an == nban %}
+							<td colspan="{{ nba }}" style="background-color:#eaecef;"><center>{{ annee }}</center></td>
+						{% endif %}
+					{% endif %}
+					{% set nban = nban+1 %}
+				{% endfor %}
+				{% set an = an+1 %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+				{% for mois, date in moiss %}
+					{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+					{% for nbm in nbmois %}
+						{# Si on est au premier mois et que le compteur de mois est = 1 #}
+						{# On applique le colspan du 1er mois stocké dans nbmois #}
+						{% if mo == 1 and nbmo == 1 %}			
+							<tr style="background-color:#eaecef; font-weight:bold; font-size:16px;"><td colspan="{{ nbm }}"><center>		
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>
+						{% set nbmo = nbmo+1 %}
+						{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+						{# On applique le colspan du dernier mois #}
+						{% elseif mo == m and nbmo == m %}
+							<td colspan="{{ nbm }}"><center> 
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}					
+							</center></td></tr>
+						{% set nbmo = nbmo+1 %}
+						{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+						{# On applique le colspan du bon mois #}
+						{% elseif mo != 1 and mo != m %}
+							{% if mo == nbmo %}	
+								<td colspan="{{ nbm }}"><center>
+									{% if mois == 1 %}
+										Janvier
+									{% endif %}
+									{% if mois == 2 %}
+										Février
+									{% endif %}
+									{% if mois == 3 %}
+										Mars
+									{% endif %}
+									{% if mois == 4 %}
+										Avril
+									{% endif %}
+									{% if mois == 5 %}
+										Mai
+									{% endif %}
+									{% if mois == 6 %}
+										Juin
+									{% endif %}
+									{% if mois == 7 %}
+										Juillet
+									{% endif %}
+									{% if mois == 8 %}
+										Août
+									{% endif %}
+									{% if mois == 9 %}
+										Septembre 
+									{% endif %}
+									{% if mois == 10 %}
+										Octobre
+									{% endif %}
+									{% if mois == 11 %}
+										Novembre
+									{% endif %}
+									{% if mois == 12 %}
+										Décembre
+									{% endif %}
+								</center></td>							
+							{% endif %}
+						{% endif %}
+						{% set nbmo = nbmo+1 %}
+					{% endfor %}
+					{% set mo = mo+1 %}			
+				{% endfor %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					
+				{% endfor %}
+			{% endfor %}
+		</thead>
+		{% set caff = 0 %}
+		{% set caff1 = 0 %}
+		{% set caff2 = 0 %}
+		{% set caff3 = 0 %}
+		{% set caff4 = 0 %}
+		{% set caff5 = 0 %}
+		{% set compteur = 0 %}
+		{% set compteur1 = 0 %}
+					
+		<tr>
+		{% set caff6 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				Chiffre d'affaires
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set avoirs = 0 %}
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in ca %}{% if annee~mois == loc.datecrea %}{% set cattesf2 = loc.careal %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in ca %}{% if annee~mois == loc.datecrea %}{% set cattesf2 = loc.careal %}{% else %}{% set cattesf2 = 0 %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in ca %}{% if annee~mois == loc.datecrea %}{% set cattesf2 = loc.careal %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+		
+		<tr>
+		{% set caff7 = 0 %}
+		{% set evol22= 0 %}		
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				Chiffre d'affaires cumulé
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set avoirs = 0 %}
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}			
+								{% for loc in catf %}{% if annee~mois == loc.datecrea %}{% set cattesf = loc.careal %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ ((cattesf - avoirs) + caff7)|number_format(0, ',', ' ') }} €{% set catot = (cattesf - avoirs) + caff7 %}{% if caff7 > 0 %}{% set evol22 = ((catot-caff7)/caff7)*100 %}{% if evol22 > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol22|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol22|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff7 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in catf %}{% if annee~mois == loc.datecrea %}{% set cattesf = loc.careal %}{% else %}{% set cattesf = 0 %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ ((cattesf - avoirs) + caff7)|number_format(0, ',', ' ') }} €{% set catot = (cattesf - avoirs) + caff7 %}{% if caff7 > 0 %}{% set evol22 = ((catot-caff7)/caff7)*100 %}{% if evol22 > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol22|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol22|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff7 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in catf %}{% if annee~mois == loc.datecrea %}{% set cattesf = loc.careal %}{% endif %}{% endfor %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ ((cattesf - avoirs) + caff7)|number_format(0, ',', ' ') }} €{% set catot = (cattesf - avoirs) + caff7 %}{% if caff7 > 0 %}{% set evol22 = ((catot-caff7)/caff7)*100 %}{% if evol22 > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol22|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol22|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff7 = catot %}				
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+		
+		</table>
+		<div class="col-md-12 column">
+			<hr>
+		</div>	
+		<div class="col-md-12 column">
+			<br><center><h2><b>Votre Chiffre d'Affaires mensuel détaillé</b></h2></center>
+		</div>
+		<div class="col-md-12 column">
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'avoirs', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> Avoirs</span></a>
+			<a type="button" style="margin-right:10px;" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'cavente', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px"><i class="fa fa-file-excel-o"></i> Ventes</span></a>
+			<a type="button" style="margin-right:10px;" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'calocdet', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> Locations</span></a>
+			<br><br><br>			
+		</div>		
+		{# Lecture de chaque ligne du tableau annee=>valeurs #}
+		{% set a = 0 %}
+		{% set m = 0 %}
+		{% set j = 0 %}
+		{% for annee, moiss in dates %}
+			{# a Donne le nombre d'années #}
+				{% set a = a+1 %}
+			{% for mois, date in moiss %}
+				{# a Donne le nombre de mois #}
+				{% set m = m+1 %}
+				{% for dat in date %}
+					{# a Donne le nombre de jours #}
+					{% set j = j+1 %}
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		<table class="table table-bordered"><thead><tr style="background-color:#eaecef;">
+			<td rowspan="4">
+				
+			</td>
+			{% set momo = 888 %}
+			{% set an = 1 %}
+			{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+			{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+			{% set coli = j%}
+			{% set colm = 0 %}
+			{% for annee, moiss in dates %}
+			{% set nban = 1 %}
+				{% for nba in nbjannee %}{# xx{{ nba }}xxaaa{{a}}ans{{ ans }}nban{{ nban }} #}
+					{% if an == 1 and nban == 1%}
+						<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;"><td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+					{% set nban = nban+1 %}
+					{% elseif an == a and nban == ans %}
+						<td colspan="{{ nba }}" style="background-color:#eaecef;"><center>{{ annee }}</center></td></tr>
+					{% set nban = nban+1 %}
+					{% elseif an != 1 and an != a %}
+						{% if an == nban %}
+							<td colspan="{{ nba }}" style="background-color:#eaecef;"><center>{{ annee }}</center></td>
+						{% endif %}
+					{% endif %}
+					{% set nban = nban+1 %}
+				{% endfor %}
+				{% set an = an+1 %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+				{% for mois, date in moiss %}
+					{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+					{% for nbm in nbmois %}
+						{# Si on est au premier mois et que le compteur de mois est = 1 #}
+						{# On applique le colspan du 1er mois stocké dans nbmois #}
+						{% if mo == 1 and nbmo == 1 %}			
+							<tr style="background-color:#eaecef; font-weight:bold; font-size:16px;"><td colspan="{{ nbm }}"><center>		
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>
+						{% set nbmo = nbmo+1 %}
+						{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+						{# On applique le colspan du dernier mois #}
+						{% elseif mo == m and nbmo == m %}
+							<td colspan="{{ nbm }}"><center> 
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}					
+							</center></td></tr>
+						{% set nbmo = nbmo+1 %}
+						{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+						{# On applique le colspan du bon mois #}
+						{% elseif mo != 1 and mo != m %}
+							{% if mo == nbmo %}	
+								<td colspan="{{ nbm }}"><center>
+									{% if mois == 1 %}
+										Janvier
+									{% endif %}
+									{% if mois == 2 %}
+										Février
+									{% endif %}
+									{% if mois == 3 %}
+										Mars
+									{% endif %}
+									{% if mois == 4 %}
+										Avril
+									{% endif %}
+									{% if mois == 5 %}
+										Mai
+									{% endif %}
+									{% if mois == 6 %}
+										Juin
+									{% endif %}
+									{% if mois == 7 %}
+										Juillet
+									{% endif %}
+									{% if mois == 8 %}
+										Août
+									{% endif %}
+									{% if mois == 9 %}
+										Septembre 
+									{% endif %}
+									{% if mois == 10 %}
+										Octobre
+									{% endif %}
+									{% if mois == 11 %}
+										Novembre
+									{% endif %}
+									{% if mois == 12 %}
+										Décembre
+									{% endif %}
+								</center></td>							
+							{% endif %}
+						{% endif %}
+						{% set nbmo = nbmo+1 %}
+					{% endfor %}
+					{% set mo = mo+1 %}			
+				{% endfor %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					
+				{% endfor %}
+			{% endfor %}
+		</thead>
+		{% set caff = 0 %}
+		{% set caff1 = 0 %}
+		{% set caff2 = 0 %}
+		{% set caff3 = 0 %}
+		{% set caff4 = 0 %}
+		{% set caff5 = 0 %}
+		{% set compteur = 0 %}
+		{% set compteur1 = 0 %}
+					
+		<tr>
+		{% set caff6 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Location
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+						
+						{% set avoirs = 0 %}
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in caloc %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in caloc %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in caloc %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in caavoirs %}{% if annee~mois == loc.datecrea %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+					
+		<tr>
+		{% set caff1 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Transport
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in catransport %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff1 > 0 %}{% set evol = ((catot-caff1)/caff1)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff1 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in catransport %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff1 > 0 %}{% set evol = ((catot-caff1)/caff1)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff1 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in catransport %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff1 > 0 %}{% set evol = ((catot-caff1)/caff1)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff1 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+					
+		<tr>
+		{% set caff2 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Assurance
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in caassurance %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff2 > 0 %}{% set evol = ((catot-caff2)/caff2)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff2 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in caassurance %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff2 > 0 %}{% set evol = ((catot-caff2)/caff2)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff2 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in caassurance %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff2 > 0 %}{% set evol = ((catot-caff2)/caff2)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff2 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+					
+		<tr>
+		{% set caff3 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Contribution verte
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in cacontributionverte %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff3 > 0 %}{% set evol = ((catot-caff3)/caff3)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff3 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in cacontributionverte %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff3 > 0 %}{% set evol = ((catot-caff3)/caff3)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff3 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in cacontributionverte %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff3 > 0 %}{% set evol = ((catot-caff3)/caff3)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff3 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+					
+		<tr>
+		{% set caff4 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Carburant
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in cacarburant %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff4 > 0 %}{% set evol = ((catot-caff4)/caff4)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff4 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in cacarburant %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff4 > 0 %}{% set evol = ((catot-caff4)/caff4)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff4 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in cacarburant %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 %}{% if caff4 > 0 %}{% set evol = ((catot-caff4)/caff4)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff4 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+					
+		<tr>
+		{% set caff5 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				CA Autres ventes
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+						{% set car = 0 %}
+						
+						{% set locavente = 0 %}
+							{# Si on est au premier mois et que le compteur de mois est = 1 #}
+							{# On applique le colspan du 1er mois stocké dans nbmois #}
+							{% if mo == 1 and nbmo == 1 %}
+								{% for loc in cavente %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in calocavente %}{% if annee~mois == loc.datecrea %}{% set locavente = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 + locavente)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 + locavente %}{% if caff5 > 0 %}{% set evol = ((catot-caff5)/caff5)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff5 = catot %}				
+								{% set nbmo = nbmo+1 %}
+								{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+								{# On applique le colspan du dernier mois #}
+							{% elseif mo == m and nbmo == m %}			
+								{% for loc in cavente %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in calocavente %}{% if annee~mois == loc.datecrea %}{% set locavente = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 + locavente)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 + locavente %}{% if caff5 > 0 %}{% set evol = ((catot-caff5)/caff5)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff5 = catot %}			
+								{% set nbmo = nbmo+1 %}
+								{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+								{# On applique le colspan du bon mois #}
+							{% elseif mo != 1 and mo != m %}
+								{% if mo == nbmo %}			
+								{% for loc in cavente %}{% if annee~mois == loc.datecrea %}{% set car = loc.careal %}{% endif %}{% endfor %}
+								{% set cattesf2 = car %}
+								{% for loc in calocavente %}{% if annee~mois == loc.datecrea %}{% set locavente = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+								<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 + locavente)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 + locavente %}{% if caff5 > 0 %}{% set evol = ((catot-caff5)/caff5)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff5 = catot %}			
+								{% endif %}
+							{% endif %}
+							{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+		
+		</table>		
+		<div class="col-md-12 column">
+			<hr>
+		</div>
+		<div class="col-md-12 column">
+			<br><center><h2><b>Chiffre d'Affaires par commerciaux</b></h2></center>
+		</div>	
+		<div class="col-md-12 column">
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'avoirsparcom', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> Avoirs par commerciaux</span></a>
+			<a type="button" style="margin-right:10px;" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'cacom', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> CA par commerciaux</span></a>
+			<br><br><br>			
+		</div>	
+	<div class="panel-body">
+		{# Lecture de chaque ligne du tableau annee=>valeurs #}
+		{% set a = 0 %}
+		{% set m = 0 %}
+		{% set j = 0 %}
+		{% for annee, moiss in dates %}
+			{# a Donne le nombre d'années #}
+				{% set a = a+1 %}
+			{% for mois, date in moiss %}
+				{# a Donne le nombre de mois #}
+				{% set m = m+1 %}
+				{% for dat in date %}
+					{# a Donne le nombre de jours #}
+					{% set j = j+1 %}
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+		<table class="table table-bordered"><thead><tr style="background-color:#eaecef;">
+			<td style="font-weight:bold" rowspan="4">
+				
+			</td>
+			{% set momo = 888 %}
+			{% set an = 1 %}
+			{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+			{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+			{% set coli = j%}
+			{% set colm = 0 %}
+			{% for annee, moiss in dates %}
+			{% set nban = 1 %}	
+				{% for nba in nbjannee %}{# xx{{ nba }}xxaaa{{a}}ans{{ ans }}nban{{ nban }} #}
+					{% if an == 1 and nban == 1%}
+						<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;"><td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+					{% set nban = nban+1 %}
+					{% elseif an == a and nban == ans %}
+						<td colspan="{{ nba }}"><center>{{ annee }}</center></td></tr>
+					{% set nban = nban+1 %}
+					{% elseif an != 1 and an != a %}
+						{% if an == nban %}
+							<td colspan="{{ nba }}"><center>{{ annee }}</center></td>
+						{% endif %}
+					{% endif %}
+					{% set nban = nban+1 %}
+				{% endfor %}
+				{% set an = an+1 %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+				{% for mois, date in moiss %}
+					{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+					{% for nbm in nbmois %}
+						{# Si on est au premier mois et que le compteur de mois est = 1 #}
+						{# On applique le colspan du 1er mois stocké dans nbmois #}
+						{% if mo == 1 and nbmo == 1 %}			
+							<tr style="background-color:#eaecef; font-weight:bold; font-size:16px;"><td colspan="{{ nbm }}"><center>			
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>
+						{% set nbmo = nbmo+1 %}
+						{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+						{# On applique le colspan du dernier mois #}
+						{% elseif mo == m and nbmo == m %}
+							<td colspan="{{ nbm }}"><center> 
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}					
+							</center></td></tr>
+						{% set nbmo = nbmo+1 %}
+						{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+						{# On applique le colspan du bon mois #}
+						{% elseif mo != 1 and mo != m %}
+							{% if mo == nbmo %}	
+								<td colspan="{{ nbm }}"><center>
+									{% if mois == 1 %}
+										Janvier
+									{% endif %}
+									{% if mois == 2 %}
+										Février
+									{% endif %}
+									{% if mois == 3 %}
+										Mars
+									{% endif %}
+									{% if mois == 4 %}
+										Avril
+									{% endif %}
+									{% if mois == 5 %}
+										Mai
+									{% endif %}
+									{% if mois == 6 %}
+										Juin
+									{% endif %}
+									{% if mois == 7 %}
+										Juillet
+									{% endif %}
+									{% if mois == 8 %}
+										Août
+									{% endif %}
+									{% if mois == 9 %}
+										Septembre 
+									{% endif %}
+									{% if mois == 10 %}
+										Octobre
+									{% endif %}
+									{% if mois == 11 %}
+										Novembre
+									{% endif %}
+									{% if mois == 12 %}
+										Décembre
+									{% endif %}
+								</center></td>							
+							{% endif %}
+						{% endif %}
+						{% set nbmo = nbmo+1 %}
+					{% endfor %}
+					{% set mo = mo+1 %}			
+				{% endfor %}
+			{% endfor %}
+			{% for annee, moiss in dates %}
+				{% for mois, date in moiss %}
+					
+				{% endfor %}
+			{% endfor %}
+		</thead>
+		{% set boucleuser = 0 %}
+		{% for loca in commerciaux %}
+		{% set boucleuser = 1 %}
+		<tr>
+		{% set caff6 = 0 %}
+		{% set evol = 0 %}
+			<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+				{{ loca }}{% for loc in cacommerciaux %}{% endfor %}
+			</td>
+			
+				{% set mo = 1 %}
+				{% set cattesf2 = 0 %}
+				{% for annee, moiss in dates %}
+					{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+					{% for mois, date in moiss %}
+						{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+						{% for nbm in nbmois %}
+							{% set car = 0 %}						
+							{% set avoirs = 0 %}
+								{# Si on est au premier mois et que le compteur de mois est = 1 #}
+								{# On applique le colspan du 1er mois stocké dans nbmois #}					
+								{% if mo == nbmo %}
+									{% for loc in cacommerciaux %}{% if annee~mois == loc.datecrea and loca == loc.user %}{% set car = car + loc.careal %}{% endif %}{% endfor %}
+									{% set cattesf2 = car %}
+									{% for loc in caavoirs %}{% if annee~mois == loc.datecrea and loca == loc.user %}{% set avoirs = loc.careal %}{% else %}{% set avoir = 0 %}{% endif %}{% endfor %}
+									<td style="font-size:14px;" colspan="{{ nbm }}">{{ (cattesf2 - avoirs)|number_format(0, ',', ' ') }} €{% set catot = cattesf2 - avoirs %}{% if caff6 > 0 %}{% set evol = ((catot-caff6)/caff6)*100 %}{% if evol > 0 %}<span class="pull-right"  style="color:#08bf0c;"><b>+{{ evol|number_format(0, ',', ' ') }}%{% else %}<span class="pull-right"  style="color:red;">{{ evol|number_format(0, ',', ' ') }}%<b>{% endif %}{% endif %}</b></span></td>{% set caff6 = catot %}				
+									{% set nbmo = nbmo+1 %}
+								{% endif %}
+								{% set nbmo = nbmo+1 %}
+						{% endfor %}
+						{% set mo = mo+1 %}			
+					{% endfor %}
+				{% endfor %}
+		</tr>
+		{% set boucleuser = 0 %}
+		{% endfor %}
+		</table>
+	</div>		
+		<div class="col-md-12 column">
+			<hr>
+		</div>	
+		<div class="col-md-12 column">
+			<br><center><h2><b>Votre Chiffre d'Affaires journalier</b></h2></center>
+		</div>		
+<table class="table table-bordered">
+	<thead>
+		<tr style="background-color:#eaecef; font-size:16px;">
+		<td rowspan="4">
+			
+		</td>
+		{% set momo = 888 %}
+		{% set an = 1 %}
+		{% set mo = 1 %}{# Compteur sur le nombre de mois #}
+		{% set jo = 1 %}{# Compteur sur le nombre de jours #}
+		{% set coli = j%}
+		{% set colm = 0 %}
+		{% for anneea, moissa in datesa %}
+		{% set nban = 1 %}	
+			{% for nbaa in nbjanneea %}{# **{{ nbaa }}**aaa{{a}}ansa{{ ansa }}nban{{ nban }} #}
+				{% if an == 1 and nban == 1%}
+					<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;"><td colspan="{{ nbaa }}"><center>{{ anneea }}</center></td>
+				{% set nban = nban+1 %}
+				{% elseif an == a and nban == ansa %}
+					<td colspan="{{ nbaa }}"><center>{{ anneea }}</center></td></tr>
+				{% set nban = nban+1 %}
+				{% elseif an != 1 and an != a %}
+					{% if an == nban %}
+						<td colspan="{{ nbaa }}"><center>{{ anneea }}</center></td>
+					{% endif %}
+				{% endif %}
+				{% set nban = nban+1 %}
+			{% endfor %}
+			{% set an = an+1 %}
+		{% endfor %}
+		{% for anneea, moissa in datesa %}
+			{# Pour chaque mois on va boucler sur nbmois afin afin de mettre le bon colspan sur le bon mois #}
+			{% for mois, datea in moissa %}
+				{% set nbmo = 1 %}{# Compteur de la boucle nbmois #}
+				{% for nbm in nbmoisa %}
+					{# Si on est au premier mois et que le compteur de mois est = 1 #}
+					{# On applique le colspan du 1er mois stocké dans nbmois #}
+					{% if mo == 1 and nbmo == 1 %}			
+						<tr style="background-color:#eaecef; font-weight:bold; font-size:18px;"><td colspan="{{ nbm }}"><center>		
+							{% if mois == 1 %}
+								Janvier
+							{% endif %}
+							{% if mois == 2 %}
+								Février
+							{% endif %}
+							{% if mois == 3 %}
+								Mars
+							{% endif %}
+							{% if mois == 4 %}
+								Avril
+							{% endif %}
+							{% if mois == 5 %}
+								Mai
+							{% endif %}
+							{% if mois == 6 %}
+								Juin
+							{% endif %}
+							{% if mois == 7 %}
+								Juillet
+							{% endif %}
+							{% if mois == 8 %}
+								Août
+							{% endif %}
+							{% if mois == 9 %}
+								Septembre 
+							{% endif %}
+							{% if mois == 10 %}
+								Octobre
+							{% endif %}
+							{% if mois == 11 %}
+								Novembre
+							{% endif %}
+							{% if mois == 12 %}
+								Décembre
+							{% endif %}
+						</center></td>
+					{% set nbmo = nbmo+1 %}
+					{# Si on est au dernier mois et que le compteur de mois est = dernier mois (m) #}
+					{# On applique le colspan du dernier mois #}
+					{% elseif mo == m and nbmo == m %}
+						<td colspan="{{ nbm }}"><center> 
+						{% if mois == 1 %}
+							Janvier
+						{% endif %}
+						{% if mois == 2 %}
+							Février
+						{% endif %}
+						{% if mois == 3 %}
+							Mars
+						{% endif %}
+						{% if mois == 4 %}
+							Avril
+						{% endif %}
+						{% if mois == 5 %}
+							Mai
+						{% endif %}
+						{% if mois == 6 %}
+							Juin
+						{% endif %}
+						{% if mois == 7 %}
+							Juillet
+						{% endif %}
+						{% if mois == 8 %}
+							Août
+						{% endif %}
+						{% if mois == 9 %}
+							Septembre 
+						{% endif %}
+						{% if mois == 10 %}
+							Octobre
+						{% endif %}
+						{% if mois == 11 %}
+							Novembre
+						{% endif %}
+						{% if mois == 12 %}
+							Décembre
+						{% endif %}					
+						</center></td></tr>
+					{% set nbmo = nbmo+1 %}
+					{# Si on n'est au pas au premier mois et que le compteur de mois n'est oas à la fin #}
+					{# On applique le colspan du bon mois #}
+					{% elseif mo != 1 and mo != m %}
+						{% if mo == nbmo %}	
+							<td colspan="{{ nbm }}"><center>
+								{% if mois == 1 %}
+									Janvier
+								{% endif %}
+								{% if mois == 2 %}
+									Février
+								{% endif %}
+								{% if mois == 3 %}
+									Mars
+								{% endif %}
+								{% if mois == 4 %}
+									Avril
+								{% endif %}
+								{% if mois == 5 %}
+									Mai
+								{% endif %}
+								{% if mois == 6 %}
+									Juin
+								{% endif %}
+								{% if mois == 7 %}
+									Juillet
+								{% endif %}
+								{% if mois == 8 %}
+									Août
+								{% endif %}
+								{% if mois == 9 %}
+									Septembre 
+								{% endif %}
+								{% if mois == 10 %}
+									Octobre
+								{% endif %}
+								{% if mois == 11 %}
+									Novembre
+								{% endif %}
+								{% if mois == 12 %}
+									Décembre
+								{% endif %}
+							</center></td>							
+						{% endif %}
+					{% endif %}
+					{% set nbmo = nbmo+1 %}
+				{% endfor %}
+				{% set mo = mo+1 %}			
+			{% endfor %}
+		{% endfor %}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+					{% if jo == 1 %}
+						<tr style="background-color:#eaecef; font-size:16px;" class="text-center">
+							<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+								{% if dat|date('D') == 'Mon' %}
+									Lun<br>
+								{% elseif dat|date('D') == 'Tue' %}
+									Mar<br>
+								{% elseif dat|date('D') == 'Wed' %}
+									Mer<br>
+								{% elseif dat|date('D') == 'Thu' %}
+									Jeu<br>
+								{% elseif dat|date('D') == 'Fri' %}
+									Ven<br>
+								{% elseif dat|date('D') == 'Sat' %}
+									Sam<br>
+								{% elseif dat|date('D') == 'Sun' %}
+									Dim<br>
+								{% endif %}
+								{{ dat|date('d') }}	
+							</td>
+					{% elseif jo > 1 or jo < j %}
+							<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+								{% if dat|date('D') == 'Mon' %}
+									Lun<br>
+								{% elseif dat|date('D') == 'Tue' %}
+									Mar<br>
+								{% elseif dat|date('D') == 'Wed' %}
+									Mer<br>
+								{% elseif dat|date('D') == 'Thu' %}
+									Jeu<br>
+								{% elseif dat|date('D') == 'Fri' %}
+									Ven<br>
+								{% elseif dat|date('D') == 'Sat' %}
+									Sam<br>
+								{% elseif dat|date('D') == 'Sun' %}
+									Dim<br>
+								{% endif %}
+								{{ dat|date('d') }}	
+							</td>
+					{% else %}
+							<td {% if dat|date('D') == 'Sat' or dat|date('D') == 'Sun' %} style="background-color:#ddd" {% endif %}>
+								{% if dat|date('D') == 'Mon' %}
+									Lun<br>
+								{% elseif dat|date('D') == 'Tue' %}
+									Mar<br>
+								{% elseif dat|date('D') == 'Wed' %}
+									Mer<br>
+								{% elseif dat|date('D') == 'Thu' %}
+									Jeu<br>
+								{% elseif dat|date('D') == 'Fri' %}
+									Ven<br>
+								{% elseif dat|date('D') == 'Sat' %}
+									Sam<br>
+								{% elseif dat|date('D') == 'Sun' %}
+									Dim<br>
+								{% endif %}
+								{{ dat|date('d') }}	
+							</td>
+						</tr>
+					{% endif %}
+					{% set jo = jo+1 %}
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</thead>
+	<tr>
+		<td style="font-weight:bold; font-size:14px;">
+			<b>CA Locations</b>
+		</td>
+		{% set loyer = 0 %}
+		{% set samedi = 0 %}
+		{% set dimanche = 0 %}
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set loyer = 0 %}	
+					{% for loca in calocjour%}
+						{% set samedi = 0 %}
+						{% set dimanche = 0 %}
+						{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+						{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}				
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;">{{ loyer|number_format(0, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+			<b>Nombre de locations</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set quantite = 0 %}
+					{% for loca in calocjour %}
+						{% set samedi = 0 %}
+						{% set dimanche = 0 %}
+						{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+						{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}	
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;background-color:#f5f6f9;">{{ quantite }}</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="font-weight:bold; font-size:14px;">
+			<b>Prix moyen</b>
+		</td>
+		{% set quantite = 0 %}
+		{% set loyer = 0 %}
+		{# Calcul de la durée de loc #}
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set quantite = 0 %}
+					{% for loca in calocjour %}
+						{% set samedi = 0 %}
+						{% set dimanche = 0 %}
+						{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+						{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}	
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set quantite = quantite + 1 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				{% set loyer = 0 %}	
+					{% for loca in calocjour %}
+						{% set samedi = 0 %}
+						{% set dimanche = 0 %}
+						{% if loca.facturersamedi == 1 and dat|date('D') == 'Sat'%}{% set samedi = samedi + 1 %}{% endif %}
+						{% if loca.facturerdimanche == 1 and dat|date('D') == 'Sun'%}{% set dimanche = dimanche + 1 %}{% endif %}				
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (samedi >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if (dat|date('D') == 'Sun') and (dimanche >= 1) %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}	
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}					
+				<td style="font-size:14px;">{% if quantite > 0 %}{{ (loyer/quantite)|number_format(2, ',', ' ') }}{% else %}0{% endif %}€</td>				
+				{% endfor %}				
+			{% endfor %}
+		{% endfor %}
+	</tr>	
+	<tr>
+		<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+			<b>CA Transport</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set transport = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') == loc.debutloc|date('U') %}
+									{% set transport = transport + loc.transportaller %}			
+							{% endif %}	
+							{% if dat|date('U') == loc.finloc|date('U') %}
+									{% set transport = transport + loc.transportretour %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') == loc.debutloc|date('U') %}
+									{% set transport = transport + loc.transportaller %}			
+							{% endif %}	
+							{% if dat|date('U') == loc.finloc|date('U') %}
+									{% set transport = transport + loc.transportretour %}			
+							{% endif %}				
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;background-color:#f5f6f9;">{{ transport|number_format(0, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="font-weight:bold; font-size:14px;">
+			<b>CA Contribution verte</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set loyer = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') == loc.debutloc|date('U') %}
+								{% if loca.contributionverte > 0 %}{% set loyer = loyer + 4.99 %}{% endif %}		
+							{% endif %}				
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') == loc.debutloc|date('U') %}
+								{% if loca.contributionverte > 0 %}{% set loyer = loyer + 4.99 %}{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;">{{ (loyer)|number_format(2, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+			<b>CA Assurance</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set loyer = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;background-color:#f5f6f9;">{{ (loyer*0.10)|number_format(2, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="font-weight:bold; font-size:14px;">
+			<b>CA Carburant</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set montantcarb = 0 %}
+					{% for loca in cahorslocjour %}
+						{% for loc in loca.locationsclone %}
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set montantcarb = montantcarb + loc.montantcarb %}			
+							{% endif %}		
+						{% endfor %}
+						{% for loc in loca.locationsslclone %}
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set montantcarb = montantcarb + loc.montantcarb %}			
+							{% endif %}		
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;">{{ montantcarb|number_format(0, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+	<tr>
+		<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+			<b>CA Ventes</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set vente = 0 %}
+					{% for loca in caventejour %}
+						{% for loc in loca.ventes %}
+							{% if dat|date('U') == loc.date|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set vente = vente + loc.montantvente %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locataventes %}
+							{% if dat|date('U') == loc.date|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set vente = vente + loc.montantvente %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				<td style="font-size:14px;background-color:#f5f6f9;">{{ vente|number_format(0, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>
+
+	<tr style="font-weight:bold; background-color:#e4e4e4;">
+		<td style="font-weight:bold; font-size:14px;">
+			<b>CA Hors location</b>
+		</td>
+		{# Calcul de la durée de loc #}
+		{% for anneea, moissa in datesa %}
+			{% for mois, datea in moissa %}
+				{% for dat in datea %}
+				{% set vente = 0 %}
+				{% set transport = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') == loc.debutloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set transport = transport + loc.transportaller %}			
+							{% endif %}	
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set transport = transport + loc.transportretour %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') == loc.debutloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set transport = transport + loc.transportaller %}			
+							{% endif %}	
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set transport = transport + loc.transportretour %}			
+							{% endif %}				
+						{% endfor %}			
+					{% endfor %}
+				{% set vente = vente + transport %}
+				{% set loyer = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (loca.facturersamedi is same as (1)) %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (loca.facturerdimanche is same as (1)) %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}			
+							{% endif %}				
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% if (dat|date('D') == 'Sat') and (loca.facturersamedi is same as (1)) %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}
+								{% if (dat|date('D') == 'Sun') and (loca.facturerdimanche is same as (1)) %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}
+								{% if dat|date('D') != 'Sat' and dat|date('D') != 'Sun' %}
+									{% set loyer = loyer + 4.99 %}
+								{% endif %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				{% set vente = vente + loyer %}
+				{% set loyer = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locations %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}			
+							{% endif %}			
+						{% endfor %}
+						{% for loc in loca.locationssl %}
+							{% if dat|date('U') >= loc.debutloc|date('U') and dat|date('U') <= loc.finloc|date('U')  and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+								{% set loyer = loyer + loc.loyerp1 + loc.loyerp2 + loc.loyerp3 + loc.loyerp4 + (loc.loyermensuel/20) %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}
+				{% set vente = vente + (loyer*0.10) %}
+				{% set montantcarb = 0 %}
+					{% for loca in cahorslocjour %}
+						{% for loc in loca.locationsclone %}
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set montantcarb = montantcarb + loc.montantcarb %}			
+							{% endif %}		
+						{% endfor %}
+						{% for loc in loca.locationsslclone %}
+							{% if dat|date('U') == loc.finloc|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set montantcarb = montantcarb + loc.montantcarb %}			
+							{% endif %}		
+						{% endfor %}			
+					{% endfor %}
+				{% set vente = vente + montantcarb %}	
+				{% set vente2 = 0 %}
+					{% for loca in caventejour %}
+						{% for loc in loca.ventes %}
+							{% if dat|date('U') == loc.date|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set vente2 = vente2 + loc.montantvente %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}				
+				{% set vente = vente + vente2 %}	
+				{% set vente3 = 0 %}
+					{% for loca in calocjour %}
+						{% for loc in loca.locataventes %}
+							{% if dat|date('U') == loc.date|date('U') and dat|date('U') >= dstarta|date('U') and dat|date('U') <= denda|date('U') %}
+									{% set vente3 = vente3 + loc.montantvente %}			
+							{% endif %}			
+						{% endfor %}			
+					{% endfor %}				
+				{% set vente = vente + vente3 %}
+				<td style="font-size:14px;">{{ vente|number_format(0, ',', ' ') }}€</td>			
+				{% endfor %}		
+			{% endfor %}
+		{% endfor %}
+	</tr>		
+</table>
+	</div>		
+</div>		
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>		
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "::layout.html.twig" %}
+	{% block title %}
+	{{ parent() }} - Bêta
+	{% endblock %}
+	{% block body %}
+
+
+
+	{% if statut == 'captured' %}
+	<div class="alert alert-success"><strong> 	Vous venez d'acheter pour {{ montant }}€ de crédits.<br>
+	Nous vous en remercions. Votre nouveau solde est de {{ credits }}.</strong></div>	
+	{% elseif statut == 'canceled' %}
+	<div class="alert alert-warning"><strong> 	Votre achat a été annulé !</strong></div>				
+	{% else %}
+	<div class="alert alert-warning"><strong> 	Votre achat n'a pu être pris en compte.</strong></div>		
+		
+	{% endif %}
+
+	{% endblock %}

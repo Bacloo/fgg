@@ -1,0 +1,58 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+{% if partager == 'nok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Déjà donné !
+							</h4>
+						</div>
+						<div class="modal-body">
+							Vous avez déjà donné cette fiche à {{ user }}.<br><br>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif partager == 'ok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Bravo !!!
+							</h4>
+						</div>
+						<div class="modal-body">
+							La fiche a bien été partagée.<br><br>
+						</div>						
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% elseif partager == 'pok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Pas dans vos collègues !
+							</h4>
+						</div>
+						<div class="modal-body">
+							L'utilisateur {{ user }} ne fait pas partie de vos collègues.<br>
+							Pour l'ajouter, <a href="{{ path('bacloocrm_showfavoris') }}">cliquer ici</a>.<br><br>
+						</div>						
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>
+						</div>
+					</div>					
+				</div>
+{% endif %}
+</div>		
+{% endblock %}

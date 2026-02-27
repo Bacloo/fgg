@@ -1,0 +1,36 @@
+<?php
+namespace Bacloo\CrmBundle\Controller;
+
+use \TCPDF;
+
+class maclasspdf extends TCPDF {
+
+    //Page header
+    public function Header() {
+        // Logo
+        $image_file = K_PATH_IMAGES.'logoweelev.png';
+        $this->Image($image_file, 5, 5, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        // Set font
+        $this->SetFont('helvetica', 'B', 20);
+        // Title
+        $this->Cell(0, 15, '', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+		//set margin
+		$this->SetMargins(13, 31, 10, true);
+    }
+
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-20);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+		$html = '<span style="text-align:center;">Demolocs - 4/6 Rue des Chauffours CS 70006 - 95095 CERGY<br>
+		RCS 824 575 393 00023 - N°TVA FR 84 82 45 75 393<br>
+		Tél.: 01 34 20 38 85 - mail : contact@demolocs.com<br>
+		IBAN FR76 1030 7001 7000 6250 4731 114 - BIC BREDFRPPXXX</span>';
+        // Page number
+        $this->writeHTMLCell(0, 0, '', '', $html, 0, 0, false, "L", true);
+        // $this->Cell(0, 10, '', 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, 'Page'.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    }
+}

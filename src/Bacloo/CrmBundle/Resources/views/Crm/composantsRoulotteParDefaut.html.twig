@@ -1,0 +1,70 @@
+<tr>
+  {#                        <td>#}
+  {#                            <div class="form-group">#}
+  {#                                <div class="col-md-12">#}
+  {#                                    {{ form_widget(locataventes.codifvente, {'attr' : {'class' : 'form-control'}})  }}#}
+  {#                                </div>#}
+  {#                            </div>#}
+  {#                        </td>#}
+  <td>
+    <div class="hidden">
+      {{ form_widget(locataventes.date, { 'value' : date }) }}
+      {{ form_widget(locataventes.user, { 'value' : user }) }}
+      {{ form_widget(locataventes.codifvente, { 'value' : 'vente' }) }}
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        {% if locid != 1 %}
+          {{ form_widget(locataventes.refarticle, {'attr' : {'class' : 'form-control'}})  }}
+        {% else %}
+          <div class="hidden">{{ form_widget(locataventes.refarticle) }}</div>
+          {{ locataventes.refarticle.vars.value }}
+        {% endif %}
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-md-12">
+        {% if locid != 1 %}
+          {{ form_widget(locataventes.description, {'value' : listeDesComposantsParDefautRoulotte.description, 'attr' : { 'class' : 'form-control description' }} )  }}
+        {% else %}
+          <div class="hidden">{{ form_widget(locataventes.description, {'value' : listeDesComposantsParDefautRoulotte.description, 'attr' : { 'class' : 'form-control description' }} )  }}</div>
+          {{ locataventes.description.vars.value }}
+        {% endif %}
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-md-12">
+        {% if locid != 1 %}
+          {{ form_widget(locataventes.quantite, {'value' : listeDesComposantsParDefautRoulotte.quantite, 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite' } })  }}
+        {% else %}
+          <div class="hidden">{{ form_widget(locataventes.quantite, {'value' : listeDesComposantsParDefautRoulotte.quantite, 'id' : 'quantite_1', 'attr' : { 'class' : 'form-control quantite' } })  }}</div>
+          {{ locataventes.quantite.vars.value }}
+        {% endif %}
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-md-12">
+        {% if locid != 1 %}
+          {{ form_widget(locataventes.pu, {'value' : listeDesComposantsParDefautRoulotte.pu, 'attr' : { 'class' : 'form-control' } })  }}
+        {% else %}
+          <div class="hidden">{{ form_widget(locataventes.pu, {'value' : listeDesComposantsParDefautRoulotte.pu, 'attr' : { 'class' : 'form-control' } })  }}</div>
+          {{ locataventes.pu.vars.value }}
+        {% endif %}
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="hidden">{{ form_widget(locataventes.montantvente) }}</div>
+        <span><center><h5><b>{{ locataventes.montantvente.vars.value }} {% if locataventes.montantvente.vars.value is not empty %}€{% endif %}</b></h5></center></span>
+      </div>
+    </div>
+  </td>
+</tr>

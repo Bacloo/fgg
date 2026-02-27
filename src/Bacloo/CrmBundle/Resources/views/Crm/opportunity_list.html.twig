@@ -1,0 +1,150 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		$("#selecctall").change(function(){
+		  $(".checkbox1").prop('checked', $(this).prop("checked"));
+		  });
+	});
+</script>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Liste des prospects potentiels détectés par Bacloo</h3>
+					</h3>
+					Les résultats sont proposés en fonction des informations saisies dans votre profil.
+				</div>
+				<div class="panel-body">
+					{# Partie Prospot #}
+					<div class="col-md-12">
+					{% if nbresultats == 0 %}
+						<center>Aucun prospect détecté pour le moment</center>
+					{% else %}
+						<form class="form-horizontal" action="{{ path('bacloocrm_showprospotlist', {'nbresult': nbresultats, 'page': page, 'insert': 'nok'}) }}" method="post" {{form_enctype(form) }}>
+							<fieldset>
+							<div class="row clearfix">
+								<input type="submit" class="btn btn-primary" value="Masquer la sélection" name="masquer" /><br><br>
+									{% macro prospotCollectionItem(formData2) %}
+											{% if formData2.masquer.vars.value == 0 %}										
+												<tr class="dibacloo4">
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div>{{ form_widget(formData2.voir, { 'attr' : { 'class' : 'checkbox1', 'name' : 'check[]' } })  }}</div>
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.lastmodif) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.user) }}</div>
+														  <div class="hidden">{{ form_widget(formData2.RaisonSociale) }}</div>
+															{{ formData2.lastmodif.vars.value }}
+														  </div>
+														</div>
+													</td>						
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.activite) }}</div>
+															{{ formData2.activite.vars.value }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.cp) }}</div>
+															{{ formData2.cp.vars.value}}
+														  </div>
+														</div>
+													</td>				
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.besoins) }}</div>
+															{{ formData2.besoins.vars.value}}
+														  </div>
+														</div>
+													</td>							
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.descbesoins) }}</div>
+															{{ formData2.descbesoins.vars.value }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+														  <div class="hidden">{{ form_widget(formData2.vendeur) }}</div>
+															<a href="{{ path('bacloocrm_publicprofile', {'user': formData2.vendeur.vars.value ?:0}) }}">{{ formData2.vendeur.vars.value}}</a>
+														  </div>
+														</div>
+													</td>
+													<td><div class="hidden">{{ form_widget(formData2.avendre) }}</div>
+														<div class="hidden">{{ form_widget(formData2.Prixsscont) }}</div>
+														<div class="hidden">{{ form_widget(formData2.Prixavcont) }}</div>
+														{% if (formData2.avendre.vars.value == 0 or formData2.Prixsscont.vars.value < 1 ) %}
+															<center><button type="button" class="btn btn-link btn-sm">Pas en Vente</button></center>
+														{% else %}
+															<center><a class="btn btn-success large" href="{{ path('bacloocrm_buyfiche', {'ficheid': formData2.ficheid.vars.value ?:0, 'vendeur': formData2.vendeur.vars.value ?:0, 'typev': 'ssc'}) }}"> {{ formData2.Prixsscont.vars.value }} {% if formData2.Prixsscont.vars.value >1 %} points  {% else %}  point {% endif %} </a></center>
+															
+														{% endif %}
+													</td>
+													<td><div class="hidden">{{ form_widget(formData2.avendrec) }}</div>
+														{% if formData2.avendrec.vars.value == 0 or formData2.avendrec.vars.value is not empty or formData2.avendrec.vars.value is defined or formData2.avendrec.vars.value is not null %}
+															<center>Pas en Vente</center>
+														{% else %}
+															<center><a class="btn btn-success large" href="{{ path('bacloocrm_buyfiche', {'ficheid': formData2.ficheid.vars.value ?:0, 'vendeur': formData2.vendeur.vars.value ?:0, 'typev': 'avc'}) }}">   {{ formData2.Prixavcont.vars.value }} {% if formData2.Prixavcont.vars.value >1 %} points {% else %}  point{% endif %}     </a></center>
+															
+														{% endif %}
+													</td>	
+													<td>
+														<a class="btn btn-primary" href="{{ path('bacloocrm_sendmessage', {'vemail': formData2.vendeur.vars.value ?:0, 'type': 'vendeur', 'rais': formData2.ficheid.vars.value ?:0 }) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Vendeur
+														</a>
+													</td>
+												</tr>
+											{% endif %}										
+									{% endmacro %}
+
+									<div id="bacloo_crmbundle_prospects_prospot" data-prototype="{{ _self.prospotCollectionItem(form.prospot.vars.prototype)|e }}">								
+										<table id="bacloo2" class="table table-bordered"><thead><tr id="dibac"><input type="checkbox" id="selecctall"/><th><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></th><th class="col-md-2">Date Modif.</th><th class="col-md-2">Activité</th><th>CP</th><th class="col-md-2">Besoins</th><th class="col-md-2">Détails Besoins</th><th class="col-md-1">Vendeur</th><th>Sans Contact</th><th>Avec Contacts</th><th></th></tr></thead>
+											{% for prospo in form.prospot %}
+												{% if loop.index > limitebasse and loop.index < limitehaute %}
+														{{ _self.prospotCollectionItem(prospo) }}
+												{% endif %}
+											{% endfor %}
+										</table>		
+									</div>
+
+								
+								<input type="submit" class="btn btn-primary" value="Masquer la sélection" name="masquer" />
+							</div>
+						{{ form_row(form._token) }}		
+							</fieldset>
+
+						<center>
+							<ul class="pagination">
+								{# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+								{% for p in range(1, nombrePage) %}
+									<li{% if p == page %} class="active"{% endif %}>
+										{% if p == page %}
+											<input type="submit" class="btn btn-primary" value="{{ p }}" name="pagination" />
+										{% else %}
+											<input type="submit" class="btn btn-default" value="{{ p }}" name="pagination" />
+										{% endif %}	
+									</li>
+								{% endfor %}
+							</ul>
+						</center>	
+						</form>						
+						{% endif %}
+						</div>
+					</div>
+					{# Fin Partie Prospot #}
+				</div>
+			</div>
+{% endblock %}

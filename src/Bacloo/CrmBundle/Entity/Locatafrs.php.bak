@@ -1,0 +1,639 @@
+<?php
+
+namespace Bacloo\CrmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Locatafrs
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bacloo\CrmBundle\Entity\LocatafrsRepository")
+ */
+ 
+class Locatafrs
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    public $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="chantierid", type="integer", nullable=true)
+     */
+    public $chantierid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomchantier", type="string", length=255, nullable=true)
+     */
+    public $nomchantier;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse1", type="string", length=255, nullable=true)
+     */
+    public $adresse1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse2", type="string", length=255, nullable=true)
+     */
+    public $adresse2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse3", type="string", length=255, nullable=true)
+     */
+    public $adresse3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cp", type="string", length=5, nullable=true)
+     */
+    public $cp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
+     */
+    public $ville;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fournisseurid", type="integer", type="integer", nullable=true)
+     */
+    public $fournisseurid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fournisseur", type="string", length=255, nullable=true)
+     */
+    public $fournisseur;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user", type="string", length=255, nullable=true)
+     */
+    public $user;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact", type="string", length=255, nullable=true)
+     */
+    public $contact;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datemodif", type="string", nullable=true)
+     */
+    public $datemodif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="annulee", type="boolean", length=255, nullable=true)
+     */
+    public $annulee;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="text", nullable=true)
+     */
+    public $commentaire;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="montantloc", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    public $montantloc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etatbdc", type="boolean", length=255, nullable=true)
+     */
+    public $etatbdc;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="codelocatasl", type="integer", length=255, nullable=true)
+     */
+    public $codelocatasl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="types", type="string", length=255, nullable=true)
+     */
+    public $types;
+
+  /**
+   * @ORM\ManyToMany(targetEntity="Bacloo\CrmBundle\Entity\Locationsfrs", cascade={"persist"}, orphanRemoval=true)
+   */	
+	public $locationsfrs;
+	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->locationsfrs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set chantierid
+     *
+     * @param integer $chantierid
+     *
+     * @return Locatafrs
+     */
+    public function setChantierid($chantierid)
+    {
+        $this->chantierid = $chantierid;
+
+        return $this;
+    }
+
+    /**
+     * Get chantierid
+     *
+     * @return integer
+     */
+    public function getChantierid()
+    {
+        return $this->chantierid;
+    }
+
+    /**
+     * Set nomchantier
+     *
+     * @param string $nomchantier
+     *
+     * @return Locatafrs
+     */
+    public function setNomchantier($nomchantier)
+    {
+        $this->nomchantier = $nomchantier;
+
+        return $this;
+    }
+
+    /**
+     * Get nomchantier
+     *
+     * @return string
+     */
+    public function getNomchantier()
+    {
+        return $this->nomchantier;
+    }
+
+    /**
+     * Set adresse1
+     *
+     * @param string $adresse1
+     *
+     * @return Locatafrs
+     */
+    public function setAdresse1($adresse1)
+    {
+        $this->adresse1 = $adresse1;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse1
+     *
+     * @return string
+     */
+    public function getAdresse1()
+    {
+        return $this->adresse1;
+    }
+
+    /**
+     * Set adresse2
+     *
+     * @param string $adresse2
+     *
+     * @return Locatafrs
+     */
+    public function setAdresse2($adresse2)
+    {
+        $this->adresse2 = $adresse2;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse2
+     *
+     * @return string
+     */
+    public function getAdresse2()
+    {
+        return $this->adresse2;
+    }
+
+    /**
+     * Set adresse3
+     *
+     * @param string $adresse3
+     *
+     * @return Locatafrs
+     */
+    public function setAdresse3($adresse3)
+    {
+        $this->adresse3 = $adresse3;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse3
+     *
+     * @return string
+     */
+    public function getAdresse3()
+    {
+        return $this->adresse3;
+    }
+
+    /**
+     * Set cp
+     *
+     * @param string $cp
+     *
+     * @return Locatafrs
+     */
+    public function setCp($cp)
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    /**
+     * Get cp
+     *
+     * @return string
+     */
+    public function getCp()
+    {
+        return $this->cp;
+    }
+
+    /**
+     * Set ville
+     *
+     * @param string $ville
+     *
+     * @return Locatafrs
+     */
+    public function setVille($ville)
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * Get ville
+     *
+     * @return string
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * Set fournisseurid
+     *
+     * @param integer $fournisseurid
+     *
+     * @return Locatafrs
+     */
+    public function setFournisseurid($fournisseurid)
+    {
+        $this->fournisseurid = $fournisseurid;
+
+        return $this;
+    }
+
+    /**
+     * Get fournisseurid
+     *
+     * @return integer
+     */
+    public function getFournisseurid()
+    {
+        return $this->fournisseurid;
+    }
+
+    /**
+     * Set fournisseur
+     *
+     * @param string $fournisseur
+     *
+     * @return Locatafrs
+     */
+    public function setFournisseur($fournisseur)
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    /**
+     * Get fournisseur
+     *
+     * @return string
+     */
+    public function getFournisseur()
+    {
+        return $this->fournisseur;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Locatafrs
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     *
+     * @return Locatafrs
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * Set datemodif
+     *
+     * @param string $datemodif
+     *
+     * @return Locatafrs
+     */
+    public function setDatemodif($datemodif)
+    {
+        $this->datemodif = $datemodif;
+
+        return $this;
+    }
+
+    /**
+     * Get datemodif
+     *
+     * @return string
+     */
+    public function getDatemodif()
+    {
+        return $this->datemodif;
+    }
+
+    /**
+     * Set annulee
+     *
+     * @param boolean $annulee
+     *
+     * @return Locatafrs
+     */
+    public function setAnnulee($annulee)
+    {
+        $this->annulee = $annulee;
+
+        return $this;
+    }
+
+    /**
+     * Get annulee
+     *
+     * @return boolean
+     */
+    public function getAnnulee()
+    {
+        return $this->annulee;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Locatafrs
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set montantloc
+     *
+     * @param integer $montantloc
+     *
+     * @return Locatafrs
+     */
+    public function setMontantloc($montantloc)
+    {
+        $this->montantloc = $montantloc;
+
+        return $this;
+    }
+
+    /**
+     * Get montantloc
+     *
+     * @return integer
+     */
+    public function getMontantloc()
+    {
+        return $this->montantloc;
+    }
+
+    /**
+     * Set etatbdc
+     *
+     * @param boolean $etatbdc
+     *
+     * @return Locatafrs
+     */
+    public function setEtatbdc($etatbdc)
+    {
+        $this->etatbdc = $etatbdc;
+
+        return $this;
+    }
+
+    /**
+     * Get etatbdc
+     *
+     * @return boolean
+     */
+    public function getEtatbdc()
+    {
+        return $this->etatbdc;
+    }
+
+    /**
+     * Add locationsfr
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locationsfrs $locationsfr
+     *
+     * @return Locatafrs
+     */
+    public function addLocationsfr(\Bacloo\CrmBundle\Entity\Locationsfrs $locationsfr)
+    {
+        $this->locationsfrs[] = $locationsfr;
+
+        return $this;
+    }
+
+    /**
+     * Remove locationsfr
+     *
+     * @param \Bacloo\CrmBundle\Entity\Locationsfrs $locationsfr
+     */
+    public function removeLocationsfr(\Bacloo\CrmBundle\Entity\Locationsfrs $locationsfr)
+    {
+        $this->locationsfrs->removeElement($locationsfr);
+    }
+
+    /**
+     * Get locationsfrs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLocationsfrs()
+    {
+        return $this->locationsfrs;
+    }
+
+    /**
+     * Set codelocatasl
+     *
+     * @param integer $codelocatasl
+     *
+     * @return Locatafrs
+     */
+    public function setCodelocatasl($codelocatasl)
+    {
+        $this->codelocatasl = $codelocatasl;
+
+        return $this;
+    }
+
+    /**
+     * Get codelocatasl
+     *
+     * @return integer
+     */
+    public function getCodelocatasl()
+    {
+        return $this->codelocatasl;
+    }
+
+    /**
+     * Set types
+     *
+     * @param string $types
+     *
+     * @return Locatafrs
+     */
+    public function setTypes($types)
+    {
+        $this->types = $types;
+
+        return $this;
+    }
+
+    /**
+     * Get types
+     *
+     * @return string
+     */
+    public function getTypes()
+    {
+        return $this->types;
+	}
+}

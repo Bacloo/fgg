@@ -1,0 +1,168 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Avoir sur facture de vente
+			</h4>
+		</div>
+		<div class="modal-body">
+			{% if message == 1 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!</strong> Vous avez déjà enregistré un avoir du même montant pour cette vente.
+				</div>	
+			{% elseif message == 2 %}
+				<div class="alert alert-success">
+				  <strong>Bravo!</strong> Votre avoir a bien été enregistré.
+				</div>	
+			{% elseif message == 3 %}
+				<div class="alert alert-danger">
+				  <strong>Le montant saisi ne doit pas être supérieur au montant de la facture.
+				</div>
+			{% endif %}
+			<form class="form-horizontal" action="{{ path('bacloocrm_avoirventes', {'vendaid':venda.id, 'numavoir':numavoir, 'numfacture':numfacture } ) }}" method="post" {{form_enctype(form) }}>
+				{% if message < 1 %}
+					<h5>Le montant total HT de la facture est de : {{ venda.montantvente }} €</h5>
+							<table>
+								<tr>
+									<td class="col-md-3"><h5><b>Avoir total</b></h5></td>
+									<td>{{ form_widget(form.avoirtotal) }}</td>
+								</tr>		
+							</table>						
+							<hr>
+							Saisissez le montant HT de l'avoir partiel sur la ligne concernée
+							{% set compteur = 0 %}
+								{% for ventes in venda.ventes %}
+									{% if ventes.codifvente == 'vente' %}
+										{% set compteur = compteur + 1 %}
+										{% if compteur == 1 %}
+											<br><b>{{ ventes.codifvente }}</b>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b>Avoir vente</b></span>
+														{% if montantavoirpartiel == 0 %}
+															{{ form_widget(form.vente, { 'attr' : { 'class' : 'form-control' } })  }}
+														{% else %}
+															{{ form_widget(form.vente, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+														{% endif %}
+														{{ form_widget(form.vente, { 'attr' : { 'class' : 'form-control' } })  }}
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									{% endif %}
+									{% if ventes.codifvente == 'entretien' %}
+										{% set compteur = compteur + 1 %}
+										{% if compteur == 1 %}
+											<br><b>{{ ventes.codifvente }}</b>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b>Avoir entretien</b></span>
+														{% if montantavoirpartiel == 0 %}
+															{{ form_widget(form.entretien, { 'attr' : { 'class' : 'form-control' } })  }}
+														{% else %}
+															{{ form_widget(form.entretien, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									{% endif %}
+									{% if ventes.codifvente == 'transport' %}
+										{% set compteur = compteur + 1 %}
+										{% if compteur == 1 %}
+											<br><b>{{ ventes.codifvente }}</b>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b>Avoir transport</b></span>
+														{% if montantavoirpartiel == 0 %}
+															{{ form_widget(form.transport, { 'attr' : { 'class' : 'form-control' } })  }}
+														{% else %}
+															{{ form_widget(form.transport, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									{% endif %}
+									{% if ventes.codifvente == 'assurance' %}
+										{% set compteur = compteur + 1 %}
+										{% if compteur == 1 %}
+											<br><b>{{ ventes.codifvente }}</b>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b>Avoir assurance</b></span>
+														{% if montantavoirpartiel == 0 %}
+															{{ form_widget(form.assurance, { 'attr' : { 'class' : 'form-control' } })  }}
+														{% else %}
+															{{ form_widget(form.assurance, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									{% endif %}
+									{% if ventes.codifvente == 'paa' %}
+										{% set compteur = compteur + 1 %}
+										{% if compteur == 1 %}
+											<br><b>{{ ventes.codifvente }}</b>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-addon"><b>Avoir autres</b></span>
+														{% if montantavoirpartiel == 0 %}
+															{{ form_widget(form.paa, { 'attr' : { 'class' : 'form-control' } })  }}
+														{% else %}
+															{{ form_widget(form.paa, { 'value' : montantavoirpartiel, 'attr' : { 'class' : 'form-control' } })  }}
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+							<div class="form-group">
+								<div class="col-md-12">
+									<br><b>Commentaire</b>
+									{% if commentaire is same as (0) %}
+										{{ form_widget(form.commentaire, { 'attr' : { 'class' : 'form-control','rows' : '5'} })  }}
+									{% else %}
+										{{ form_widget(form.commentaire, { 'value' : commentaire, 'attr' : { 'class' : 'form-control','rows' : '5'} })  }}
+									{% endif %}									
+								</div>
+							</div>					
+						<center>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Valider"/>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': ficheid}) }}"><span>Fermer</span></a>
+							{{ form_row(form._token) }}
+						</center>	
+				{% elseif message > 0 %}				
+					<center>
+						<br>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_voir', {'id': ficheid}) }}"><span>Fermer</span></a>
+					</center>				
+				{% endif %}
+			</form>
+		</div>	
+		{% include "BaclooCrmBundle:Crm:ajout_locations.html.twig" %}
+		{# Fin Partie Locations #}
+	</div>
+</div>
+{# Fin partie invisible #}
+	
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>	
+{% endblock %}

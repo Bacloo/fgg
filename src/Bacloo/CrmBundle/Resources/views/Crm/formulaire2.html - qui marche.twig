@@ -1,0 +1,132 @@
+<h3>Fiche</h3>
+	<div class="well">
+
+
+	<form action="{{ path('bacloocrm_voir', {'id': fiche.id})  }}" method="post" {{form_enctype(form) }}>
+		<input type="submit" class="btn btn-primary" />
+	{# Les erreurs générales du formulaire. #}
+	{{ form_errors(form) }}				
+				<div class="control-group">
+				  <div class="controls">
+					<div class="input-prepend">	
+						<span class="add-on">{# Génération du label. #}{{ form_label(form.raisonSociale, "Raison Sociale") }}</span>
+						{{ form_widget(form.raisonSociale) }}< /br>
+						<br><br>
+						<div>
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.adresse1, "Adresse1") }}</span>
+							{{ form_widget(form.adresse1) }}
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.adresse2, "Adresse2") }}</span>
+							{{ form_widget(form.adresse2) }}
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.adresse3, "Adresse3") }}</span>
+							{{ form_widget(form.adresse3) }}					
+						</div>
+						<br>
+						<div>
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.cp, "CP") }}</span>
+							{{ form_widget(form.cp) }}
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.ville, "Ville") }}</span>
+							{{ form_widget(form.ville) }}				
+						</div>
+						<br>
+						<div>
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.telephone, "Téléphone") }}</span>
+							{{ form_widget(form.telephone) }}
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.fax, "Fax") }}</span>
+							{{ form_widget(form.fax) }}				
+						</div>
+						<br>
+						<div>
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.siteWeb) }}</span>
+							{{ form_widget(form.siteWeb) }}
+							<span class="add-on">{# Génération du label. #}{{ form_label(form.user, "Suivi Par") }}</span>
+							{{ form_widget(form.user) }}											
+						</div>
+						<br>
+						<div>
+							{{ form_label(form.aVendre, "A vendre") }}
+							{{ form_widget(form.aVendre) }}			
+						</div>
+						<div>
+							{{ form_label(form.memo, "Memo") }}
+							{{ form_widget(form.memo.texte) }}			
+						</div>								
+					</div>
+				  </div>
+				</div>					
+				
+
+	{# On charge la bibliothèque jQuery. Ici, je la prends depuis le CDN google mais si vous l'avez en local, changez simplement l'adresse. #}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{# Partie bcontatcs #}
+	{% macro bcontactsCollectionItem(formData) %}
+	<div>
+		<table>
+			<tr>
+				<td>{{ form_widget(formData.dateCrea)}}</td><td>{{ form_widget(formData.civilite)}}</td><td>{{ form_widget(formData.nom)}}</td><td>{{ form_widget(formData.prenom)}}</td><td>{{ form_widget(formData.fonction)}}</td>
+				<td>{{ form_widget(formData.tel1)}}</td><td>{{ form_widget(formData.tel2)}}</td><td>{{ form_widget(formData.email)}}</td>
+				<td>{{ form_widget(formData.commentaire)}}</td><td>{{ form_widget(formData.mailingOk)}}</td><td>{{ form_widget(formData.aVendre)}}</td>
+			</tr>
+		</table>
+	</div>
+	{% endmacro %}
+	<h3>{{ form_label(form.bcontacts, "Contacts") }}</h3>	
+	<div id="bacloo_crmbundle_fiche_bcontacts" data-prototype="{{ _self.bcontactsCollectionItem(form.bcontacts.vars.prototype)|e }}">
+		{% for bcontact in form.bcontacts %}
+			{{ _self.bcontactsCollectionItem(bcontact) }}
+		{% endfor %}
+	</table>
+	</div>
+{# Fin Partie bcontatcs #}	
+
+{# Partie brappels #}
+	{% macro brappelsCollectionItem(formData3) %}
+	<div>
+			<tr>
+				<td>{{ form_widget(formData3.date)}}</td><td>{{ form_widget(formData3.rapTexte)}}</td><td>{{ form_widget(formData3.user)}}</td>
+			</tr>
+	</div>
+	{% endmacro %}
+
+	<h3>{{ form_label(form.brappels, "Rappels") }}</h3>	
+	<div id="bacloo_crmbundle_fiche_brappels" data-prototype="{{ _self.brappelsCollectionItem(form.brappels.vars.prototype)|e }}">
+		{% for brappel in form.brappels %}
+			{{ _self.brappelsCollectionItem(brappel) }}
+		{% endfor %}
+	</div>		
+{# Fin Partie brappels #}
+
+{# Partie event #}
+	{% macro eventCollectionItem(formData2) %}
+	<div>
+		<table>
+				<tr>
+					<td>{{ form_widget(formData2.eventDate)}}</td><td>{{ form_widget(formData2.heure)}}</td><td>{{ form_widget(formData2.user)}}</td>
+					<td>{{ form_widget(formData2.eventComment)}}</td>
+				</tr>
+		</table>
+	</div>
+	{% endmacro %}
+
+	<h3>{{ form_label(form.event, "Evènement") }}</h3>	
+	<div id="bacloo_crmbundle_fiche_event" data-prototype="{{ _self.eventCollectionItem(form.event.vars.prototype)|e }}">
+		{% for even in form.event %}
+			{{ _self.eventCollectionItem(even) }}
+		{% endfor %}
+	</div>
+{# Fin Partie event #}
+
+	{% include "BaclooCrmBundle:Crm:ajout_contacts.html.twig" %}
+	{% include "BaclooCrmBundle:Crm:ajout_event.html.twig" %}
+	{% include "BaclooCrmBundle:Crm:ajout_rappels.html.twig" %}
+
+		<input type="submit" class="btn btn-primary" />
+	{{ form_rest(form) }}	
+	</form>
+</div>
+				<div class="panel-footer">
+				       <script "text/javascript">
+						$("form input.date").datepicker({
+							dateFormat: 'dd/mm/yy', 
+							firstDay:1
+						});
+				   </script>

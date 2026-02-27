@@ -1,0 +1,194 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<a type="button" class="btn btn-primary pull-left" href="{{ path('bacloocrm_home') }}"><<< Retour au statistiques financières</span></a>
+<br><br><br>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Chiffre d'affaires total par client</h3>
+		</h3>
+	</div>
+	<div class="panel-body">	
+		<div class="col-md-3 column">
+			<form role="form" action="{{ path('bacloocrm_camensuelclientsdetaille', {'dStart' : dstart, 'dEnd' : dend}) }}" method="post" {{form_enctype(form) }}>					
+				<div class="row clearfix">
+					<table class="col-md-12">
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Du</span>
+											{{ form_widget(form.du, {'value' : dstart|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>				
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Au</span>
+											{{ form_widget(form.au, {'value' : dend|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Client</span>
+											{{ form_widget(form.client, {'attr' : { 'class' : 'form-control' } })  }}				
+										</div>							
+									  </div>
+								  </div>
+								</div>	
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<br><center><input type="submit" class="btn btn-info" value="Rechercher"  name="recherche" />				
+								<a type="button" class="btn btn-default" href="{{ path('bacloocrm_camensuelclientsdetaille') }}">Réinitialiser</a></center>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				<br>			 
+				{{ form_row(form._token) }}				
+			</form>			
+		</div>	
+		<div class="col-md-10 column">
+				
+		</div>	
+		<div class="col-md-12 column">
+			<a type="button" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'avoirsparclients', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px;"><i class="fa fa-file-excel-o"></i> Avoirs</span></a>
+			<a type="button" style="margin-right:10px;" class="btn btn-success pull-right" href="{{ path('avro_csv_export_export', {'alias': 'caclientsdetaille', 'user': 'VT', 'dstart':dstart, 'dend':dend}) }}">
+			<span style="font-size:15px"><i class="fa fa-file-excel-o"></i> CA loc détaillé</span></a><br><br><br>			
+		</div>
+		<table class="table table-bordered"><thead><tr style="background-color:#eaecef;">
+			<thead>
+				<tr style="background-color:#eaecef; font-weight:bold; font-size:20px;">
+					<td>
+						Clients
+					</td>
+					<td>
+						Location
+					</td>
+					<td>
+						Transport
+					</td>
+					<td>
+						Carburant
+					</td>
+					<td>
+						Contribution verte
+					</td>
+					<td>
+						Assurance
+					</td>
+					<td>
+						Ventes annexes
+					</td>
+				</tr>
+			</thead>
+			{% for loca in commerciaux %}
+				<tr>
+					<td style="background-color:#f5f6f9; font-weight:bold; font-size:14px;">
+						{{ loca }}
+					</td>
+					{% set montantloc = 0 %}
+					{% set transport = 0 %}
+					{% set assurance = 0 %}
+					{% set carburant = 0 %}
+					{% set contributionverte = 0 %}
+					{% set ventes = 0 %}
+					{% set avoirs = 0 %}
+					{% for avoir in avoirsclients %}
+						{% if loca == avoir.client %}
+							{% set avoirs = avoirs + avoir.totalht %}
+						{% endif %}	
+					{% endfor %}
+					{% for loc in ca %}
+						{% if loca == loc.client %}
+							{% set montantloc = montantloc + loc.montantloc %}
+							{% set contributionverte = contributionverte + loc.contributionverte %}
+							{% set assurance = assurance + loc.assurance %}
+							{% set transport = transport + loc.transportaller + loc.transportretour %}
+							{% set carburant = carburant + loc.montantcarb  %}
+							{% set ventes = ventes + loc.montantlocavente %}
+						{% endif %}	
+					{% endfor %}
+					{% set montantloc = montantloc - avoirs %}
+					<td style="font-size:14px;">{{ montantloc|number_format(2, ',', ' ')  }}€</td>
+					<td style="font-size:14px;">{{ transport|number_format(2, ',', ' ')  }}€</td>
+					<td style="font-size:14px;">{{ carburant|number_format(2, ',', ' ')  }}€</td>
+					<td style="font-size:14px;">{{ contributionverte|number_format(2, ',', ' ')  }}€</td>
+					<td style="font-size:14px;">{{ assurance|number_format(2, ',', ' ')  }}€</td>
+					<td style="font-size:14px;">{{ ventes|number_format(2, ',', ' ')  }}€</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+			<center>
+				{% if nombrePage > 0 %}
+					<ul class="pagination">
+						{% if page > 1 %}
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclientsdetaille', {'mode': mode, 'page': 1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									<<
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclientsdetaille', {'mode': mode, 'page': -1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									<
+								</a>
+							</li>
+						{% endif %}
+
+						{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+						{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+							<li {% if p == page %}class="active"{% endif %}>
+								<a href="{{ path('bacloocrm_camensuelclientsdetaille', {'mode': mode, 'page': p, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									{{ p }}
+								</a>
+							</li>
+						{% endfor %}
+
+						{% if page < nombrePage %}
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclientsdetaille', {'mode': mode, 'page': page+1, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									>
+								</a>
+							</li>
+							<li>
+								<a href="{{ path('bacloocrm_camensuelclientsdetaille', {'mode': mode, 'page': nombrePage, 'search': search, 'dStart': dstart, 'dEnd': dend}) }}">
+									>>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+			</center>		
+<script>
+  $( function() {
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'dd/mm/yy', 
+		firstDay:1			
+	});
+  } );
+</script>		
+{% endblock %}

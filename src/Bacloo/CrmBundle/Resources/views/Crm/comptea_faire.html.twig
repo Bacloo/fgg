@@ -1,0 +1,5 @@
+{% if type == 'accueil' %}
+	{{ nba_faire }}
+{% else %}
+	{% if nba_faire > 1 %}{{ nba_faire }} Tâches{% elseif nba_faire == 1 %}{{ nba_faire }} Tâche{% else %}0 Tâche{% endif %}
+{% endif %}

@@ -1,0 +1,14 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="container">
+	<div class="row">
+	  <div class="col-md-12">
+	  {% if ok == 'ok' %}
+		<div class="alert alert-success"><strong><span class="glyphicon glyphicon-send"></span> Votre message a bien été envoyé !</strong></div>	
+	  {% endif %}
+	</div>
+</div>
+{% endblock %}	
+
+
+	

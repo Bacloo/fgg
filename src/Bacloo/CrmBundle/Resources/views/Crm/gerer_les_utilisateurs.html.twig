@@ -1,0 +1,255 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<h3>Gestion des utilisateurs et leurs modules</h3>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12 column">	
+			<form class="form-horizontal" action="{{ path('bacloocrm_utilisateurs', {'dix': 2}) }}" method="post" {{form_enctype(form) }}>				
+				<fieldset>
+				<div class="row clearfix">
+					<input type="submit" class="btn btn-primary" value="Enregistrer"/><br><br>
+						{% macro modulesCollectionItem(formData2, societe) %}
+							{% if formData2.usersociete.vars.value == societe %}
+								<div class="hidden">{{ form_widget(formData2.userid) }}</div>
+								<div class="hidden">{{ form_widget(formData2.username) }}</div>			
+								<tr class="dibacloo4">
+										<td>
+											<div class="form-group">
+												<div class="col-md-12">
+													<b>{{ formData2.username.vars.value }}</b>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.userprix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.userdebut) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.usersociete) }}</div>
+												{{ form_widget(formData2.bbuseractivation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div>
+													{{ formData2.userexpiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module2, { 'value' : 'Bloc devis et commandes' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module2prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module2debut) }}</div>
+												{{ form_widget(formData2.module2activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module2expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module3, { 'value' : 'Recherche avancée' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module3prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module3debut) }}</div>
+												{{ form_widget(formData2.module3activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module3expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module4, { 'value' : 'Synchronisation avec agenda' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module4prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module4debut) }}</div>
+												{{ form_widget(formData2.module4activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module4expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module5, { 'value' : 'Fiches fournisseurs' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module5prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module5debut) }}</div>
+												{{ form_widget(formData2.module5activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module5expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module6, { 'value' : 'Google Docs' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module6prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module6debut) }}</div>
+												{{ form_widget(formData2.module6activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module6expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module7prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module7, { 'value' : 'Google Docs' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module7debut) }}</div>
+												{{ form_widget(formData2.module7activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module7expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module9, { 'value' : 'module9' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module9prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module9debut) }}</div>
+												{{ form_widget(formData2.module9activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module9expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										{# <td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module10, { 'value' : 'module10' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module10prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module10debut) }}</div>
+												{{ form_widget(formData2.module10activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module10expiration.vars.value }}
+												</div>
+											</div>
+										</td> #}
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module11, { 'value' : 'module11' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module11prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module11debut) }}</div>
+												{{ form_widget(formData2.module11activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module11expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module12, { 'value' : 'module12' }) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module12prix) }}</div>
+											  <div class="col-md-12"><div class="hidden">{{ form_widget(formData2.module12debut) }}</div>
+												{{ form_widget(formData2.module12activation) }}
+											  </div>
+											</div>
+										</td>
+										<td>
+											<div class="form-group">
+												<div">
+													{{ formData2.module12expiration.vars.value }}
+												</div>
+											</div>
+										</td>
+
+									</tr>
+							{% endif %}
+						{% endmacro %}
+
+						<div id="bacloo_crmbundle_moda_modules" data-prototype="{{ _self.modulesCollectionItem(form.modules.vars.prototype, societe)|e }}">
+							<table id="bacloo2" class="table table-striped">
+								<thead>
+									<tr id="dibac">
+										<th>Utilisateur</th>
+										<th class="col-md-2">Utilisateur Activé ?</th>
+										<th>R.</th>
+										<th class="col-md-2">Relances, Rendez-vous et Tâches</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Bloc devis et commandes</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Recherche avancée</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Synchronisation agenda</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Fiches fournisseurs</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Google Docs</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Annuaire</th>
+										<th class="col-md-2">R.</th>
+										{# <th class="col-md-2">Module10</th>
+										<th class="col-md-2">R.</th> #}
+										<th class="col-md-2">Speed Menu</th>
+										<th class="col-md-2">R.</th>
+										<th class="col-md-2">Compte-rendu</th>
+										<th class="col-md-2">R.</th>
+									</tr>
+								</thead>
+								{% for prospo in form.modules %}
+											{{ _self.modulesCollectionItem(prospo, societe) }}
+								{% endfor %}
+							</table>		
+						</div>
+
+					
+					<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+				</div>
+			{{ form_errors(form) }}
+			{{ form_row(form._token) }}		
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+</div>
+{% endblock %}	

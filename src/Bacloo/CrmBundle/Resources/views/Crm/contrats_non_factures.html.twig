@@ -1,0 +1,43 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="row clearfix">
+			<div class="col-md-9">
+				<h3 class="panel-title">
+					<h3>Contrats non facturés - Période du {{ start|date('d/m/Y') }} au {{ end|date('d/m/Y') }}</h3>
+				</h3>
+			</div>
+			<div class="col-md-3">
+{#				{% if form.vars.value.etat == 'Disponible' %}<span class="pull-right"><a type="button" class="btn btn-danger btn-xl" href="{{ path('bacloocrm_removemachineparc', {'id': machineid}) }}">Supprimer ce matériel</a></span>{% endif %}#}
+			</div>
+		</div>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered">
+			<thead>
+			<tr>
+				<th>Code contrat</th>
+				<th>Début location</th>
+				<th>Fin location</th>
+				<th>Statut de la loc</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for item in results %}
+				<tr>
+					<td><a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': item.clientid, 'locid': item.locata_id }) }}">{{ item.locata_id }}</a></td>
+					<td>{{ item.debutloc|date('d/m/Y') }}</td>
+					<td>{{ item.finloc|date('d/m/Y') }}</td>
+					<td>{{ item.etatloc }}</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">Aucun contrat non facturé sur la période.</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

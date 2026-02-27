@@ -1,0 +1,83 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">						
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> {{ objet }} 
+					{% if proprio is defined %}
+						{% if proprio == userid %} <b>{{ rais }}</b>{% endif %}
+					{% else %}
+						
+					{% endif %}
+                </div>
+                <div class="panel-body">
+					<ul class="chat">
+				{% for recu in detail %}
+					{% set rais = recu.raisonsociale %}
+					{% if recu.fromId != userid %}
+						{% if recu.lu == 'nok' %}	
+							<li class="left clearfix bg-warning"><span class="chat-img pull-left">
+						{% else %}
+							<li class="left clearfix"><span class="chat-img pull-left">
+						{% endif %}	
+								<img src="http://placehold.it/50/55C1E7/fff&text=Lui" alt="User Avatar" class="img-circle" />
+							</span>					
+								<div class="chat-body clearfix">
+									<div class="header">
+										<strong class="primary-font">{{ recu.fromNom }} {{ recu.fromPrenom }}</strong> <small class="pull-right text-muted">
+											<span class="glyphicon glyphicon-time"></span>{{ recu.date|date('d/m/Y') }}</small>
+									</div>
+
+									<p>
+									{{ recu.message }}
+									</p>
+								</div>
+							</li>
+					{% else %}
+						{% if recu.lu == 'nok' %}	
+							<li class="right clearfix bg-warning"><span class="chat-img pull-right">
+						{% else %}
+							<li class="right clearfix"><span class="chat-img pull-right">
+						{% endif %}						
+							
+								<img src="http://placehold.it/50/FA6F57/fff&text=MOI" alt="User Avatar" class="img-circle" />
+							</span>
+								<div class="chat-body clearfix">
+									<div class="header">
+										<strong class="primary-font">{{ recu.fromNom }} {{ recu.fromPrenom }}</strong> <small class="pull-right text-muted">
+											<span class="glyphicon glyphicon-time"></span>{{ recu.date|date('d/m/Y') }}</small>
+									</div>
+									<p>										
+										{{ recu.message }}
+									</p>
+								</div>
+							</li>
+					{% endif %}
+				{% endfor %}
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div>
+						<form role="form" action="{{ path('bacloocrm_senddetmessage', {'destid': destid, 'rais': rais, 'id' : id} ) }}" method="post" {{form_enctype(form) }}>
+						{% set date = 'now'|date('Y-m-d') %}
+						
+						<div class="hidden">{{ form_widget(form.objet, { 'attr' : { 'value' : objet }})  }}	{{ form_widget(form.date, { 'attr' : { 'value' : date }})  }}</div>						
+							{{ form_widget(form.message, { 'attr' : { 'class' : 'form-control' ,'rows' : '5'}} )  }}
+							{{ form_row(form._token) }}
+							<br>
+                            <input type="submit" class="btn btn-primary" value="Envoyer"/>
+                            <a class="btn btn-primary" href="{{ path('bacloocrm_mesmessages') }}"><span>Fermer</span></a>
+						
+						</form>
+                    </div>
+
+			</div>
+		</div>					
+	</div>		
+</div>		
+{% endblock %}
+						

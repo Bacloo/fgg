@@ -1,0 +1,222 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	{% if module12activation == 1 %}
+			<div class="col-md-4 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<h3>Recherche</h3>
+							Sélectionnez un intervalle de recherche
+						</h3>
+					</div>
+					<div class="panel-body">
+						<form role="form" action="{{ path('bacloocrm_cr') }}" method="post" {{form_enctype(form) }}>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">							
+										<span class="input-group-addon">Du</span>
+										{{ form_widget(form.du, { 'value' : du|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}				
+									</div>							
+								  </div>
+							  </div>
+							</div>
+							<br>
+							<div class="form-group">
+							  <div class="controls">
+								  <div class="col-md-12">
+									<div class="input-group">							
+										<span class="input-group-addon">Au</span>
+										{{ form_widget(form.au, { 'value' : au|date('d/m/Y'), 'attr' : { 'class' : 'form-control datepicker' } })  }}						
+									</div>							
+								  </div>
+							  </div>
+							</div>
+							{% if userdaccueil == 'admin' or userdacc.username == 'Metin' %}
+								<br>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+										<span class="input-group-addon">&nbsp;<i class="fa fa-user"></i>&nbsp;</span>
+											{{ form_widget(form.username,{ 'attr' : { 'class' : 'form-control' }}) }}						
+										</div>							
+									  </div>
+								  </div>
+								</div>
+								<br>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="">&nbsp;Rechercher dans les relances&nbsp;</span>
+											{% if relances == 1 %}
+												{{ form_widget(form.relances,{'value' : '1',checked:'checked', 'attr' : { 'class': '' }}) }}
+											{% else %}
+												{{ form_widget(form.relances,{'attr' : { 'class': '' }}) }}
+											{% endif %}
+										</div>							
+									  </div>
+								  </div>
+								</div>
+							{% else %}
+								<div class="hidden">
+									{{ form_widget(form.username, { 'value' : user }) }}
+								</div>
+							{% endif %}
+							<br>
+							<br>
+							<input type="submit" name="submit" id="submit" value="Valider" class="btn btn-info pull-right">					 
+							{{ form_row(form._token) }}
+						
+						</form>				
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							{% if userdaccueil == 'admin' or userdacc.username == 'Metin' %}
+								{% if relances == 1 %}
+									<h3>Liste de relances - rendez-vous et tâches de {% if user == 'tous' %}tous les utilisateurs {% else %}{{ user }}{% endif %} du {{ du|date('d/m/Y') }} au {{ au|date('d/m/Y') }}</h3>
+								{% else %}
+									<h3>Comtpe-rendu d'activité de {% if user == 'tous' %}tous les utilisateurs {% else %}{{ user }}{% endif %} du {{ du|date('d/m/Y') }} au {{ au|date('d/m/Y') }}</h3>
+									Pour ajouter un évènement ici, cochez la case <i class="fa fa-list-alt"></i> située au-dessus de l'évènement (rubrique historique) dans la fiche concernée.
+								{% endif %}
+							{% else %}
+								<h3>Comtpe-rendu d'activité {% if userdaccueil == 'admin' or userdacc.username == 'Metin' %}de {% if user == 'tous' %}tous les commerciaux {% else %}{{ user }}{% endif %} {% endif %}du {{ du|date('d/m/Y') }} au {{ au|date('d/m/Y') }}</h3>
+								Pour ajouter un évènement ici, cochez la case <i class="fa fa-list-alt"></i> située au-dessus de l'évènement (rubrique historique) dans la fiche concernée.								
+							{% endif %}
+						</h3>
+					</div>
+					<div class="panel-body">
+					{% set dato = 1 %}
+					{% set i = 1 %}
+					{% if (userdaccueil == 'admin' and mode == 'cr') or (userdacc.username == 'Metin' and mode == 'cr') %}
+						{% set cr = cra %}
+						{% for data in cr %}
+							{% if dato != data.eventDate %}{% if i != 1 %}<hr class="style4">{% endif %}<h4>Journée du {{ data.eventDate|date('d/m/Y') }}</h4>	{% endif %}
+							
+							<br><span style="cursor:pointer;padding-left:20px"" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'raison': data.entreprise}) }}'">
+								<i class="fa fa-caret-right"></i> <b>{% if user == 'tous' %}<span class="text-primary">{{ data.user }}</span> - {% endif %} {{ data.entreprise }}</b> : {{ data.eventComment }}														
+							</span>
+							{% set dato = data.eventDate %}
+							{% set i = i+1 %}
+						{% endfor %}
+					{% elseif (userdaccueil == 'admin' and mode == 'brappels') or (userdacc.username == 'Metin' and mode == 'brappels')  %}
+						{% set cr = bra %}
+						{% for data in cr %}
+								{% if dato != data.date %}{% if i != 1 %}<hr class="style4">{% endif %}<h4>Journée du {{ data.date|date('d/m/Y') }}</h4>	{% endif %}
+									{% if data.rdv == 1 %}
+										<div class="bg-success" style="padding-left:10px;padding-top:0.5px;padding-bottom:5px;">
+											<h5><b>Rendez-vous</b></h5>
+											<span style="cursor:pointer;padding-left:20px"" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'raison': data.entreprise}) }}'">
+												<i class="fa fa-caret-right"></i> <b>{% if user == 'tous' %}<span class="text-primary">{{ data.user }}</span> - {% endif %} {{ data.entreprise }}</b> : {{ data.rapTexte }}																		
+											</span>
+										</div>
+									{% elseif data.afaire == 1 %}
+										<div class="bg-info" style="padding-left:10px;padding-top:0.5px;padding-bottom:5px;">
+											<h5>Tâches</h5>
+											<span style="cursor:pointer;padding-left:20px"" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'raison': data.entreprise}) }}'">
+												<i class="fa fa-caret-right"></i> <b>{% if user == 'tous' %}<span class="text-primary">{{ data.user }}</span> - {% endif %} {{ data.entreprise }}</b> : {{ data.rapTexte }}																
+											</span>
+										</div>
+									{% else %}
+										<div class="bg-warning" style="padding-left:10px;padding-top:0.5px;padding-bottom:5px;">
+											<h5><b>Relances téléphoniques</b></h5>
+											<span style="cursor:pointer;padding-left:20px"" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'raison': data.entreprise}) }}'">
+												<i class="fa fa-caret-right"></i> <b>{% if user == 'tous' %}<span class="text-primary">{{ data.user }}</span> - {% endif %} {{ data.entreprise }}</b> : {{ data.rapTexte }}																
+											</span>
+										</div>
+									{% endif %}
+								{% set dato = data.date %}
+								{% set i = i+1 %}
+						{% endfor %}
+					{% else %}
+						{% set cr = cr %}
+						{% for data in cr %}
+							{% if dato != data.eventDate %}{% if i != 1 %}<hr class="style4">{% endif %}<h4>Journée du {{ data.eventDate|date('d/m/Y') }}</h4>	{% endif %}
+							
+							<br><span style="cursor:pointer;padding-left:20px"" class="warning" onclick="location.href='{{ path('bacloocrm_voir', {'raison': data.entreprise}) }}'">
+								<i class="fa fa-caret-right"></i> <b>{% if user == 'tous' %}<span class="text-primary">{{ data.user }}</span> - {% endif %} {{ data.entreprise }}</b> : {{ data.eventComment }}
+														
+							</span>
+							{% set dato = data.eventDate %}
+							{% set i = i+1 %}
+						{% endfor %}
+					{% endif %}
+					<hr class="style4">
+					
+					<center>
+					{% if nombrePage > 0 %}
+						<ul class="pagination">
+							{% if page > 1 %}
+								<li>
+									<a href="{{ path('bacloocrm_cr', {'page': 1}) }}">
+										<<
+									</a>
+								</li>
+								<li>
+									<a href="{{ path('bacloocrm_cr', {'page': page-1}) }}">
+										<
+									</a>
+								</li>
+							{% endif %}
+
+							{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nombrePage #}
+							{% for p in range(max(page-4, 1), min(page+4, nombrePage)) %}
+								<li {% if p == page %}class="active"{% endif %}>
+									<a href="{{ path('bacloocrm_cr', {'page': p}) }}">
+										{{ p }}
+									</a>
+								</li>
+							{% endfor %}
+
+							{% if page < nombrePage %}
+								<li>
+									<a href="{{ path('bacloocrm_cr', {'page': page+1}) }}">
+										>
+									</a>
+								</li>
+								<li>
+									<a href="{{ path('bacloocrm_cr', {'page': nombrePage}) }}">
+										>>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					{% endif %}
+
+					</center>					
+					
+					
+					</div>
+				</div>
+			</div>
+		  <script>
+			  $( function() {
+				$( ".datepicker" ).datepicker({
+					dateFormat: 'dd/mm/yy', 
+					firstDay:1			
+				});
+			  } );
+		  </script>	
+	{% else %}
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Le module "Compte-rendu d'activité" n'est pas activé : <a type="button" class="btn btn-danger" href="{{ path('bacloocrm_modules') }}">L'activer maintenant</a></h3>
+					</h3>
+				</div>
+				<div class="panel-body">
+					Ce module vous permet de générer un rapport d'activité basé sur l'historique de vos appels présent dans chaque fiche. Inutile de vous creuser la tête
+					le vendredi. Bacloo réalise votre rapport au fil de l'eau.
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	
+{% endblock %}

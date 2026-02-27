@@ -1,0 +1,260 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+			<!-- Side menu -->
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+	{% endblock %}
+
+
+	</head>
+	<body>
+	<table>
+		<tr>
+			<td>
+				<span style="font-size:10pt"><b>Demolocs Location</b><br>
+					3 rue Margueritte Perey<br>
+					95150 Taverny<br>
+					01 85 11 72 49<br>
+					contact@demolocs.com<br>
+				</span>
+			</td>
+			<td>
+				<b>{{ client.raisonSociale }}</b><br>
+				{{ client.adresse1 }}<br>
+				{% if client.adresse2 is not empty %}{{ client.adresse2 }}{% endif %}
+				{% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %}
+				{{ client.cp }} {{ client.ville }}<br>
+				<b>N°de téléphone :</b> {{ client.telephone }}
+			</td>
+		</tr>
+	</table>
+		<br>
+			<span style="text-align:center;font-size:12pt"><b>RAPPORT D'INTERVENTION n°{{ venda.id }}</b></span>
+		<br><br>
+		<table border="1" cellpadding="3">
+			<tr>
+				<td colspan="3" style="text-align: center;font-weight: bold;">
+					Adresse du chantier
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					{{ venda.adresse1 }}, {% if venda.adresse2 is not empty %}{{ venda.adresse2 }},{% endif %}{% if venda.adresse3 is not empty %}, {{ venda.adresse3 }}{% endif %} <b>{{ venda.cp }} {{ venda.ville }}</b><br>
+{#					<b>N°de téléphone :</b> {{ client.telephone }}#}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align: center;font-weight: bold;">
+					MACHINE
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>Marque :</b>{{ venda.marque }}<br>
+					<b>N° de série :</b>{{ venda.numserie }}
+				</td>
+				<td>
+					<b>Type :</b>{{ venda.type }}<br>
+					<b>Horamètre :</b>{{ venda.horametre }}
+				</td>
+				<td>
+					<br><br>
+					<b>N° de parc :</b>{{ venda.numparc }}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align: center;font-weight: bold;">
+					INTERVENTION
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>Date :</b>{{ venda.dateinter|date('d/m/Y') }}<br>
+					<b>Nature de l'intervention :</b>{{ venda.natureinter }}<br>
+					<b>N° bon de commande :</b>{{ venda.numbdc }}
+				</td>
+				<td>
+					<b>Heure d'arrivée :</b>{{ venda.hdebut }}<br>
+					<b>Responsabilité client :</b>{% if venda.respoui == 1 %} Oui{% elseif venda.respnon == 1 %} Non{% endif %}
+				</td>
+				<td>
+					<br><br>
+					<b>Heure de départ :</b>{{ venda.hfin }}<br>
+
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div style="text-align: center;font-weight: bold;">DESCRIPTION</div>
+					{{ venda.description|nl2br }}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div style="text-align: center;font-weight: bold;">TRAVAUX EFFECTUÉS</div>
+					{{ venda.travauxeffectues|nl2br }}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div style="text-align: center;font-weight: bold;">OBSERVATIONS</div>
+					{{ venda.observations|nl2br }}
+				</td>
+			</tr>
+		</table>
+
+		<span style="font-size:2pt"><br></span>
+{#		<span style="font-size:11pt">Veuillez trouver ci-joint notre devis.</span>#}
+		<span style="font-size:15pt"><br></span>
+		<table cellpadding="4" border="0">
+			<tr>
+{#				<td height="" width="60" align="center" border="1">#}
+{#					<b>Ref.</b>#}
+{#				</td>#}
+				<td height="" width="340" align="center" border="1">
+					<b>Désignation</b>
+				</td>
+				<td height="" width="80" align="center" border="1">
+					<b>Prix unitaire<br>(en € HT)</b>
+				</td>
+				<td height="" width="55" align="center" border="1">
+					<b>Quantité</b>
+				</td>
+				<td height="" width="70" align="center" border="1">
+					<b>Total<br>(en € HT)</b>
+				</td>
+			</tr>
+			{% for ventes in venda.ventes%}
+				<tr style="font-size:10pt">
+{#					<td height="" width="60" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">#}
+{#						{{ ventes.refarticle }}#}
+{#					</td>#}
+					<td height="" width="340" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ ventes.description }}
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ ventes.pu|number_format(2, ',', ' ')  }}
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ ventes.quantite }}
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ ventes.montantvente|number_format(2, ',', ' ')}} €
+					</td>
+				</tr>
+			{% endfor %}
+				{% set montantventeht = venda.montantvente %}
+
+
+				<tr style="font-size:1pt">
+{#					<td height="" width="60" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">#}
+{#					</td>#}
+					<td height="" width="340" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="80" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="55" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+				</tr>
+		</table>
+		{% if  venda.commentaire is not empty %}<h4>{{ venda.commentaire|nl2br }}</h4>{% endif %}
+
+    <span style="font-size:7pt;"><br></span>
+
+		<table border="0" width="545">
+			<tr>
+				<td width="425" align="left" border="1" style="font-size:7pt;">
+				<table cellpadding="7">
+					<tr>
+						<td>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td width="120" border="1">
+					<table width="120" cellspacing="0" style="font-size:10pt;" border="0">
+						<tr>
+							<td width="58" align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+							<td align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+						</tr>
+						<tr>
+							<td width="58" align="right">
+								<b>Total HT :</b>
+							</td>
+							<td align="right">
+
+								<b>{{ montantventeht|number_format(2, ',', ' ') }} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>TVA 20% : </b>
+							</td>
+							<td align="right">
+							{% if client.typeclient == 'export' %}
+								{% set tva = 0 %}
+							{% else %}
+								{% set tva = montantventeht * 0.20 %}
+							{% endif %}
+								<b>{{ tva|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>Total TTC : </b>
+							</td>
+							<td align="right">
+							{% set totalttc = montantventeht + tva %}
+								<b>{{ totalttc|number_format(2, ',', ' ')}} €</b><br>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+		<table border="" width="540" cellpadding="7" style="font-size:7pt;" >
+			<tr>
+				<td border="0" align="left" colspan="3"  style="font-size:10pt">
+					<b>Signature du client</b>
+
+{#					<img src="{{ venda.signed }}" alt="Red dot" />#}
+				</td>
+			</tr>
+		</table>
+	{% if doca is defined and doca is not empty %}
+		{% for documents in doca.document%}
+			<br pagebreak="true"/>
+			<table border="">
+				<tr>
+					<td border="0" align="center">
+						<img width="490" src="{{ asset('uploads/bi/'~ vendaid ~'/' ~ documents.nom ~ '') }}" class="img-thumbnail">
+					</td>
+				</tr>
+			</table>
+		{% endfor %}
+	{% endif %}
+	</body>
+</html>

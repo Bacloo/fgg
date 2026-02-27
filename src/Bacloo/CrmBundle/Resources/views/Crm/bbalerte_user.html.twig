@@ -1,0 +1,36 @@
+{% if mode == 'user' %}
+	Cher {{ prenom }}
+
+	L'utilisateur {{ user }} est  passé en accès restreint faute de points sur votre compte.
+	Veuillez créditer votre compte et activer à nouveau cet utilisateur.
+
+	Votre Bacloo Personnalisé.
+{% elseif mode == 'points' %}
+	Cher {{ prenom }}
+
+	Votre nombre de points est bas, certains de vos modules risquent de ne plus d'être désactivés.
+	Afin d'éviter une interruption, <a href="{{ path('bacloocrm_store') }}"> veuillez réapprovisioner votre compte de points</a>.
+
+	Votre Bacloo Personnalisé.
+{% elseif mode == 'module' %}
+	Cher {{ prenom }}
+
+	Faute de points {{ comptemodarret }} modules ont été arrêtés et {{ comptemodalerte }} modules seront arrêtés dans 5 jours.
+	Afin d'éviter une interruption, <a href="{{ path('bacloocrm_store') }}"> veuillez réapprovisioner votre compte de points</a>.
+
+	Votre Bacloo Personnalisé.
+{% elseif mode == 'module_arret' %}
+	Cher {{ prenom }}
+
+	Faute de points {{ comptemodarret }} modules ont été arrêtés.
+	Afin d'éviter une interruption, <a href="{{ path('bacloocrm_store') }}"> veuillez réapprovisioner votre compte de points</a>.
+
+	Votre Bacloo Personnalisé.
+{% elseif mode == 'module_alerte' %}
+	Cher {{ prenom }}
+
+	Faute de points {{ comptemodalerte }} modules seront arrêtés dans 5 jours.
+	Afin d'éviter une interruption, <a href="{{ path('bacloocrm_store') }}"> veuillez réapprovisioner votre compte de points</a>.
+
+	Votre Bacloo Personnalisé.
+{% endif %}

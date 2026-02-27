@@ -1,0 +1,79 @@
+
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+    <form role="form" action="{{ path('bacloocrm_clonagecontratautre', {'vendaid' : vendaid}) }}" method="post" {{form_enctype(form) }}>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Copier un devis vers une autre fiche
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row clearfix">
+                        <div class="hidden">
+                            {{ form_widget(form.entrepriseid, { 'id' : 'entrepriseid_1', 'attr' : { 'class' : 'entrepriseid' } })  }}
+                            {{ form_widget(form.vendaid, { 'id' : 'venda_1', 'attr' : { 'class' : 'entrepriseid' } })  }}
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><b></b>Société</span>
+                                    {{ form_widget(form.entreprise, {  'id' : 'entreprise_1', 'attr' : { 'class' : 'form-control entreprise' } })  }}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="match3"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <br>
+                        <input type="submit" class="btn btn-primary" value="Dupliquer"/>
+                        <a class="btn btn-primary" href="{{ path('bacloocrm_adispatcher') }}"><span>Fermer</span></a>
+                        {{ form_rest(form) }}
+                    </center>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        //Autocomplete loentrepriseueur
+        $(document).ready(function(){
+            $(document).on('keydown', '.entreprise', function() {
+
+                var id = this.id;
+                var splitid = id.split('_');
+                var index = splitid[1];
+
+                // Initialize jQuery UI autocomplete
+                $( '#'+id ).autocomplete({
+                    source: function( request, response ) {
+                        $('#match3').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+                        $.ajax({
+                            url: "{{ path('bacloocrm_requeteentreprise') }}",
+                            type: 'post',
+                            minLength: 2,
+                            dataType: "json",
+                            data: {
+                                search: request.term,request:1
+                            },
+                            success: function( data ) {
+                                response( data );
+                                $('#match3').text('');
+                            }
+                        });
+                    },
+
+                    select: function (event, ui) {
+                        $(this).val(ui.item.label); // display the selected text
+                        document.getElementById('entrepriseid_'+index).value = ui.item.value;
+
+                        return false;
+                    }
+                });
+            });
+        } );
+        //Fin autocomplete entreprise
+    </script>
+{% endblock %}

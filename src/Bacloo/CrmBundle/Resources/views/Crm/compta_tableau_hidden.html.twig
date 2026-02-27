@@ -1,0 +1,46 @@
+<div class="hidden">
+	{% if factures.vars.value.typedoc == 'facture' or factures.vars.value.typedoc == 'avoir' %}
+
+		{{ form_widget(factures.datecrea) }}
+		{{ form_widget(factures.locatacloneid) }}
+		{{ form_widget(factures.user) }}
+		{{ form_widget(factures.encompta) }}
+		{{ form_widget(factures.selection) }}
+		{{ form_widget(factures.numfacture) }}
+		{{ form_widget(factures.codelocata) }}
+		{{ form_widget(factures.clientid) }}
+		{{ form_widget(factures.client) }}
+		{{ form_widget(factures.chantier) }}
+		{{ form_widget(factures.totalht) }}
+		{{ form_widget(factures.totalttc) }}
+		{{ form_widget(factures.echeance) }}
+		{{ form_widget(factures.typedoc) }}
+		{{ form_widget(factures.reglement) }}
+		{{ form_widget(factures.commentaire) }}
+		{{ form_widget(factures.montantreg) }}	
+		{{ form_widget(factures.datepaiement) }}
+		{{ form_widget(factures.modepaiement) }}
+		{{ form_widget(factures.montantdejareg) }}
+		{{ form_widget(factures.daterelance1) }}
+		{{ form_widget(factures.daterelance2) }}
+		{{ form_widget(factures.daterelance3) }}
+		{{ form_widget(factures.encaisse) }}
+									
+	{% elseif factures.vars.value.typedoc == 'bon de commande' %}
+
+		{{ form_widget(factures.datecrea) }}
+		{{ form_widget(factures.locatacloneid) }}
+		{{ form_widget(factures.numfacture) }}
+		{{ form_widget(factures.codelocata) }}
+		{{ form_widget(factures.clientid) }}
+		{{ form_widget(factures.client) }}
+		{{ form_widget(factures.chantier) }}
+		{{ form_widget(factures.totalht) }}
+		{{ form_widget(factures.totalttc) }}
+		{{ form_widget(factures.typedoc) }}
+		{{ form_widget(factures.reglement) }}
+		{{ form_widget(factures.datepaiement) }}
+		{{ form_widget(factures.modepaiement) }}
+			
+	{% endif %}
+</div>

@@ -1,0 +1,56 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<h3>Contrats non facturés le mois dernier</h3>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped col-md-12">
+						<thead>
+						<th>
+							Code contrat
+						</th>
+						<th>
+							Client
+						</th>
+						<th>
+							Chantier
+						</th>
+						</thead>
+						{% for retour in locata %}
+							{% set ok = 0 %}
+							{% for fac in factures %}
+								{% if fac.codelocata == retour.id %}
+									{% set ok = ok+1 %}
+								{% elseif fac.codelocata is not same as(retour.id) %}
+								{% else %}
+								{% endif %}
+							{% endfor %}
+							{% if ok == 0 %}
+								<tr>
+									<td>
+										<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': retour.clientid, 'locid':  retour.id, 'erreur': 0 }) }}">{{ retour.id }}</a>
+									</td>
+									<td>
+										<a href="{{ path('bacloocrm_voir', {'id': retour.clientid } ) }}">{{ retour.client }}</a>
+									</td>
+									<td>
+										{{ retour.nomchantier }}
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{# FIN PARTIE LIVRAISON #}
+</div>
+{% endblock %}

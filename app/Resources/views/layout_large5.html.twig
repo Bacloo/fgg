@@ -1,0 +1,200 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="icon" href="{{ asset('favicon.ico') }}" />	
+    <title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+    <!-- Bootstrap Core CSS -->
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"type="text/css" />
+    
+	<!-- Custom CSS -->
+    <link href="{{ asset('css/grayscale.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/full.css') }}" rel="stylesheet">	
+	
+	{% endblock %}
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                    <a class="navbar-brand page-scroll" href="{{ path('fos_user_registration_register') }}"><i class="fa fa-play-circle"></i> S'enregistrer</a>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                    {% block body %}
+					{% endblock %}		
+            </div>
+        </div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4 text-left">
+					<h2>
+						Ils prospectent pour vous !
+					</h2>
+					<p>
+						<strong>Vous n'êtes plus seul à prospecter, les utilisateurs de Bacloo prospectent avec vous.</strong> Une alerte leur propose de demander à leurs contacts s'ils ont besoin de vos produits. En cas de réponse positive de ces derniers, vous êtes alertés.						
+					</p>
+					<p>
+						<img src="../img/demander.png" class="img-thumbnail">
+					</p>
+				</div>
+				<div class="col-md-4 text-left">
+					<h2>
+						Partagez des prospects
+					</h2>
+					<p> 
+						Vous passez beaucoup d'appels ? Vous disposez de contacts ayant des besoins sans rapport avec votre activité ? <strong>Bacloo vous fournit la liste des utilisateurs interressés par chacun de vos contacts</strong>. Partagez pour vous créer des partenaires.
+					</p>
+					<p>
+						<img src="../img/vendre2.png" class="img-thumbnail">
+					</p>					
+				</div>				
+				<div class="col-md-4 text-left">
+					<h2>
+						Achetez des prospects qualifiés
+					</h2>
+					<p>
+						Pour réussir une vente, il est important de démarcher le bon client, au bon moment et au bon prix. <strong>Bacloo vous propose des prospects ayant une demande sur votre produit</strong> et déjà démarchés par des utilisateurs non concurrents.
+					</p>
+					<p>
+						<img src="../img/acheter.png" class="img-thumbnail">
+					</p>					
+				</div>
+			</div>
+		</div>
+		<div class="hr hr-custom hr-center hr-icon-no avia-builder-el-12 el_after_av_one_fifth el_before_av_one_half " style=" margin-top:70px; margin-bottom:30px;">
+			<span class="hr-inner inner-border-av-border-fat" style=" width:50px; border-color:#000000;"></span>
+		</div>		
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h1>
+				Plus besoin de <strong>Tableur</strong><br>
+				Gérez <b>toute votre prospection</b> sur Bacloo</h1><br>
+				<p>Bacloo est un outil de prospection commerciale. Il vous évite d'ouvrir un tableur et un logiciel d'agenda. Tout est centralisé et plus aucun rappel téléphonique ne vous échappe.
+				Toutes les informations sont accessibles sur un seul et même écran.</p>
+			</div>
+		</div>		
+		<div class="container-fluid">
+			<div class="row">			
+				<div class="col-md-4 text-left">
+					<h2>
+						Gérez vos contacts
+					</h2>
+					<p> 
+						Bacloo est avant tout un CRM (logiciel de gestion de relation client) intelligent, permettant de <strong>gérer vos contacts avec une efficacité redoutable</strong>. Si vous le désirez, ces derniers peuvent être partagés avec d'autres.
+					</p>
+				</div>				
+				<div class="col-md-4 text-left">
+					<h2>
+						Suivi des appels
+					</h2>
+					<p>
+						Rien de pire que d'appeler un client sans savoir ce qu'on lui a dit il y a 6 mois. Avec Bacloo, <strong>vous archivez chaque évènement de manière chronologique</strong> et reprenez vos échanges là où vous vous étiez arretés.
+					</p>
+				</div>
+				<div class="col-md-4 text-left">
+					<h2>
+						Gestion des rappels
+					</h2>
+					<p>
+						<strong>Vos rappels Bacloo sont directement ajoutés à votre calandrier Outlook, Apple, Google ou Yahoo. </strong>Impossible de passer à coté d'un rappel. Bacloo n'oublie pas ! Vos clients apprécierons votre rigueur et votre efficacité.
+					</p>
+				</div>
+			</div>
+		</div>		
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Bacloo 2017 | <a href="{{ path('bacloocrm_conditions_generales_public') }}">Conditions générales d'utilisation</a></p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script type="text/javascript" src="{{ asset('js/jquery.easing.min.js') }}"></script>
+
+    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
+    <script type="text/javascript" src="{{ asset('js/grayscale.js') }}"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-65993029-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/56fb98c1c65bb7c80a98e802/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+
+</html>

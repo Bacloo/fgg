@@ -1,0 +1,139 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">	
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<h3>Tcard {% if mode == 'vgp' %} des VGP{% elseif mode == 'maintenance' %} des maintenances{% endif %} à faire </h3>
+				</h3>
+			</div>
+			<div class="panel-body">
+					<form role="form" action="{{ path('bacloocrm_tcard', {'mode' : 'all'}) }}" method="post" {{form_enctype(form) }}>					
+						<div class="row clearfix">
+							<div class="col-md-2 pull-left">
+								<div class="form-group">
+									  <div class="col-md-12">
+										<div class="input-group">							
+											<span class="input-group-addon">Filtrer</span>
+											{{ form_widget(form.filtre, {'attr' : { 'class' : 'form-control' } })  }}						
+										</div>							
+									  </div>
+								</div>
+							</div>
+							<div class="col-md-2 column pull-left">
+								<input type="submit" name="submit" id="submit" value="Valider" class="btn btn-info pull-left">
+							</div>
+							<div class="col-md-8 column">
+								<a class="btn btn-success pull-right" href="{{ path('bacloocrm_machines', {'machineid': 0}) }}"><span>Ajouter un nouveau matériel</span></a>
+							</div>
+						</div>
+						<br>
+						<br>			 
+						{{ form_row(form._token) }}				
+					</form>
+					{% if compte <= 0 %}
+						<h4>Vous n'avez aucune machine dans votre parc pour l'instant.</h4>
+					{% else %}
+						{% set el = 0 %}
+						{% set rp = 0 %}
+						{% set insp = 0 %}
+						{% set ep = 0 %}
+						{% set res = 0 %}
+						{% set disp = 0 %}
+						{% set pad = 0 %}
+						{% if mode == 'all' %}
+							{% for codegenerique, codes in allecodes %}		
+								{% for code in codes %}
+									{% if code.etat == 'En location' %}
+										{% set el = el + 1 %}
+									{% elseif code.etat == 'Retour planifié' %}
+										{% set rp = rp + 1 %}
+									{% elseif code.etat == 'Inspection' %}
+										{% set insp = insp + 1 %}
+									{% elseif code.etat == 'En panne' %}
+										{% set ep = ep + 1 %}
+									{% elseif code.etat == 'Réservé' %}
+										{% set res = res + 1 %}
+									{% elseif code.etat == 'Disponible' %}
+										{% set disp = disp + 1 %}
+									{% elseif code.etat == 'Prêt au départ' %}
+										{% set pad = pad + 1 %}
+									{% endif %}
+								{% endfor %}
+							{% endfor %}				
+						{% endif %}				
+						<div class="col-md-6 column"></div>	
+						<div class="col-md-6 column">
+							<table class="table table-bordered">
+								<tr>
+									{% if mode == 'all' %}
+										<td style="border=1" bgcolor="#f0ad4e" class="col-md-1"><center><b>{{ ((el + rp)/totalparc*100)|round(0, 'floor') }}%</b></center></td>
+										<td borderless>En location</td>
+										<td bgcolor="#8eb3f9" class="col-md-1 borderless"><center><b>{{ (insp/totalparc*100)|round(0, 'floor') }}%</b></center></td>
+										<td>Inspection</td>
+										<td bgcolor="#ef5d4d" class="col-md-1"><center><b>{{ (ep/totalparc*100)|round(0, 'floor') }}%</b></center></td>
+										<td>En panne</td>
+										<td bgcolor="#f5b0b0" class="col-md-1"><center><b>{{ (res/totalparc*100)|round(0, 'floor') }}%</b></center></td>
+										<td>Réservé</td>
+										<td bgcolor="#85de7e" class="col-md-1"><center><b>{{ ((disp + pad)/totalparc*100)|round(0, 'floor') }}%</b></center></td>
+										<td>Disponible</td>
+									{% else %}
+										<td style="border=1" bgcolor="#f0ad4e" class="col-md-1"></td>
+										<td borderless>En location</td>
+										<td bgcolor="#8eb3f9" class="col-md-1 borderless"></td>
+										<td>Inspection</td>
+										<td bgcolor="#ef5d4d" class="col-md-1"></td>
+										<td>En panne</td>
+										<td bgcolor="#f5b0b0" class="col-md-1"></td>
+										<td>Réservé</td>
+										<td bgcolor="#85de7e" class="col-md-1"></td>
+										<td>Disponible</td>									
+									{% endif %}
+								</tr>
+							</table>
+						</div>				
+						<table id="vertical-2" class="table table-bordered">
+							<tbody>
+								{% set col = 1 %}
+								{% for codegenerique, codes in allecodes %}
+									<tr>
+										{% set i = 0 %}
+										{% set colo = 0 %}
+										<th bgcolor="#d4d4d4">{{ codegenerique }}{% for code in codes %}{% set colo = colo + 1 %}{% endfor %} ({{ colo }})</th>
+										{% for code in codes %}
+
+											{% if code.etat == 'En location' or code.etat == 'Retour planifié' %}
+												<td bgcolor="#f0ad4e">
+											{% elseif code.etat == 'Inspection' %}
+												<td bgcolor="#8eb3f9">
+											{% elseif code.etat == 'En panne' %}
+												<td bgcolor="#ef5d4d">
+											{% elseif code.etat == 'Réservé' %}
+												<td bgcolor="#f5b0b0">
+											{% elseif code.etat == 'Disponible' or code.etat == 'Prêt au départ' %}
+												<td bgcolor="#85de7e">
+											{% else %}
+												<td bgcolor="#E7F1F3">
+											{% endif %}
+													<b><a href="{{ path('bacloocrm_machines', {'machineid': code.id})  }}">{{ code.code }}</a></b>
+												</td>
+											{% set i = i+1 %}
+										{% endfor %}
+										{% set rab = compte - i %}
+										{% if rab > 0 %}
+											{% for col in 1..rab %}
+												<td bgcolor="#f5f5f5"></td>
+											{% endfor %}
+										{% endif %}
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					{% endif %}
+			</div>
+		</div>	
+	</div>	
+</div>
+{% endblock %}

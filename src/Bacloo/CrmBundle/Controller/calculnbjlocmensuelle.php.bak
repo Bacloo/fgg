@@ -1,0 +1,238 @@
+<?php
+include('calculnbmois.php');
+//nb jrs du mois de debutloc
+$premierjour = $loc->getDebutloc();
+$premierjourperiode = date("Y-m-01", strtotime($premierjour));//dernier jour du premier mois
+$dernierjour = date("Y-m-t", strtotime($premierjour));//dernier jour du premier mois
+$premiermoisentier = date('Y-m-d', strtotime($dernierjour . ' +1 days'));
+$dernierjourperiode = date('Y-m-t', strtotime($loc->getFinloc()));
+
+// $nbm = (int)abs((strtotime($premierjour) - strtotime($dernierjour))/(60*60*24*30)); echo ' MMMMM '.$nbm;
+
+$begin = new DateTime($premierjourperiode);
+$end = new DateTime($dernierjour);
+$end = $end->modify( '+1 day' );
+
+$interval = DateInterval::createFromDateString('1 day');
+$period = new DatePeriod($begin, $interval, $end);
+$nbjlocmois = 0;
+foreach ($period as $dt) {
+    $newformat = $dt->format("D");
+    if($locata->getFacturersamedi()  == 1 && $newformat == 'Sat')
+    {
+        $nbjlocmois++;
+    }
+    elseif($locata->getFacturerdimanche() == 1 && $newformat == 'Sun')
+    {
+        $nbjlocmois++;
+    }
+    elseif($newformat == 'Sat' or $newformat == 'Sun')
+    {}
+    else
+    {
+        $nbjlocmois++;//echo $newformat;echo $nbjloc;
+    }
+}
+
+$begin = new DateTime($loc->getDebutloc());
+$end = new DateTime($dernierjour );
+//$end = $end->modify( '+1 day' );
+
+// $nbm = date_diff($begin, $end); echo ' MMMMM '; echo $nbm->m + ($nbm->y * 12) . ' months';
+
+$interval = DateInterval::createFromDateString('1 day');
+$period = new DatePeriod($begin, $interval, $end);
+$nbjloc1 = 0;
+$nbjlocass1 = 0;
+if($nbjloc > 20)
+{
+    foreach ($period as $dt) {
+        $newformat = $dt->format("D");
+        $nbjlocass1++;
+        if($locata->getFacturersamedi()  == 1 && $newformat == 'Sat')
+        {
+            $nbjloc1++;
+        }
+        elseif($locata->getFacturerdimanche() == 1 && $newformat == 'Sun')
+        {
+            $nbjloc1++;
+        }
+        elseif($newformat == 'Sat' or $newformat == 'Sun')
+        {}
+        else
+        {
+            $nbjloc1++;//echo $newformat;echo $nbjloc;
+        }
+    }//echo 'nbjlocmois'.$nbjlocmois;
+//echo 'nbjloc'.$nbjloc1;
+//echo ' NBJLOCDEB '.$nbjlocmois;
+    if($nbjloc1 < 20)
+    {//echo 'ic666';
+        $nbjloc1 = $nbjloc1;
+        $nbjloc1 = round(($nbjloc1/$nbjlocmois)*20);
+    }
+    else
+    {//echo 'parla';
+        $nbjloc1 = 20;
+        $nbjlocass1 = 28;
+    }
+    $nbjloctot = $nbjloc1;
+//echo 'NBJLOCL'.$nbjloc1;
+//nb jours du mois de fin loc
+    $premierjourdm = date("Y-m-01", strtotime($loc->getFinloc()));//echo ' 1ERJDM'.date("Y-m-01", strtotime($loc->getFinloc()));;
+    $dernierjourdm = $loc->getFinloc();
+    $derniermoisentier = date('Y-m-d', strtotime($dernierjourdm . ' -1 days'));//echo $derniermoisentier;
+
+    $begin = new DateTime($premierjourdm);
+    $end = new DateTime($dernierjourperiode );
+
+    $interval = DateInterval::createFromDateString('1 day');
+    $period = new DatePeriod($begin, $interval, $end);
+    $nbjlocmois = 0;
+    foreach ($period as $dt) {
+        $nbjlocmois++;
+    }
+
+    $begin = new DateTime($premierjourdm);
+    $end = new DateTime($dernierjourdm );
+    $end = $end->modify( '+1 day' );
+
+    $interval = DateInterval::createFromDateString('1 day');
+    $period = new DatePeriod($begin, $interval, $end);
+    $nbjlocdm = 0;
+    $nbjlocassdm = 0;
+    foreach ($period as $dt) {
+        $newformat = $dt->format("D");
+        $nbjlocassdm++;
+        if($locata->getFacturersamedi() == 1 && $newformat == 'Sat')
+        {
+            $nbjlocdm++;
+        }
+        elseif($locata->getFacturerdimanche() == 1 && $newformat == 'Sun')
+        {
+            $nbjlocdm++;
+        }
+        elseif($newformat == 'Sat' or $newformat == 'Sun')
+        {}
+        else
+        {
+            $nbjlocdm++;
+        }
+    }//echo 'mbjlocDM111X'.$nbjlocdm;
+
+
+    if($nbjlocdm < 20)
+    {//echo 'iciiiiiiiiiiii';
+        $nbjlocdm = $nbjlocdm;
+        $nbjlocdm = round(($nbjlocdm/$nbjlocmois)*20);
+    }
+    else
+    {//echo 'laaaaaaa';
+        $nbjlocdm = 20;
+        $nbjlocassdm = 28;
+    }
+//echo ' nbjlocdm'.$nbjlocdm;
+//nb de mois entier à 20 jours
+    $debutloc = $loc->getDebutloc();
+    $finloc = $loc->getFinloc();
+
+    $timezone = 'Europe/Paris';
+    $d1 = new DateTime(date("Y-m-01", strtotime($debutloc)), new DateTimeZone($timezone));//echo 'D1X'.date("Y-m-01", strtotime($debutloc));
+    $d2 = new DateTime(date('Y-m-t', strtotime($finloc)), new DateTimeZone($timezone));//echo 'D2X'.date('Y-m-t', strtotime($finloc));
+    $d1x = new DateTime($debutloc, new DateTimeZone($timezone));
+    $d2x = new DateTime($finloc, new DateTimeZone($timezone));
+//    include('calculnbmois20.php');
+//    $nbmois = $d1->diff($d2)->m + ($d1->diff($d2)->y*12)+1;//echo 'diff1x'.$d1->diff($d2)->m;//echo 'diff2x'.($d1->diff($d2)->y*12);echo 'nbmois'.$nbmois;
+//$nbmois20j = abs((date('Y', $derniermoisentier) - date('Y', $premiermoisentier))*12 + (date('m', $derniermoisentier) - date('m', $premiermoisentier)));
+// $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)))+1;
+//$nbj = $nbmois20j * 20;
+//echo 'nbjlocint'.$nbjloc;
+//echo ' nbmois20j'.$nbmois20j;echo 'x';
+//Total jours
+    if($nbjloc >= 58)
+    {//echo 'XXXXXXXXXXX>3';echo 'nbjloc1x'.$nbjloc1;echo 'nbjlocdm'.$nbjlocdm;
+        $nbmois20j = $d1x->diff($d2x)->m + ($d1x->diff($d2x)->y*12);
+        $nbj = ($nbmois-2) * 20;
+        if($nbjlocdm >= 20)
+        {
+            $nbjlocpas20 = $nbjloc1;
+            $nbjloc = $nbjloc1+$nbjlocdm + $nbj;
+            $nbjass = $nbmois20j * 28;
+            $nbjlocass = $nbjlocass1 + $nbjass + $nbjlocassdm;
+        }
+        else
+        {
+            $nbjlocpas20 = $nbjloc1+$nbjlocdm;
+            $nbjloc = $nbjlocpas20 + $nbj;
+            $nbjass = $nbmois20j * 28;
+            $nbjlocass = $nbjlocass1 + $nbjass + $nbjlocassdm;
+        }//echo 'nbjlocpas20x'.$nbjlocpas20;
+        //echo 'nbjloc'.$nbjloc;exit();
+    }
+    elseif($nbjloc > 31 && $nbjloc < 40)
+    {//echo '222222222222';echo 'nbjloc1'.$nbjloc1;echo 'nbjlocdm'.$nbjlocdm;
+        $nbmois20j = $d1x->diff($d2x)->m + ($d1x->diff($d2x)->y*12);//echo 'diff'.$d1x->diff($d2x)->m.'<br>';echo 'nbmois20j'.$nbmois20j;
+        $nbj = $nbmois20j * 20;//echo 'nbjxx'.$nbj;
+        if($nbmois >= 2)
+        {
+            if($nbjloc1+$nbjlocdm > 20){$nbjlocpas20 = $nbjloc1+$nbjlocdm;}else{$nbjlocpas20 = 20;}
+            if($nbjlocpas20 >= 38){$nbjloc = 40;}else{$nbjloc = $nbjlocpas20 + $nbj;} //echo '$nbjlocpas20'.$nbjlocpas20;
+//		if($nbjlocpas20 >= 38){$nbjloc = 40;}else{$nbjloc = $nbjlocpas20 + $nbj;} //echo 'nbmois'.$nbjloc;
+            $nbjass = $nbmois20j * 28;
+            $nbjlocass = $nbjlocass1 + $nbjass + $nbjlocassdm;
+        }
+        else
+        {
+            if($nbjloc1+$nbjlocdm >= 20){$nbjlocpas20 = 20;}else{$nbjlocpas20 = $nbjloc1+$nbjlocdm;}
+            $nbjloc = $nbjlocpas20;
+            $nbjass = $nbmois20j * 28;
+            $nbjlocass = $nbjlocass1 + $nbjlocassdm;
+        }
+    }
+    elseif(($nbjloc > 31 && $nbjloc < 58) or ($nbmois == 2 and $nbjloc > 1))
+    {//echo '33333333333';echo 'nbjloc1'.$nbjloc1;echo 'nbjlocdm'.$nbjlocdm;echo 'nbmois'.$nbmois;
+        if($nbmois > 2)
+        {
+            $nbmois20j = $d1->diff($d2)->m + ($d1->diff($d2)->y*12)-1;
+        }
+        else
+        {
+            $nbmois20j = 0;
+        }
+        $nbj = $nbmois20j * 20;//echo 'nbjyy'.$nbj;
+        if($nbjloc1 >= 20){$nbjloc1 = 20;}
+        if($nbjlocdm >= 20){$nbjlocdm = 20;}
+        if($nbjloc1+$nbjlocdm >= 20){$nbjlocpas20 = $nbjloc1+$nbjlocdm;}else{$nbjlocpas20 = $nbjloc1+$nbjlocdm;}
+        $nbjloc = $nbjlocpas20 + $nbj;
+
+        $nbjass = $nbmois20j * 28;
+        $nbjlocass = $nbjlocass1 + $nbjass + $nbjlocassdm;
+        if($nbjloc <= 31)
+        {
+            $nbjloc = 20;
+            $nbjass = 28;
+        }
+    }
+    else
+    {//echo '11111111111';echo 'nbjloc1'.$nbjloc1;echo 'nbjlocdm'.$nbjlocdm;echo '$nbmois'.$nbmois;
+        if($nbmois == 0 and $nbjloc <= 31 )
+        {//echo 'ici';
+            $nbjloc = $nbjloc1;
+            $nbjlocass = $nbjlocass1 ;
+        }
+        else
+        {//echo 'laaa'.$nbmois;
+            if($nbmois == 1)
+            {
+                $nbjloc = $nbjloc1;
+            }
+            else
+            {
+                $nbjloc = $nbjloc1 + $nbjlocdm;
+            }
+            $nbjlocass = $nbjlocass1 ;
+        }
+//	$nbjloc = 20;
+//	$nbjlocass = 28;
+    }
+}//echo 'nbjloooooc'.$nbjloc;

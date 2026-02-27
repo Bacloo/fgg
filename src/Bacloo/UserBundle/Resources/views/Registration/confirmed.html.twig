@@ -1,0 +1,11 @@
+{% extends "FOSUserBundle::layout2.html.twig" %}
+
+{% block fos_user_content %}
+	<h1 class="brand-heading">{{ societe }}</h1>
+	<p class="intro-text">{{ text }}</p>
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+    {% endif %}
+{% endblock fos_user_content %}

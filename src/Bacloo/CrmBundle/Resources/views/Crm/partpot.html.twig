@@ -1,0 +1,286 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			{% if modepart == 'partpot' %}
+				<h3>Liste de vos partenaires potentiels</h3>
+				{% if partenaires is empty %}
+					<h4>Pas de partenaires potentiel détecté</h4>
+				{% endif %}
+			{% elseif modepart == 'partenaires' %}
+				<h3>Liste de vos partenaires commerciaux</h3>
+			{% endif %}	
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			{# Partie Prospot #}
+					<div class="row clearfix">
+								{% if partenaires_attente is defined and check > 0 %}
+									<table id="bacloo2" class="table table-bordered">
+									<thead>
+										<tr id="dibac">
+											<th>
+												Nom d'utilisateur
+											</th>
+											<th>
+												Activité
+											</th>
+											<th>
+												Affaires recherchés
+											</th>
+											<th>
+												Mots clés
+											</th>
+											<th>
+												Activités Connexes
+											</th>
+											<th>
+											</th>
+											<th>
+											</th>
+											<th>
+											</th>
+											<th>
+											</th>							
+										</tr>
+									</thead>
+									{% for parta in partenaires_attente %}
+										<tr class="success">
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													{{ parta.username }}
+												  </div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													{{ parta.useractivite }}
+												  </div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													{{ parta.userdescrech }}
+												  </div>
+												</div>
+											</td>				
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													{{ parta.usertags }}
+												  </div>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+												  <div class="col-md-12">
+													{{ parta.useractco }}
+												  </div>
+												</div>
+											</td>
+											<td class="col-md-1">
+												<a class="btn btn-warning" href="{{ path('bacloocrm_publicprofile', {'user': parta.partpotUsername }) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Voir son profil</a>
+											</td>
+											<td class="col-md-1">
+												<a class="btn btn-success" href="{{ path('bacloocrm_followpart', {'id': parta.id}) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  Accepter le partenariat</a>
+											</td>
+											<td class="col-md-1">
+												<a class="btn btn-success" href="{{ path('bacloocrm_sendmessage', {'vemail': parta.partpotUsername, 'type': 'favoris', 'rais': 'nok' }) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  Contacter cet Utilisateur </a>
+											</td>
+											<td class="col-md-1">
+												<a class="btn btn-warning" href="{{ path('bacloocrm_nofollowpart', {'id': parta.id}) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Ne plus proposer</a>
+											</td>
+										</tr>						
+									{% endfor %}
+								{% endif %}		
+								{% if partenaires is not empty %}
+								
+									{% for part in partenaires %}
+										{% if modepart == 'partpot' %}	
+												<table id="bacloo2" class="table table-bordered">
+												<thead>
+													<tr id="dibac">
+														<th>
+															Nom d'utilisateur
+														</th>
+														<th>
+															Activité
+														</th>
+														<th>
+															Affaires recherchés
+														</th>
+														<th>
+															Mots clés
+														</th>
+														<th>
+															Activités Connexes
+														</th>
+														<th>
+														</th>
+														<th>
+														</th>
+														<th>
+														</th>
+														<th>
+														</th>							
+													</tr>
+												</thead>							
+											{% if part.partenaire == '0' %}
+												<tr class="success">
+											{% elseif part.partenaire == '1' %}
+												<tr class="warning">
+											{% endif %}
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.partpotUsername }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.actipart }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.descrech }}
+														  </div>
+														</div>
+													</td>				
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.tags }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.acticon }}
+														  </div>
+														</div>
+													</td>
+													<td class="col-md-1">
+														<a class="btn btn-warning" href="{{ path('bacloocrm_publicprofile', {'user': part.partpotUsername }) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Voir son profil</a>
+													</td>
+													<td class="col-md-1">
+														{% if part.partenaire == '0' %}
+															<a class="btn btn-success" href="{{ path('bacloocrm_askpart', {'id': part.id, 'partpotid': part.partpotid, 'modepart': 'partpot'}) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  Demande de partenariat</a>
+														{% elseif part.partenaire == '1' %}
+															<span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> En attente de réponse
+														{% endif %}										
+														
+													</td>
+													<td class="col-md-1">
+														<a class="btn btn-success" href="{{ path('bacloocrm_sendmessage', {'vemail': part.partpotUsername, 'type': 'favoris', 'rais': 'nok' }) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  Contacter cet Utilisateur </a>
+													</td>
+													<td class="col-md-1">
+														<a class="btn btn-warning" href="{{ path('bacloocrm_nofollowpart', {'id': part.id}) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Ne plus proposer</a>
+													</td>
+												</tr>
+										</table>
+										{% elseif modepart == 'partenaires' %}
+												{% if check == 0 %}
+													<table id="bacloo2" class="table table-bordered">
+													<thead>
+														<tr id="dibac">
+															<th>
+																Nom d'utilisateur
+															</th>
+															<th>
+																Activité
+															</th>
+															<th>
+																Affaires recherchés
+															</th>
+															<th>
+																Mots clés
+															</th>
+															<th>
+																Activités Connexes
+															</th>
+															<th>
+															</th>
+															<th>
+															</th>
+															<th>
+															</th>
+															<th>
+															</th>							
+														</tr>
+													</thead>
+												{% endif %}
+												<tr class="">
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.partpotUsername }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.actipart }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.descrech }}
+														  </div>
+														</div>
+													</td>				
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.tags }}
+														  </div>
+														</div>
+													</td>
+													<td>
+														<div class="form-group">
+														  <div class="col-md-12">
+															{{ part.acticon }}
+														  </div>
+														</div>
+													</td>						
+													<td class="col-md-1">
+														<a class="btn btn-warning" href="{{ path('bacloocrm_publicprofile', {'user': part.partpotUsername }) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Voir son profil</a>
+													</td>
+													<td class="col-md-1">
+														<a class="btn btn-success" href="{{ path('bacloocrm_sendmessage', {'vemail': part.partpotUsername, 'type': 'favoris', 'rais': 'nok' }) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  Contacter cet Utilisateur </a>
+													</td>
+													<td class="col-md-1">
+														<div class="form-group">
+														  <div class="col-md-12">
+															<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Partenaire
+														  </div>
+														</div>																		 
+													</td>
+													<td class="col-md-1">
+														<a class="btn btn-danger" href="{{ path('bacloocrm_removepart', {'id': part.id }) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Supprimer</a>
+													</td>
+												</tr>
+											{% if check == 0 %}</table>{% endif %}
+										{% endif %}						
+									{% endfor %}
+								{% endif %}
+			{% if partenaires_attente is defined and check > 0 %}</table>{% endif %}					
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

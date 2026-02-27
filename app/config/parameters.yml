@@ -1,0 +1,22 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: demolocs
+    database_user: root
+    database_password: null
+    mailer_transport: mail
+    mailer_auth_mode:  login
+    mailer_host: ssl0.ovh.net
+    mailer_port: 587
+    mailer_user: contact@weelev.com
+    mailer_password: Mohamed011215
+    locale: fr
+    secret: ThisTokenIsNotSoSecretChangeIt
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
+    paypal.express_checkout.username: ringuetjm_api1.bacloo.fr
+    paypal.express_checkout.password: NZ6VHYPQ89K2KSKT
+    paypal.express_checkout.signature: AklwVKgp44p8duhs3UK2HU5Un7j6AV7m842TY-.drokiHHsuSQgAZZ7E

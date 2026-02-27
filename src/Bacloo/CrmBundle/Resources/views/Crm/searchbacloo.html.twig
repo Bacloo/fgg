@@ -1,0 +1,156 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+			{% if mode == 'allprosp' %}
+				<h3>Rechercher des prospects</h3>
+			{% elseif mode == 'prospssc' %}
+				<h3>Acheter des prospects sans les contacts</h3>
+			{% elseif mode == 'prospavc' %}
+				<h3>Acheter des prospects avec les contacts</h3>
+			{% endif %}
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-12">
+				<ul class="nav nav-pills nav-stacked">
+				{% if resultats is defined %}
+					{% if resultats == 'rien' %}
+						<center><h4>Aucun prospect ne correspond à votre recherche</h4></center>
+					{% elseif resultats is empty %}
+					<form class="form-horizontal" action="{{ path('bacloocrm_searchbacloo', {'mode': mode}) }}" method="post" {{form_enctype(form) }}>
+						{# Les erreurs générales du formulaire. #}
+				
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Activité</span>
+											{{  form_widget(form.raisonSociale, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Fabrication de plâts cuisinés' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>						
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Besoins</span>
+											{{  form_widget(form.besoins, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Déménagement' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+											<span class="input-group-addon large">Département</span>
+											{{ form_widget(form.nom, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : 92' } })  }}							
+											</div>							
+										  </div>
+									  </div>
+									</div>						
+						<center>
+						<br>
+							{{ form_row(form._token) }}
+							<input type="submit" class="btn btn-primary" />
+						</center>
+					</form>
+						<br><br>
+							<center>Aucun résultat trouvé.<br>
+											
+					
+					{% elseif id is defined  %}
+					<form class="form-horizontal" action="{{ path('bacloocrm_searchbacloo', {'mode': mode}) }}" method="post" {{form_enctype(form) }}>
+						{# Les erreurs générales du formulaire. #}
+					
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Activité</span>
+											{{  form_widget(form.raisonSociale, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Fabrication de plâts cuisinés' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>	
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Besoins</span>
+											{{  form_widget(form.besoins, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Déménagement' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+											<span class="input-group-addon large">Département</span>
+											{{ form_widget(form.nom, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : 92' } })  }}								
+											</div>							
+										  </div>
+									  </div>
+									</div>						
+						<center>
+						<br>
+							{{ form_row(form._token) }}
+							<input type="submit" class="btn btn-primary" />
+						</center>
+					</form>
+								{{ render(controller("BaclooCrmBundle:Crm:showbacloolist", {'id': id, 'page': page, 'mode': mode, 'toc': toc, 'insert': insert})) }}
+
+					{% endif %}
+				{% elseif id is not defined %}
+					<form class="form-horizontal" action="{{ path('bacloocrm_searchbacloo', {'mode': mode}) }}" method="post" {{form_enctype(form) }}>
+					<fieldset>
+						{# Les erreurs générales du formulaire. #}
+							
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Activité</span>
+											{{  form_widget(form.raisonSociale, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Fabrication de plâts cuisinés' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Besoins</span>
+											{{  form_widget(form.besoins, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : Déménagement' } })  }}
+											</div>						
+										  </div>
+									  </div>
+									</div>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+											<span class="input-group-addon large">Département</span>
+											{{ form_widget(form.nom, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Exemple : 92' } })  }}								
+											</div>							
+										  </div>
+									  </div>
+									</div>						
+						<center>
+						<br>
+							{{ form_row(form._token) }}
+							<input type="submit" class="btn btn-primary" />
+							<center>Lancez une recherche de prospect par département et/ou activité<br>
+						</center>
+					</fieldset>			
+					</form>
+				{% endif %}
+				</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}

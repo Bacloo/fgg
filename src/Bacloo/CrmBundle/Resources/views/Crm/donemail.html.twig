@@ -1,0 +1,138 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="row clearfix">
+{% if send == 'ok' %}
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								OK
+							</h4>
+						</div>
+						<div class="modal-body">
+							votre message a bien été envoyé
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-primary" href="{{ previous }}"><span>Fermer</span></a>					
+						</div>
+					</div>					
+				</div>
+{% elseif id == '0' %}
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form role="form" action="{{ path('bacloocrm_donemail', {'id': id} ) }}" method="post" {{form_enctype(form) }}>
+					{{ form_errors(form) }}
+						<fieldset>					
+						<div class="modal-header">
+						<a class="close" href="{{ previous }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Envoyer une invitation à un contact
+							</h4>
+						</div>
+						<div class="modal-body">
+							{% if nom is empty or prenom is empty %}							
+								<div class="alert alert-warning xs" role="alert">Vous devez d'abord renseigner votre nom et votre prénom dans votre profil avant de pouvoir envoyer des invitations.<br>
+							{% else %}
+								{% set date = 'now'|date('Y-m-d') %}
+								<div class="alert alert-warning xs" role="alert">Votre contact recevra un email l'invitant à se connecter à Bacloo.<br>
+								Une fois son profil entièrement complété, vous recevrez à nouveau 1 point.</div>							
+								<div class="form-group">
+								  <div class="col-md-12">							
+									
+								  </div>
+								</div>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">	
+												<span class="input-group-addon large">Prénom</span>
+												{{ form_widget(form.raisonsociale, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Prénom  de la personne à inviter' } })  }}
+
+												<div class="hidden">
+													{{ form_widget(form.ficheid) }}
+													{{ form_widget(form.parrainid) }}
+													{{ form_widget(form.parrainpseudo) }}
+												</div>
+											</div>						
+										  </div>
+									  </div>
+									</div>
+									<br><br>
+									<div class="form-group">
+									  <div class="controls">
+										  <div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-addon large">Email</span>
+												{{ form_widget(form.email, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Saisissez l\'adresse email de votre ami(e)' } })  }}
+											</div>
+											{{ form_errors(form.email) }}
+										  </div>
+									  </div>
+									</div>								
+									<br><br>										
+								{{ form_row(form._token) }}
+							{% endif %}
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-default" href="{{ previous }}">Fermer</a>
+							<input type="submit" class="btn btn-primary" />
+						</div>
+						</fieldset>							
+					</form>						
+				</div>					
+			</div>
+{% else %}
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form role="form" action="{{ path('bacloocrm_donemail', {'id': id} ) }}" method="post" {{form_enctype(form) }}>
+						<fieldset>	
+						{{ form_errors(form) }}
+						<div class="modal-header">
+						<a class="close" href="{{ path('bacloocrm_voir', {'id': id} ) }}">×</a>
+							<h4 class="modal-title" id="myModalLabel">
+								Envoyer cette fiche à un ami non membre de Bacloo
+							</h4>
+						</div>
+						<div class="modal-body">
+							{% set date = 'now'|date('Y-m-d') %}
+							<div class="alert alert-warning xs" role="alert">L'utilisateur recevra une invitation à se connecter à Bacloo pour consulter une copie de la fiche que vous lui avez donnée.<br>
+							Cette dernière contiendra les informations de la fiche administrative et les contacts.</div>							
+							<div class="form-group">
+							  <div class="col-md-12">							
+								
+							  </div>
+							</div>
+								<div class="form-group">
+								  <div class="controls">
+									  <div class="col-md-12">
+										<div class="input-group">	
+											<span class="input-group-addon large">Email</span>
+											{{ form_widget(form.email, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Saisissez l\'adresse email de votre ami(e)' } })  }}
+
+											<div class="hidden">
+												{{ form_widget(form.raisonsociale, { 'value' : 'xxxxxxx' } )  }}
+												{{ form_widget(form.ficheid) }}
+												{{ form_widget(form.parrainid) }}
+												{{ form_widget(form.parrainpseudo) }}
+											</div>
+										</div>
+										{{ form_errors(form.email) }}
+									  </div>
+								  </div>
+								</div>								
+<br><br>
+										
+						{{ form_row(form._token) }}
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-default" href="{{ path('bacloocrm_voir', {'id': id} ) }}">Fermer</a>
+							<input type="submit" class="btn btn-primary" />
+						</div>
+						</fieldset>							
+					</form>						
+				</div>					
+			</div>
+{% endif %}
+</div>		
+{% endblock %}

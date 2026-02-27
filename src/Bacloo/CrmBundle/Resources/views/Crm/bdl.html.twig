@@ -1,0 +1,272 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+
+			<!-- Side menu -->
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+
+
+
+	{% endblock %}
+
+
+	</head>
+	<body>
+		<span style="text-align:center;font-size:10pt"><br></span>
+		<br>
+		{% if mode == 'bdl' %}
+			<span style="text-align:center;font-size:12pt"><b>Bon de livraison n°{{ locata.id }}</b></span>
+		{% elseif mode == 'br' %}
+			<span style="text-align:center;font-size:12pt"><b>Bon de retour n°{{ locata.id }}</b></span>
+		{% elseif mode == 'be' %}
+			<span style="text-align:center;font-size:12pt"><b>Bon d'échange n°{{ locata.id }}</b></span>
+		{% endif %}
+		<br>
+		<span style="text-align:center;font-size:11pt;"><b>A l’attention de {{ locata.acheteur }}</b></span>
+		<span style="text-align:center;font-size:10pt"><br></span>
+		<span style="font-size:7.5pt;"><br></span>
+		<table><tr><td><span style="font-size:11pt;">Date : {{ locata.datemodif|date('d/m/Y') }}</span></td></tr></table>
+		<span style="font-size:0.5pt;"><br></span>
+		<table><tr><td><span style="font-size:11pt;">N° de client : {{ locata.clientid }}</span></td></tr></table>
+		<span style="font-size:1.5pt;"><br></span>
+		<table><tr><td><span style="font-size:11pt;">N° de bon de commande : {{ locata.numbdc }}</span></td></tr></table>
+		<span style="font-size:1.5pt;"><br></span>
+		<table><tr><td><span style="font-size:11pt;"></span></td></tr></table>
+
+		<br>
+		<table border="0">
+			<tr>
+				<td width="250">
+					<table cellspacing="0" cellpadding="3" border="0" style="margin-left:100px">
+						<tr>
+							<td width="5" height="80">
+							</td>
+							<td width="180">
+								<span style="font-size:7pt"><br></span>
+								<span style="font-size:10pt"><u>Coordonnées client :</u></span><br>
+								<span style="font-size:10pt"><b>{{ locata.client }}</b><br>
+								{{ client.adresse1 }}<br>
+								{# {% if client.adresse2 is not empty %}{{ client.adresse2 }}<br>{% endif %} #}
+									{# {% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %} #}
+									{{ client.cp }} {{ client.ville }}<br>
+								Tél: {{ client.telephone }}</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="28">
+				</td>
+				<td width="262">
+					<table cellspacing="0" cellpadding="3" border="0">
+						<tr>
+							<td height="80">
+								<span style="font-size:7pt"><br></span>
+								<span style="font-size:10pt"><u>Adresse chantier :</u></span><br>
+								<span style="font-size:10pt"><b>{{ locata.nomchantier }}</b><br>
+									{{ locata.adresse1 }}<br>
+									{% if locata.adresse2 is not empty %}{{ locata.adresse2 }}<br>{% endif %}
+									{% if locata.adresse3 is not empty %}{{ locata.adresse3 }}<br>{% endif %}
+									{{ locata.cp }} {{ locata.ville }}
+								</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="80">
+				</td>
+			</tr>
+		</table>
+		<span style="font-size:2pt"><br></span>
+		<span style="font-size:11pt"></span>
+		<span style="font-size:15pt"><br></span>
+		<table cellspacing="0" cellpadding="4" border="0">
+			<tr>
+				<td height="" width="60" align="center" border="1">
+					<b>Ref.</b>
+				</td>
+				<td height="" width="255" align="center" border="1">
+					<b>Désignation</b>
+				</td>
+				<td height="" width="80" align="center" border="1">
+					<b>Prix unitaire<br>(en € HT)</b>
+				</td>
+				<td height="" width="55" align="center" border="1">
+					<b>Quantité<br>(jours)</b>
+				</td>
+				<td height="" width="70" align="center" border="1">
+					<b>Total<br>(en € HT)</b>
+				</td>
+			</tr>
+			{% for location in locata.locations %}
+				<tr style="font-size:10pt">
+					<td height="" width="60" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{% if location.codemachineinterne is not empty %}{{ location.codemachineinterne}}{% endif %}
+					</td>
+					<td height="" width="255" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						<b>{{ location.typemachine}}</b>
+						<br>Du {{ location.debutloc|date('d/m/Y') }} au {{ location.finloc|date('d/m/Y') }}
+{#						{% if location.horametre > 0 %}#}
+{#							<br><br><b>Horamètre : {{ location.horametre }}	</b>#}
+{#						{% endif %}#}
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+					</td>
+				</tr>
+			{% endfor %}
+			{% for locationsl in locata.locationssl %}
+				<tr style="font-size:10pt">
+					<td height="" width="60" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{% if locationsl.codemachineinterne is not empty %}{{ locationsl.codemachineinterne}}{% endif %}
+					</td>
+					<td height="" width="255" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						<b>{{ locationsl.typemachine}}</b>
+						<br>Du {{ locationsl.debutloc|date('d/m/Y') }} au {{ locationsl.finloc|date('d/m/Y') }}
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+
+					</td>
+				</tr>
+			{% endfor %}
+			{% if totalvente > 0 %}
+				{% for ventes in locata.locataventes %}
+					<tr style="font-size:10pt">
+						<td height="" width="60" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+							<span style="font-size:9pt">{{ ventes.refarticle }}</span>
+						</td>
+						<td height="" width="255" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+							<span style="font-size:9pt">{{ ventes.description}}</span>
+						</td>
+						<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						</td>
+						<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">{{ ventes.quantite }}
+						</td>
+						<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						</td>
+					</tr>
+				{% endfor %}
+			{% endif %}
+				<tr style="font-size:1pt">
+					<td height="" width="60" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="255" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="80" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="55" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+				</tr>
+		</table>
+		{% if  locata.commentaire is not empty %}<h4>{{ locata.commentaire|nl2br }}</h4>{% endif %}
+{% for i in 0..locata.spacer %}
+    <span style="font-size:7pt;"><br></span>
+{% endfor %}
+		<table border="0" width="520">
+			<tr>
+				<td width="400" align="left" border="1" style="font-size:7pt;">
+					<table cellpadding="7">
+						<tr>
+							<td>
+								- Cette offre est valable pour une utilisation de 7 heures par jour et 5 jours par semaine. En cas de dépassement, une majoration sera appliquée.<br>
+
+								- Le niveau de carburant des matériels thermique doit être rendu au même niveau qu'à la livraison, soit le plein. Tout appoint effectué par nos soins sera facturé {% if locata.clientid == 14 or locata.clientid == 45 or locata.clientid == 79 %}1,80 €{% else %}1,97 €{% endif %}HT le litre.<br>
+
+								- Les matériels électriques sont livrés avec la batterie chargée et doivent être restitués à l’identique.<br>
+
+								- Notre matériel est livré propre et doit être rendu à l'identique. En cas de manquement, un forfait nettoyage sera facturé 50€HT de l’heure avec un minimum d’une heure pleine en cas de manquement.<br>
+
+								- L’arrêt ou la prolongation de votre location doit être notifé à Demolocs par email exclusivement afin d’être effectif.<br>
+
+								- En cas de suspension de location pour intempérie ou retard de livraison, veuillez nous en informer par email le jour même avant 9 heures 30.<br>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="120" border="1">
+					<table width="120" cellspacing="0" style="font-size:10pt;" border="0">
+						<tr>
+							<td width="58" align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+							<td align="right">
+								<span style="font-size:5pt;"><br></span>
+							</td>
+						</tr>
+						<tr>
+							<td width="58" align="right">
+								<b>Total HT :</b>
+							</td>
+							<td align="right">
+								{% if montantremise is not defined %}{% set montantremise = 0 %}{% endif %}
+								{% set montantloc = locata.montantloc + locata.transportaller + locata.transportretour + locata.contributionverte + locata.assurance + locata.montantlocavente - montantremise %}
+								<b></b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>TVA 20% : </b>
+							</td>
+							<td align="right">
+								{% if client.typeclient == 'export' %}
+									{% set tva = 0 %}
+								{% else %}
+									{% set tva = montantloc * 0.20 %}
+								{% endif %}
+								<b></b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>Total TTC : </b>
+							</td>
+							<td align="right">
+								{% set totalttc = montantloc + tva %}
+								<b></b><br>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br><br>
+		<table border="" width="520" cellpadding="7" style="font-size:7pt;" border="1">
+			<tr>
+				<td border="0" align="center" colspan="2"  style="font-size:10pt;color:#20348a;">
+					<b><i>Pour les retours, les bases vie doivent impérativement être à disposition au sein du chantier ou à proximité immédiate de celui-ci prêtes à être enlevées. Dans le cas contraire, elles ne seront pas reprises, et une facturation retour à vide peut avoir lieu.</i></b>
+				</td>
+			</tr>
+		</table>
+		<br><br>
+		<table border="" width="520" cellpadding="7" style="font-size:7pt;" >
+			<tr>
+				<td border="0" align="center" colspan="2"  style="font-size:10pt">
+					<b>Signature précédée de la mention « bon pour accord » et cachet de l’entreprise :</b>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

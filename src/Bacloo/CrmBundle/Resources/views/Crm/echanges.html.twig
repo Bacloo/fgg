@@ -1,0 +1,142 @@
+{# src/Bacloo/CrmBundle/Resources/views/Blog/search.html.twig #}
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalLabel">
+				Echange de matériel
+			</h4>
+		</div>
+		<div class="modal-body">
+			{% if message == 1 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!</strong> Ce modèle n'est plus disponible sur le parc. Merci de vous renseigner auprès de l'atelier pour un autre modèle.
+				</div>	
+			{% elseif message == 2 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!</strong> Il n'y a pas de matériel de sous-location disponible.
+				</div>	
+			{% elseif message == 3 %}
+				<div class="alert alert-danger">
+				  <strong>Attention!</strong> La matériel sélectionnée n'est pas disponible. Veuillez en choisir un autre.
+				</div>
+			{% endif %}
+			<form class="form-horizontal" action="{{ path('bacloocrm_echanges', {'codelocations':codelocations, 'ecode':ecodeancienmat, 'locid': locid, 'typeloc':typeloc } ) }}" method="post" {{form_enctype(form) }}>
+				{% if message < 4 %}
+					<h5>Materiel d'origine : {{ ecodeancienmat }}</h5>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b>Nouveau matériel</b></span>
+										{% if ecodenewmat != null %}
+											{{ form_widget(form.newmateriel, { 'value' : ecodenewmat, 'id' : 'newmateriel_1', 'attr': { 'class' : 'form-control newmateriel' } })  }}							
+										{% else %}
+											{{ form_widget(form.newmateriel, {'id' : 'newmateriel_1', 'attr' : { 'class' : 'form-control newmateriel' } })  }}
+										{% endif %}
+									</div>
+								</div>
+								</div><span id="match2"></span>	
+							</div>	
+							<hr>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b>Tarif livraison</b></span>
+										{{ form_widget(form.transportaller, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div><br><br>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b>Tarif reprise</b></span>
+										{{ form_widget(form.transportretour, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+							<br><br>
+								<div class="col-md-12 column">						
+									<table>
+										<tr>
+											<td class="moyen"><span>Bdc reçu ?</span></td>
+											<td class="moyen">{{ form_widget(form.bdcrecu) }}</td>
+											<td class="moyen"></td>
+										</tr>
+										<tr>
+											<td class="moyen" colspan="3">{{ form_widget(form.numbdc, { 'attr' : { 'class' : 'form-control-sm', 'placeholder' : 'n° de bon de commande' } })  }}</td>
+										</tr>		
+									</table>				
+								</div>
+											
+						<center>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Valider"/>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': ficheid, 'locid':locid} ) }}"><span>Fermer</span></a>
+							{{ form_row(form._token) }}
+						</center>	
+				{% elseif message == 4 %}
+					<div class="alert alert-danger">
+					  <strong>Attention!</strong> Cet échange a déjà été enregistré.
+					</div>					
+					<center>
+						<br>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': ficheid, 'locid':locid} ) }}"><span>Fermer</span></a>
+					</center>
+				{% else %}
+					<div class="alert alert-success">
+					  <strong>Bravo!</strong> Echange effectué avec succès.
+					</div>					
+					<center>
+						<br>
+						<a class="btn btn-primary" href="{{ path('bacloocrm_ajouterlocation', {'ficheid': ficheid, 'locid':locid} ) }}"><span>Fermer</span></a>
+					</center>				
+				{% endif %}
+			</form>
+			<br>
+		</div>	
+		{% include "BaclooCrmBundle:Crm:ajout_locations.html.twig" %}
+		{# Fin Partie Locations #}
+	</div>
+</div>
+{# Fin partie invisible #}
+</form>		
+<script>
+//Autocomplete newmateriel
+	$(document).ready(function(){
+	 $(document).on('keydown', '.newmateriel', function() {
+	 
+	  var id = this.id;
+	  var splitid = id.split('_');
+	  var index = splitid[1];
+	  // Initialize jQuery UI autocomplete
+	  $( '#'+id ).autocomplete({
+	   source: function( request, response ) {
+		$('#match2').html('<img style="width:55px;height:55px;" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />');
+		$.ajax({
+		 url: "{{ path('bacloocrm_updatecodemachineinternemixte') }}",
+		 type: 'post',
+		 minLength: 3,
+		 dataType: "json",
+		 data: {
+		  search: request.term,request:1
+		 },
+		 success: function( data ) {
+		  response( data );
+		  $('#match2').text(''); 
+		 }
+		});
+	   },
+	   
+	   select: function (event, ui) {
+		$(this).val(ui.item.label); // display the selected text
+
+
+		return false;
+	   }
+	  });
+	 });
+} );
+//Fin autocomplete newmateriel
+</script>	
+{% endblock %}

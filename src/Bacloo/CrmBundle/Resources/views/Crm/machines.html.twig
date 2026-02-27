@@ -1,0 +1,580 @@
+{% extends "BaclooCrmBundle::layout.html.twig" %}
+{% block body %}
+<form class="form-horizontal" action="{{ path('bacloocrm_machines', {'machineid':machineid} ) }}" method="post" {{form_enctype(form) }}>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="row clearfix">
+			<div class="col-md-9">
+				<h3 class="panel-title">
+					<h3>{% if machineid is defined %}{{ form.vars.value.code }} : {{ form.vars.value.etat }}{% else %}Création d'un nouveau matériel{% endif %}</h3>
+				</h3>
+			</div>
+			<div class="col-md-3">
+				{% if form.vars.value.etat == 'Disponible' %}<span class="pull-right"><a type="button" class="btn btn-danger btn-xl" href="{{ path('bacloocrm_removemachineparc', {'id': machineid}) }}">Supprimer ce matériel</a></span>{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="panel-body">
+
+		<center>
+			<br>
+			<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+			<a class="btn btn-primary" href="{{ path('bacloocrm_tcard') }}"><span>Fermer</span></a>
+			{{ form_row(form._token) }}
+		</center>
+		<br>
+		<div class="col-md-7">
+			<div class="col-md-8 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Matériel
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="col-md-6 column">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="hidden">
+										{{ form_widget(form.debutloc)  }}
+										{{ form_widget(form.finloc) }}
+										{{ form_widget(form.original, { 'value' : 1 }) }}
+										{{ form_widget(form.clientid) }}
+										{{ form_widget(form.codecontrat) }}
+										{{ form_widget(form.codelocations) }}
+										{{ form_widget(form.nomchantier) }}
+										{{ form_widget(form.entreprise) }}
+
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Famille</span>
+										{{ form_widget(form.codegenerique, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Energie</span>
+										{{ form_widget(form.energie, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+						</div>	
+						<div class="col-md-6 column">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Code machine</span>
+										{{ form_widget(form.code, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>N° série</span>
+										{{ form_widget(form.numSerie, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>						
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Immatriculation</span>
+										<input type="text" name="immatriculation" class="form-control" value="{{ app.request.get('immatriculation') }}">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="col-md-12">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Description</span>
+										{{ form_widget(form.description, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>						
+						</div>
+						{% if form.vars.value.etat == 'Disponible' or form.vars.value.etat == 'Hors Usage' or form.vars.value.etat == 'Indisponible' or form.vars.value.etat == 'Pièce' or form.vars.value.etat == 'Vendu' or form.vars.value.etat == 'Volé'%}
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="col-md-12">
+										<div class="input-group">
+											<span class="input-group-addon"><b></b>Etat</span>
+											{{ form_widget(form.etat, { 'attr' : { 'class' : 'form-control' } })  }}
+										</div>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<div class="hidden">{% if machineid != 0 %}{{ form_widget(form.etat) }}{% else %}{{ form_widget(form.etat, { 'value' : 'Disponible' }) }}{% endif %}</div>
+						{% endif %}
+					</div>	
+				</div>
+				<div align="center" style="font-weight: bold;font-size: 16px;">
+					<table>
+						<tr>
+							<td>Ventes réalisées sur cette machine</td>
+							<td style="text-align:right;width:150px;">{{ recettes }} €HT</td>
+						</tr>
+						<tr>
+							<td>Locations réalisées sur cette machine</td>
+							<td style="text-align:right">{{ recetteslocation }} €HT</td>
+						</tr>
+						<tr>
+							<td>Dépenses réalisées sur cette machine</td>
+							<td style="text-align:right;width:100px;"> - {{ depenses }} €HT</td>
+						</tr>
+						<tr>
+							<td>Loyer mensuel</td>
+							<td style="text-align:right;width:100px;"> - {{ form.vars.value.coutmensuel }} €HT</td>
+						</tr>
+						<tr>
+							<td>Marge brute</td>
+							<td style="text-align:right;"> {{recettes + recetteslocation - depenses - form.vars.value.coutmensuel }} €HT</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+			<div class="col-md-4 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Echéances
+						</h3>
+					</div>				
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Prochaine VGP</span>
+									{{ form_widget(form.prochaineVgp, { 'attr' : { 'class' : 'form-control date' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Prochaine révision</span>
+									{{ form_widget(form.prochaineRevision, { 'attr' : { 'class' : 'form-control date' } })  }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><b></b>Hormètre entretien</span>
+									{{ form_widget(form.prochainhorametre, { 'attr' : { 'class' : 'form-control' } })  }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon"><b></b>N°Immo</span>
+							{{ form_widget(form.codeimmo, { 'attr' : { 'class' : 'form-control' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon"><b></b>Coût mensuel</span>
+							{{ form_widget(form.coutmensuel, { 'attr' : { 'class' : 'form-control' } })  }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<div class="input-group">
+							<span class="input-group-addon"><b></b>Prix neuf</span>
+							{{ form_widget(form.prixneuf, { 'attr' : { 'class' : 'form-control' } })  }}
+						</div>
+					</div>
+				</div>
+			
+			<center>
+				{% if qrcode == 1 %}
+					{% if machineid != 0 %}
+						<a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_qrcode', {'codemachine': form.vars.value.code }) }}"><span class="glyphicon glyphicon-qrcode"></span></a>
+					{% endif %}
+					{% if form.vars.value.etatlog == 'Livré chez le client' and form.vars.value.etat ==  'En location' %}
+						<a type="button" class="btn btn-info btn-lg" href="{{ path('bacloocrm_maps', {'latitude': form.vars.value.latitude, 'longitude': form.vars.value.longitude }) }}"><span class="glyphicon glyphicon-map-marker"></span></a>
+					{% endif %}
+				{% endif %}
+			</center>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="col-md-12">
+							<div class="input-group">
+								<span class="input-group-addon"><b></b>VR</span>
+								{{ form_widget(form.vr, { 'attr' : { 'class' : 'form-control' } })  }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="col-md-12">
+							<div class="input-group">
+								<span class="input-group-addon"><b></b>Fin crédit</span>
+								{{ form_widget(form.datefincredit, { 'attr' : { 'class' : 'form-control datepicker' } })  }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="hidden">
+						{{ form_widget(form.caprestantdu, { 'attr' : { 'class' : 'form-control' } })  }}
+					</div>
+					<span style="font-weight: bold;font-size: 16px;">Capital restant dû {{ form.vars.value.caprestantdu }} €</span>
+				</div>
+			</div>
+	</div>
+			<div class="col-md-5 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Les 6 dernières locations
+						</h3>
+					</div>				
+					<div class="panel-body">
+						{% if last5loc == 0 or last5loc is empty%}
+							Cette machine n'a jamais été louée
+						{% else %}
+							<table class="table table-striped col-md-12">
+								<thead>
+									<th>
+										Client
+									</th>
+									<th>
+										Contrat
+									</th>
+									<th>
+										Nom chantier
+									</th>
+									<th>
+										Date début
+									</th>
+									<th>
+										Date fin
+									</th>
+									<th>
+										Statut
+									</th>
+								</thead>
+								{% for locata in last5loc %}
+									{% for locations in locata.locations %}
+										<tr>
+											<td>
+												{{ locata.client}}
+											</td>
+											<td>
+												<a href="{{ path('bacloocrm_ajouterlocation', {'ficheid': locata.clientid|number_format(0, ',', ''), 'locid':  locata.id, 'erreur': 0 }) }}">{{ locata.id }}</a>
+											</td>
+											<td>
+												{{ locata.nomchantier }}<br>
+												{{ locata.cp }} {{ locata.ville }}
+											</td>
+											<td>
+												{{ locations.debutloc|date('d/m/Y') }}
+											</td>
+											<td>
+												{{ locations.finloc|date('d/m/Y') }}
+											</td>
+											<td>
+												{{ locations.etatloc }}
+											</td>
+{#											<td>#}
+{#												{% if locations.bdok == 1 %}<a type="button" class="btn btn-info btn-xs" href="{{ path('bacloocrm_bondepartpdf', {'ficheid': locata.clientid, 'bdid': locations.bdid, 'codecontrat': locata.id, 'codelocation': locations.id }) }}">BD</a>{% endif %}#}
+{#											</td>#}
+{#											<td>#}
+{#												{% if locations.brok == 1 %}<a type="button" class="btn btn-primary btn-xs" href="{{ path('bacloocrm_bonretourpdf', {'ficheid': locata.clientid, 'brid': locations.brid, 'codecontrat': locata.id, 'codelocation': locations.id }) }}">BR</a>{% endif %}#}
+{#											</td>#}
+										</tr>
+									{% endfor %}
+								{% endfor %}
+							</table>
+						{% endif %}						
+					</div>
+				</div>
+			</div>
+			<br><br>
+	{# Partie Dimensions #}
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Dimensions
+							</h3>
+						</div>				
+						<div class="panel-body">
+							<div class="form-group">
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Longueur</span>
+										{{ form_widget(form.longueur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Largeur</span>
+										{{ form_widget(form.largeur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Hauteur</span>
+										{{ form_widget(form.hauteur, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Poids</span>
+										{{ form_widget(form.poids, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Charge maximale</span>
+										{{ form_widget(form.chargemax, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="input-group">
+										<span class="input-group-addon"><b></b>Déport</span>
+										{{ form_widget(form.deport, { 'attr' : { 'class' : 'form-control' } })  }}
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>					
+				<div>	
+			{# Fin partie dimensions #}
+			{# Partie Eventparc #}
+{#			<div class="col-md-6 column">#}
+{#				<div class="panel panel-default">#}
+{#					<div class="panel-heading">#}
+{#						<h3 class="panel-title">#}
+{#							Rapport d'intervention#}
+{#						</h3>#}
+{#					</div>#}
+{#					<div class="panel-body">			#}
+{#						#}{# Les erreurs générales du formulaire. #}{#		#}
+{#						<div id="bacloo_crmbundle_machines_eventparc" data-prototype="{{ _self.eventparcCollectionItem(form.eventparc.vars.prototype, user, date)|e }}">#}
+{#							<table id="bacloo3" class="table table-bordered">#}
+{#								<tr id="dibac3">#}
+{#									<td class="col-md-3">Date</td>#}
+{#									<td class="">User</td>#}
+{#									<td class="">Horamètre</td>#}
+{#									<td class="">Note</td>#}
+{#								</tr>#}
+{#								{% for eventpar in form.eventparc|reverse(true) %}#}
+{#									{{ _self.eventparcCollectionItem(eventpar, user, date) }}#}
+{#								{% endfor %}						#}
+{#								{% macro eventparcCollectionItem(eventparc, user, date) %}#}
+{#									<tr class="dibacloo3">#}
+{#										<td class="col-md-2">#}
+{#											<div class="form-group">#}
+{#												<div class="col-md-12">#}
+{#													{{ form_widget(eventparc.date, {'attr' : { 'class' : 'form-control date' } })  }}#}
+{#												</div>#}
+{#											</div>#}
+{#										</td>#}
+{#										<td class="col-md-2">#}
+{#											<div class="form-group">#}
+{#											  <div class="col-md-12">#}
+{#												{{ form_widget(eventparc.user , {'value' : user, 'attr' : { 'class' : 'form-control' } })  }}#}
+{#											  </div>#}
+{#											</div>#}
+{#										</td>#}
+{#										<td class="col-md-2">#}
+{#											<div class="form-group">#}
+{#											  <div class="col-md-12">#}
+{#												{{ form_widget(eventparc.horametre , { 'attr' : { 'class' : 'form-control' } })  }}#}
+{#											  </div>#}
+{#											</div>#}
+{#										</td>#}
+{#										<td class="col-md-6">#}
+{#											<div class="form-group">#}
+{#											  <div class="col-md-12">#}
+{#												{{ form_widget(eventparc.note , { 'attr' : { 'class' : 'form-control' } })  }}#}
+{#											  </div>#}
+{#											</div>#}
+{#										</td>#}
+{#									</tr>#}
+{#								{% endmacro %}#}
+{#							</table>#}
+{#						</div>	#}
+{#						{% include "BaclooCrmBundle:Crm:ajout_eventparc.html.twig" %}#}
+{#						#}{# Fin Partie eventparc #}
+{#					</div>			#}
+{#				</div>#}
+{#			</div>#}
+			<div class="col-md-6 column">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							Liste des fichiers liés à ce véhicule
+						</h3>
+					</div>	
+					<div class="panel-body">
+						<div class="tab-content">
+								 {#{{ form_start(form) }}#}
+								 {#{{ form_widget(form) }}#}
+								 
+								 <div class="form-group">
+									 <div class="col-sm-12">
+										 <center><div class="dropzone col-md-12" id="my-awesome-dropzone" style="border-style: dashed solid; height:100px;"><div class="dz-message" data-dz-message><span>Glissez un fichier image ou pdf ici ou cliquez</span></div></div></center>
+									 </div>
+								 </div>
+								 {#{{ form_end(form) }}#}
+						</div>
+						<hr>
+						<table class="table table-striped col-md-12">
+							<thead>
+								<th>
+									Nom du fichier
+								</th>
+								<th>
+									
+								</th>
+								<th>
+									
+								</th>
+							</thead>
+							{% for document in documents %}
+							<tr>
+								<td class="col-md-10">
+									{{ document.nom }}
+								</td>
+								<td>
+									<a type="button" class="btn btn-primary btn-xs" href="{{ asset('uploads/machine/'~ machineid ~'/' ~ document.nom ~ '') }}">Ouvrir</a>
+								</td>
+								<td class="col-md-10">
+									<a type="button" class="btn btn-danger btn-xs" href="{{ path('bacloocrm_removedocument', {'iddoc': document.id, 'codecontrat': document.codecontrat, 'machineid':machineid, 'type':'machine' }) }}">Supprimer</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+					</div>
+				</div>
+			<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Journal des dépenses
+					</h3>
+				</div>
+				<div class="panel-body">
+					{# Les erreurs générales du formulaire. #}
+					<div id="bacloo_crmbundle_machines_depensesmachine" data-prototype="{{ _self.depensesCollectionItem(form.depensesmachine.vars.prototype, user, date, machine)|e }}">
+						<table id="bacloo5" class="table table-bordered">
+							<tr id="dibac5">
+								<td width="80">Date</td>
+								<td class="">User</td>
+								<td width="640">Description</td>
+								<td width="235">HT</td>
+								<td width="235">TTC</td>
+							</tr>
+							{% for depense in form.depensesmachine|reverse(true) %}
+								{{ _self.depensesCollectionItem(depense, user, date, machine) }}
+							{% endfor %}
+							{% macro depensesCollectionItem(depenses, user, date, machine) %}
+								<tr class="dibacloo5">
+									<td>
+										<div class="form-group">
+											<div class="col-md-12">
+												{{ form_widget(depenses.date, {'attr' : { 'class' : 'form-control date etroit100' } })  }}
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<div class="col-md-12">
+												<div class="hidden">{% if depenses.user.vars.value is not empty %}{{ form_widget(depenses.user) }}{% else %}{{ form_widget(depenses.user, { 'value' : user }) }}{% endif %}</div>
+												{{ depenses.user.vars.value }}
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<div class="col-md-12">
+												{{ form_widget(depenses.description , { 'attr' : { 'class' : 'form-control' } })  }}
+											</div>
+										</div>
+									</td>
+									<td>
+										{{ form_widget(depenses.totalht , { 'attr' : { 'class' : 'form-control' } })  }}
+									</td>
+									<td>
+										{{ form_widget(depenses.totalttc , { 'attr' : { 'class' : 'form-control' } })  }}
+									</td>
+								</tr>
+							{% endmacro %}
+						</table>
+					</div>
+					{% include "BaclooCrmBundle:Crm:ajout_depensesmachine.html.twig" %}
+					{# Fin Partie dépenses #}
+				</div>
+			</div>
+		</div>
+						<center>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Enregistrer"/>
+							<a class="btn btn-primary" href="{{ path('bacloocrm_tcard') }}"><span>Fermer</span></a>
+							{{ form_row(form._token) }}
+						</center>
+	</div>
+</div>
+	</div>
+</div>
+</form>
+<script>
+	// init,configure dropzone
+	Dropzone.autoDiscover = true;
+	var dropzone_default = new Dropzone(".dropzone", {
+		url: '{{ path('bacloocrm_dropzone', {'codecontrat':machineid, 'type':'machine'}) }}',
+		maxFiles: 1,
+		dictMaxFilesExceeded: 'Only 1 Image can be uploaded',
+
+		acceptedFiles: '.jpg, .jpeg, .png, .bmp, .pdf',
+		maxFilesize: 9,  // in Mb
+		addRemoveLinks: true,
+		init: function () {
+			this.on("maxfilesexceeded", function(file) {
+				this.removeFile(file);
+			});
+			this.on("sending", function(file, xhr, formData) {
+				// send additional data with the file as POST data if needed.
+				// formData.append("key", "value");
+			});
+			this.on("success", function() {
+				if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+						location.reload();
+				}
+			});
+		}
+	});
+</script>
+
+	<script>
+		$( function() {
+			$( ".datepicker" ).datepicker({
+				dateFormat: 'dd/mm/yy',
+				firstDay:1
+			});
+		} );
+	</script>
+
+{% endblock %}

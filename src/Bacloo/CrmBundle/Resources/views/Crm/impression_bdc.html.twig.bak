@@ -1,0 +1,218 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Bacloo{% endblock %}</title>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"type="text/css" />
+
+			<!-- Custom CSS -->
+		<link href="{{ asset('css/sb-admin.css') }}"type="text/css" />
+		<link href="{{ asset('css/morris.css') }}"type="text/css" />
+		<link href="{{ asset('css/full.css') }}" rel="stylesheet">
+		
+			<!-- Side menu -->	
+		<link href="{{ asset('css/slidemenu.css') }}" rel="stylesheet">
+		<link rel="icon" href="{{ asset('favicon.ico') }}" />
+		
+
+		
+	{% endblock %}
+
+
+	</head>
+	<body>
+		<span style="text-align:center;font-size:10pt"><br><br></span>
+		<br>
+		{% if mode == 'offreloc' %}
+			<span style="text-align:center;font-size:12pt"><b>DEVIS n°{{ locatafrs.id }}</b></span>
+		{% elseif mode == 'bdc' %}
+			<span style="text-align:center;font-size:12pt"><b>BON DE COMMANDE n°{{ locatafrs.id }}</b></span>	
+		{% elseif mode == 'contrat' %}
+			<span style="text-align:center;font-size:12pt"><b>CONTRAT n°{{ locatafrs.id }}</b></span>	
+		{% elseif mode == 'proforma' %}
+			<span style="text-align:center;font-size:12pt"><b>FACTURE PROFORMA n°{{ locatafrs.id }}</b></span>		
+		{% endif %}
+		
+		<span style="text-align:center;font-size:11pt;"></span>
+		<span style="text-align:center;font-size:10pt"><br></span><br><br>
+		<span style="font-size:7.5pt;"><br></span>
+		<table><tr><td width="35"></td><td><span style="font-size:11pt;">{{ locatafrs.datemodif|date('d/m/Y') }}</span></td></tr></table>
+		<span style="font-size:0.5pt;"><br></span>
+		<table><tr><td width="150"></td><td><span style="font-size:11pt;">{{ locatafrs.fournisseurid }}</span></td></tr></table>
+		<span style="font-size:1.5pt;"><br></span>
+		<table><tr><td width="145"></td><td><span style="font-size:11pt;"></span></td></tr></table>
+	
+		<br>
+		<table border="0">
+			<tr>
+				<td width="278">
+					<table cellspacing="0" cellpadding="3" border="0" style="margin-left:100px">
+						<tr>
+							<td width="5" height="80">
+							</td>
+							<td width="208">
+								<span style="font-size:7pt"><br></span>
+								<span style="font-size:10pt"><u>Coordonnées fournisseur :</u></span><br>
+								<span style="font-size:10pt"><b>{{ locatafrs.fournisseur }}</b><br>
+									{% if clients.id == locatafrs.fournisseurid %}
+										{{ clients.adresse1 }}<br>
+										{# {% if client.adresse2 is not empty %}{{ client.adresse2 }}<br>{% endif %} #}
+										{# {% if client.adresse3 is not empty %}{{ client.adresse3 }}<br>{% endif %} #}
+										{{ clients.cp }} {{ clients.ville }}</span><br>
+										<span style="font-size:9pt">{{ clients.telephone }}</span>
+									{% endif %}
+							</td>
+						</tr>
+					</table>				
+				</td>
+				<td width="162">
+					<table cellspacing="0" cellpadding="3" border="0">
+						<tr>
+							<td height="80">
+								<span style="font-size:7pt"><br></span>
+								<span style="font-size:10pt"><u>Adresse de livraison :</u></span><br>
+								<span style="font-size:10pt"><b>{{ locatafrs.nomchantier }}</b><br>
+									{{ locatafrs.adresse1 }}<br>
+									{% if locatafrs.adresse2 is not empty %}{{ locatafrs.adresse2 }}<br>{% endif %}
+									{% if locatafrs.adresse3 is not empty %}{{ locatafrs.adresse3 }}<br>{% endif %}							
+									{{ locatafrs.cp }} {{ locatafrs.ville }}
+								</span>
+							</td>
+						</tr>
+					</table>				
+				</td>
+				<td width="100">
+				</td>
+				<td width="80">				
+				</td>
+			</tr>
+		</table>	
+		<span style="font-size:2pt"><br></span><br>
+		<span style="font-size:11pt">Veuillez trouver ci-joint notre bon de commande.</span><br>
+		<span style="font-size:15pt"><br></span>
+		<table cellspacing="0" cellpadding="4" border="0">
+			<tr>
+				<td height="" width="60" align="center" border="1">
+					<b>Ref.</b>
+				</td>
+				<td height="" width="255" align="center" border="1">
+					<b>Désignation</b>
+				</td>
+				<td height="" width="80" align="center" border="1">
+					<b>Prix unitaire<br>(en € HT)</b>
+				</td>
+				<td height="" width="55" align="center" border="1">
+					<b>Quantité<br>(jours)</b>
+				</td>
+				<td height="" width="70" align="center" border="1">
+					<b>Total<br>(en € HT)</b>
+				</td>	
+			</tr>
+			{% for location in locatafrs.locationsfrs %}
+				<tr style="font-size:10pt">
+					<td height="" width="60" align="center" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.reference}}
+					</td>
+					<td height="" width="255" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.designation}}<br>
+						{% if location.reference  == 'location' or location.reference == 'contributionverte' or location.reference ==  'assurance' %}
+						{# du {{ location.debutloc|date('d/m/Y') }} au {{ location.finloc|date('d/m/Y') }} #}
+						{% endif %}
+					</td>
+					<td height="" width="80" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.pu|number_format(2, ',', ' ') }}	
+					</td>
+					<td height="" width="55" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.quantite }}
+					</td>
+					<td height="" width="70" align="right" style="border-left: 1px solid #000000;border-right: 1px solid #000000;">
+						{{ location.montantht|number_format(2, ',', ' ') }}						
+					</td>
+				</tr>
+			{% endfor %}
+				<tr style="font-size:1pt">
+					<td height="" width="60" align="center" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="255" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="80" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">						
+					</td>
+					<td height="" width="55" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">
+					</td>
+					<td height="" width="70" align="right" style="border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;">					
+					</td>
+				</tr>			
+		</table>
+			{#
+				{% for i in 0..locatafrs.spacer %}
+					<span style="font-size:7pt;"><br></span>
+				{% endfor %}	
+			#}
+		<br><br><br>
+		<table border="0" width="520">
+			<tr>
+				<td width="400" align="left" border="1" style="font-size:7pt;">
+				<table cellpadding="7">
+					<tr>
+						<td>
+							{% if  locatafrs.commentaire is not empty %}<h4>{{ locatafrs.commentaire }}</h4>{% endif %}
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td width="120" border="1">
+					<table width="120" cellspacing="0" style="font-size:10pt;" border="0">
+						<tr>
+							<td width="58" align="right">
+								<br><br><b>Total HT :</b>
+							</td>
+							<td align="right">
+								{% set montantloc = locatafrs.montantloc %}
+								<br><br><b>{{ montantloc|number_format(2, ',', ' ') }} €</b><br>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>TVA 20% : </b>
+							</td>
+							<td align="right">
+								<b>
+								{% if clients.typeclient == 'export' %}<br>
+									0 €
+								{% else %}
+									{% set tva = montantloc * 0.20 %}{{ tva|number_format(2, ',', ' ') }} €<br>
+								{% endif %}
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<b>Total TTC : </b><br>
+							</td>
+							<td align="right">
+							{% set totalttc = montantloc + (montantloc * 0.20) %}
+								<b>
+								{% if clients.typeclient == 'export' %}
+									{{ montantloc|number_format(2, ',', ' ') }} €
+								{% else %}
+									{{ totalttc|number_format(2, ',', ' ') }} €
+								{% endif %}								
+								</b><br>
+							</td>
+						</tr>
+					</table>				
+				</td>
+			</tr>
+		</table>
+			
+		<table border="" width="520" cellpadding="7" style="font-size:7pt;" >
+			<tr>
+				<td border="0" align="center" colspan="2"  style="font-size:10pt">
+				</td>
+			</tr>
+		</table>		
+	</body>
+</html>	
